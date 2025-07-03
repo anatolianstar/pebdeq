@@ -1,123 +1,109 @@
-# PEBDEQ - E-Commerce Platform
+# 🚀 PEBDEQ - Modern E-Commerce Platform
 
-**PEBDEQ** is a modern e-commerce platform specializing in 3D printing products, tools, vintage light bulbs, and laser engraving services. Built with Flask backend and React frontend.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
+[![React](https://img.shields.io/badge/React-18.0+-61DAFB.svg)](https://reactjs.org)
+[![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)](https://flask.palletsprojects.com)
 
-## 🚀 Features
+> Modern, responsive ve kullanıcı dostu e-ticaret platformu. 3D baskı, vintage ürünler, el aletleri ve lazer gravür hizmetleri için özel tasarlanmış.
 
-- **Product Categories**: 3D Print, Tools, Vintage Light Bulbs, Laser Engraving
-- **User Authentication**: Registration, login, profile management
-- **Shopping Cart**: Add to cart, quantity management, checkout
-- **Admin Panel**: Product management, order tracking, customer messages
-- **Blog System**: Content management for articles and tutorials
-- **Responsive Design**: Mobile-friendly interface
-- **Payment Integration**: Stripe payment processing (ready)
+## ✨ Özellikler
 
-## 🛠 Tech Stack
+### 🎨 Frontend (React)
+- **Modern UI/UX**: Montserrat font, gradient renkler, hover animasyonları
+- **Responsive Design**: Mobil ve desktop uyumlu tasarım
+- **Single Page Application**: React Router ile hızlı sayfa geçişleri
+- **Context API**: Auth ve Cart state yönetimi
+- **Component-Based**: Modüler ve yeniden kullanılabilir component yapısı
+
+### ⚙️ Backend (Flask)
+- **RESTful API**: Modern API endpoint'leri
+- **JWT Authentication**: Güvenli kullanıcı doğrulama sistemi
+- **Database ORM**: SQLAlchemy ile veritabanı yönetimi
+- **Admin Panel**: Yönetici paneli route'ları
+- **CORS Support**: Frontend-backend entegrasyonu
+
+### 🏪 E-Ticaret Özellikleri
+- **Kategori Yönetimi**: 4 ana kategori (3D Print, Tools, Vintage Bulbs, Laser Engraving)
+- **Ürün Yönetimi**: Ürün ekleme, düzenleme, silme
+- **Sepet Sistemi**: Dinamik sepet yönetimi
+- **Kullanıcı Sistemi**: Kayıt, giriş, profil yönetimi
+- **Blog Sistemi**: İçerik yönetimi
+- **İletişim Formu**: Müşteri iletişimi
+
+## 🛠️ Teknoloji Stack
 
 ### Backend
-- **Framework**: Flask 2.3.3
-- **Database**: SQLite (development) / PostgreSQL (production)
-- **ORM**: SQLAlchemy
-- **Authentication**: JWT tokens
-- **API**: RESTful endpoints
-- **Payment**: Stripe integration
+- **Flask 2.3.3** - Web framework
+- **SQLAlchemy** - ORM
+- **JWT** - Authentication
+- **SQLite** - Database
+- **CORS** - Cross-origin support
+- **Werkzeug** - WSGI utilities
 
 ### Frontend
-- **Framework**: React 18
-- **Routing**: React Router DOM
-- **HTTP Client**: Axios
-- **UI Components**: Lucide React icons
-- **Notifications**: React Hot Toast
-- **Styling**: CSS3 with responsive design
+- **React 18** - UI framework
+- **React Router** - Navigation
+- **Context API** - State management
+- **CSS3** - Modern styling
+- **Google Fonts** - Typography
 
-## 📦 Installation
+## 🚀 Kurulum ve Çalıştırma
 
-### Prerequisites
-- Python 3.8+
-- Node.js 16+
-- npm or yarn
+### Gereksinimler
+- Python 3.11+
+- Node.js 18+
+- npm
 
-### Backend Setup
+### Backend Kurulumu
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd pebdeq
-   ```
+```bash
+# Repository'yi klonlayın
+git clone https://github.com/anatolianstar/pebdeq.git
+cd pebdeq
 
-2. **Create virtual environment**
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+# Backend klasörüne gidin
+cd backend
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Virtual environment oluşturun
+python -m venv venv
 
-4. **Initialize database**
-   ```bash
-   python run.py
-   ```
+# Virtual environment'i aktif edin
+# Windows:
+.\venv\Scripts\Activate.ps1
+# macOS/Linux:
+source venv/bin/activate
 
-   This will create the SQLite database and add sample categories.
+# Gerekli paketleri yükleyin
+pip install -r requirements.txt
 
-5. **Admin User Created**
-   - Email: `admin@pebdeq.com`
-   - Password: `admin123`
+# Uygulamayı çalıştırın
+python run.py
+```
 
-### Frontend Setup
+Backend http://localhost:5000 adresinde çalışacak.
 
-1. **Navigate to frontend directory**
-   ```bash
-   cd frontend
-   ```
+### Frontend Kurulumu
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+```bash
+# Frontend klasörüne gidin (yeni terminal)
+cd frontend
 
-3. **Start development server**
-   ```bash
-   npm start
-   ```
+# Paketleri yükleyin
+npm install
 
-## 🚀 Running the Application
+# Development server'ı başlatın
+npm start
+```
 
-### Development Mode
+Frontend http://localhost:3000 adresinde çalışacak.
 
-1. **Start Backend** (Terminal 1)
-   ```bash
-   cd backend
-   python run.py
-   ```
-   Backend will run on `http://localhost:5000`
+## 🔧 Admin Bilgileri
 
-2. **Start Frontend** (Terminal 2)
-   ```bash
-   cd frontend
-   npm start
-   ```
-   Frontend will run on `http://localhost:3000`
+- **Email**: admin@pebdeq.com
+- **Password**: admin123
 
-### Production Deployment
-
-1. **Build React app**
-   ```bash
-   cd frontend
-   npm run build
-   ```
-
-2. **Deploy with Gunicorn**
-   ```bash
-   cd backend
-   gunicorn -w 4 -b 0.0.0.0:5000 run:app
-   ```
-
-## 📁 Project Structure
+## 📁 Proje Yapısı
 
 ```
 pebdeq/
@@ -127,121 +113,95 @@ pebdeq/
 │   │   ├── models/
 │   │   │   └── models.py
 │   │   └── routes/
-│   │       ├── main.py
-│   │       ├── products.py
+│   │       ├── admin.py
 │   │       ├── auth.py
-│   │       └── admin.py
+│   │       ├── main.py
+│   │       └── products.py
 │   ├── requirements.txt
 │   └── run.py
 ├── frontend/
+│   ├── public/
+│   │   └── index.html
 │   ├── src/
 │   │   ├── components/
-│   │   ├── pages/
+│   │   │   ├── Header.js
+│   │   │   └── Footer.js
 │   │   ├── contexts/
-│   │   ├── services/
+│   │   │   ├── AuthContext.js
+│   │   │   └── CartContext.js
+│   │   ├── pages/
+│   │   │   ├── Home.js
+│   │   │   ├── Products.js
+│   │   │   ├── Login.js
+│   │   │   └── ...
 │   │   ├── App.js
-│   │   └── App.css
-│   ├── package.json
-│   └── public/
+│   │   ├── App.css
+│   │   └── index.js
+│   └── package.json
 └── README.md
 ```
 
-## 🔧 API Endpoints
+## 🌐 API Endpoints
 
-### Public Endpoints
-- `GET /` - Home page data
-- `GET /api/products` - Product listing
-- `GET /api/products/<slug>` - Product details
-- `GET /api/blog` - Blog posts
-- `POST /api/contact` - Contact form
+### Genel
+- `GET /` - Ana sayfa kategorileri
+- `GET /api/categories` - Tüm kategoriler
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/profile` - User profile
+### Ürünler
+- `GET /api/products` - Tüm ürünler
+- `GET /api/products/<id>` - Tek ürün
+- `POST /api/products` - Ürün ekleme (Admin)
 
-### Admin Endpoints (Protected)
-- `GET /api/admin/products` - Product management
-- `POST /api/admin/products` - Create product
-- `GET /api/admin/orders` - Order management
-- `GET /api/admin/messages` - Customer messages
+### Kullanıcı
+- `POST /api/auth/register` - Kayıt
+- `POST /api/auth/login` - Giriş
+- `GET /api/auth/profile` - Profil
 
-## 🛡 Environment Variables
+### Admin
+- `GET /api/admin/dashboard` - Admin paneli
+- `POST /api/admin/products` - Ürün yönetimi
 
-Create a `.env` file in the backend directory:
+## 🎨 UI/UX Özellikleri
 
-```env
-SECRET_KEY=your-secret-key-here
-DATABASE_URL=sqlite:///pebdeq.db
-STRIPE_PUBLIC_KEY=your-stripe-public-key
-STRIPE_SECRET_KEY=your-stripe-secret-key
-```
+- **Modern Color Palette**: Mavi gradient tonları
+- **Typography**: Montserrat font ailesi
+- **Animations**: Hover ve transition efektleri
+- **Cards**: Gölgeli ve interactive kartlar
+- **Responsive Grid**: Mobil uyumlu grid sistemi
+- **Social Media Icons**: Footer'da sosyal medya bağlantıları
 
-## 📱 Pages & Features
+## 📱 Responsive Design
 
-### Customer Pages
-- **Home**: Featured products, categories, latest blog posts
-- **Products**: Product grid with filtering and sorting
-- **Product Detail**: Product information, related products
-- **Categories**: 3D Print, Tools, Vintage Bulbs, Laser Engraving
-- **Cart**: Shopping cart management
-- **Checkout**: Payment processing with Stripe
-- **Blog**: Articles about 3D printing and tutorials
-- **Contact**: Contact form
-- **About**: Company information
+- **Desktop**: 1200px+ tam özellik
+- **Tablet**: 768px-1199px optimized layout
+- **Mobile**: 320px-767px stack layout
 
-### Admin Panel
-- **Dashboard**: Overview of orders, products, messages
-- **Product Management**: Add, edit, delete products
-- **Order Management**: Track order status
-- **Customer Messages**: View and respond to inquiries
-- **Blog Management**: Create and manage blog posts
+## 🔒 Güvenlik
 
-## 🔄 Development Workflow
+- JWT token authentication
+- Password hashing
+- CORS policy
+- Input validation
+- Admin role protection
 
-1. **Backend Development**
-   - Add new models in `app/models/models.py`
-   - Create API routes in `app/routes/`
-   - Test with Postman or curl
+## 🤝 Katkıda Bulunma
 
-2. **Frontend Development**
-   - Create React components in `src/components/`
-   - Add pages in `src/pages/`
-   - Use context for state management
+1. Repository'yi fork edin
+2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
+4. Branch'i push edin (`git push origin feature/AmazingFeature`)
+5. Pull Request oluşturun
 
-3. **Database Changes**
-   - Use Flask-Migrate for database migrations
-   - `flask db migrate -m "description"`
-   - `flask db upgrade`
+## 📄 Lisans
 
-## 🎨 Customization
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
-### Brand Identity
-- Logo: Place your logo in `frontend/public/logo.png`
-- Colors: Update CSS variables in `App.css`
-- Typography: Modify font families in CSS
+## 📞 İletişim
 
-### Categories
-- Default categories: 3D Print, Tools, Vintage Bulbs, Laser Engraving
-- Add new categories through admin panel
-- Customize category descriptions and images
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📞 Support
-
-For support, email support@pebdeq.com or create an issue in the repository.
+- **Website**: [PEBDEQ](http://localhost:3000)
+- **Email**: developer@pebdeq.com
+- **Repository**: [GitHub](https://github.com/anatolianstar/pebdeq)
 
 ---
 
-**PEBDEQ** - Your trusted source for 3D printing, tools, vintage lighting, and laser engraving services.
+**Made with ❤️ by PEBDEQ Team**
