@@ -1,13 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const Cart = () => {
   return (
-    <div className="cart">
+    <div className="cart fade-in">
       <div className="container">
-        <h1>Sepet</h1>
-        <p>Sepetinizde henüz ürün bulunmuyor</p>
-        <Link to="/products" className="btn btn-primary">Alışverişe Devam Et</Link>
+        <h1>Shopping Cart</h1>
+        <p>Your cart is currently empty</p>
+        
+        <div className="cart-actions">
+          <button className="btn btn-primary">Continue Shopping</button>
+        </div>
       </div>
     </div>
   );

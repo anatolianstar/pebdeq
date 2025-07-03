@@ -50,6 +50,23 @@ def home():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@main_bp.route('/api/categories')
+def categories():
+    try:
+        categories = Category.query.filter_by(is_active=True).all()
+        
+        return jsonify({
+            'categories': [{
+                'id': c.id,
+                'name': c.name,
+                'slug': c.slug,
+                'description': c.description,
+                'image_url': c.image_url
+            } for c in categories]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @main_bp.route('/api/contact', methods=['POST'])
 def contact():
     try:

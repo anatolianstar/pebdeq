@@ -5,15 +5,16 @@ const ProductDetail = () => {
   const { slug } = useParams();
   
   return (
-    <div className="product-detail">
+    <div className="product-detail fade-in">
       <div className="container">
-        <h1>Ürün Detay</h1>
-        <p>Ürün slug: {slug}</p>
-        <div className="product-info">
-          <h2>Ürün Başlığı</h2>
-          <p>Ürün açıklaması buraya gelecek</p>
-          <span className="price">₺100</span>
-          <button className="btn btn-primary">Sepete Ekle</button>
+        <h1>Product Detail</h1>
+        <p>Product slug: {slug}</p>
+        
+        <h2>Product Title</h2>
+        <p>Product description will be here</p>
+        
+        <div className="product-actions">
+          <button className="btn btn-primary">Add to Cart</button>
         </div>
       </div>
     </div>

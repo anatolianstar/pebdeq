@@ -2,20 +2,31 @@ import React from 'react';
 
 const Blog = () => {
   return (
-    <div className="blog">
+    <div className="blog fade-in">
       <div className="container">
         <h1>Blog</h1>
-        <p>En son yazılarımızı okuyun</p>
+        <p>Read our latest articles</p>
+        
         <div className="blog-posts">
-          <div className="post-card">
-            <h3>Örnek Blog Yazısı 1</h3>
-            <p>Blog yazısı açıklaması</p>
-            <span className="date">2024-01-01</span>
+          <div className="blog-post-card">
+            <h3>Sample Blog Post 1</h3>
+            <p>Blog post description</p>
+            <span className="blog-date">May 1, 2024</span>
           </div>
-          <div className="post-card">
-            <h3>Örnek Blog Yazısı 2</h3>
-            <p>Blog yazısı açıklaması</p>
-            <span className="date">2024-01-02</span>
+          <div className="blog-post-card">
+            <h3>Sample Blog Post 2</h3>
+            <p>Blog post description</p>
+            <span className="blog-date">April 19, 2024</span>
+          </div>
+          <div className="blog-post-card">
+            <h3>3D Printing Tips</h3>
+            <p>Learn the best practices for 3D printing</p>
+            <span className="blog-date">April 15, 2024</span>
+          </div>
+          <div className="blog-post-card">
+            <h3>Vintage Bulb Collection</h3>
+            <p>Explore our collection of vintage light bulbs</p>
+            <span className="blog-date">April 10, 2024</span>
           </div>
         </div>
       </div>

@@ -10,13 +10,13 @@ const Header = () => {
             <h1>PEBDEQ</h1>
           </Link>
           <nav className="nav">
-            <Link to="/">Ana Sayfa</Link>
-            <Link to="/products">Ürünler</Link>
+            <Link to="/">Home</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/about">About</Link>
             <Link to="/blog">Blog</Link>
-            <Link to="/contact">İletişim</Link>
-            <Link to="/about">Hakkımızda</Link>
-            <Link to="/cart">Sepet</Link>
-            <Link to="/login">Giriş</Link>
+            <Link to="/contact">Contact</Link>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
           </nav>
         </div>
       </div>

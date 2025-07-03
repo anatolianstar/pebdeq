@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="footer-content">
           <div className="footer-section">
             <h3>PEBDEQ</h3>
-            <p>Modern E-ticaret Platformu</p>
+            <p>Your trusted e-commerce platform for 3D printing, tools, vintage bulbs, and laser engraving.</p>
             <div style={{marginTop: '1rem', fontSize: '1.5rem'}}>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{marginRight: '1rem'}}>📸</a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={{marginRight: '1rem'}}>🐦</a>
@@ -16,26 +16,35 @@ const Footer = () => {
             </div>
           </div>
           <div className="footer-section">
-            <h4>Hızlı Bağlantılar</h4>
+            <h4>Quick Links</h4>
             <ul>
-              <li><Link to="/">Ana Sayfa</Link></li>
-              <li><Link to="/products">Ürünler</Link></li>
-              <li><Link to="/blog">Blog</Link></li>
-              <li><Link to="/contact">İletişim</Link></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/products">Products</Link></li>
+              <li><Link to="/about">About</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
           <div className="footer-section">
-            <h4>Kategoriler</h4>
+            <h4>Categories</h4>
             <ul>
-              <li><Link to="/category/3d-print">3D Print</Link></li>
-              <li><Link to="/category/tools">Aletler</Link></li>
+              <li><Link to="/category/3d-print">3D Printing</Link></li>
+              <li><Link to="/category/tools">Tools</Link></li>
               <li><Link to="/category/vintage-bulbs">Vintage Bulbs</Link></li>
               <li><Link to="/category/laser-engraving">Laser Engraving</Link></li>
             </ul>
           </div>
+          <div className="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><Link to="/help">Help Center</Link></li>
+              <li><Link to="/shipping">Shipping Info</Link></li>
+              <li><Link to="/returns">Returns</Link></li>
+              <li><Link to="/privacy">Privacy Policy</Link></li>
+            </ul>
+          </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2024 PEBDEQ. Tüm hakları saklıdır.</p>
+          <p>&copy; 2024 PEBDEQ. All rights reserved.</p>
         </div>
       </div>
     </footer>

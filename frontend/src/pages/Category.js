@@ -5,13 +5,12 @@ const Category = () => {
   const { slug } = useParams();
   
   return (
-    <div className="category">
+    <div className="category fade-in">
       <div className="container">
-        <h1>Kategori</h1>
-        <p>Kategori slug: {slug}</p>
-        <div className="category-products">
-          <p>Bu kategorideki ürünler burada listelenecek</p>
-        </div>
+        <h1>Category</h1>
+        <p>Category slug: {slug}</p>
+        
+        <p>Products in this category will be listed here</p>
       </div>
     </div>
   );

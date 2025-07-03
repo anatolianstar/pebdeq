@@ -2,27 +2,29 @@ import React from 'react';
 
 const AdminDashboard = () => {
   return (
-    <div className="admin-dashboard">
+    <div className="admin-dashboard fade-in">
       <div className="container">
-        <h1>Admin Paneli</h1>
-        <div className="admin-stats">
+        <h1>Admin Dashboard</h1>
+        
+        <div className="dashboard-stats">
           <div className="stat-card">
-            <h3>Toplam Ürün</h3>
-            <p>0</p>
+            <h3>Total Products</h3>
+            <span className="stat-number">0</span>
           </div>
           <div className="stat-card">
-            <h3>Toplam Sipariş</h3>
-            <p>0</p>
+            <h3>Total Orders</h3>
+            <span className="stat-number">0</span>
           </div>
           <div className="stat-card">
-            <h3>Toplam Kullanıcı</h3>
-            <p>1</p>
+            <h3>Total Users</h3>
+            <span className="stat-number">0</span>
           </div>
         </div>
+        
         <div className="admin-actions">
-          <button className="btn btn-primary">Ürün Ekle</button>
-          <button className="btn btn-secondary">Siparişleri Gör</button>
-          <button className="btn btn-info">Kullanıcıları Gör</button>
+          <button className="btn btn-primary">Add Product</button>
+          <button className="btn btn-secondary">View Orders</button>
+          <button className="btn btn-secondary">Manage Users</button>
         </div>
       </div>
     </div>

@@ -3,29 +3,29 @@ import { Link } from 'react-router-dom';
 
 const Register = () => {
   return (
-    <div className="register">
+    <div className="register fade-in">
       <div className="container">
-        <h1>Kayıt Ol</h1>
+        <h1>Register</h1>
         <form className="register-form">
           <div className="form-group">
-            <label>Ad:</label>
-            <input type="text" placeholder="Adınız" />
-          </div>
-          <div className="form-group">
-            <label>Soyad:</label>
-            <input type="text" placeholder="Soyadınız" />
+            <label>Name:</label>
+            <input type="text" placeholder="Your full name" />
           </div>
           <div className="form-group">
             <label>Email:</label>
-            <input type="email" placeholder="email@example.com" />
+            <input type="email" placeholder="Your email address" />
           </div>
           <div className="form-group">
-            <label>Şifre:</label>
-            <input type="password" placeholder="Şifreniz" />
+            <label>Password:</label>
+            <input type="password" placeholder="Your password" />
           </div>
-          <button type="submit" className="btn btn-primary">Kayıt Ol</button>
+          <div className="form-group">
+            <label>Confirm Password:</label>
+            <input type="password" placeholder="Confirm your password" />
+          </div>
+          <button type="submit" className="btn btn-primary">Register</button>
         </form>
-        <p>Hesabınız var mı? <Link to="/login">Giriş Yap</Link></p>
+        <p>Already have an account? <Link to="/login">Login</Link></p>
       </div>
     </div>
   );
