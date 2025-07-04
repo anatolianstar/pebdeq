@@ -68,4 +68,8 @@ Thumbs.db
 
 # Logs
 logs
-*.log 
+*.log
+
+# Uploads
+backend/uploads/
+uploads/ 

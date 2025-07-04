@@ -182,10 +182,10 @@ def init_database():
                 last_name='User',
                 is_admin=True
             )
-            admin.set_password('admin123')
+            admin.set_password('adminx999')
             db.session.add(admin)
             db.session.commit()
-            print("Admin user created! Email: admin@pebdeq.com, Password: admin123")
+            print("Admin user created! Email: admin@pebdeq.com, Password: adminx999")
 
 if __name__ == '__main__':
     init_database()

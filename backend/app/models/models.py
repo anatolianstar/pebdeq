@@ -43,6 +43,7 @@ class Product(db.Model):
     stock_quantity = db.Column(db.Integer, default=0)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     images = db.Column(db.JSON)  # Array of image URLs
+    video_url = db.Column(db.String(255))  # Single video URL
     is_featured = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
