@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models.models import Category, Product, BlogPost, ContactMessage
+from app.models.models import Category, Product, BlogPost, ContactMessage, SiteSettings
 from app import db
 
 main_bp = Blueprint('main', __name__)
@@ -143,6 +143,55 @@ def blog_detail(slug):
             'featured_image': post.featured_image,
             'created_at': post.created_at.isoformat(),
             'updated_at': post.updated_at.isoformat()
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@main_bp.route('/api/site-settings')
+def get_site_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            # Return default settings
+            return jsonify({
+                'site_name': 'pebdeq',
+                'site_logo': None,
+                'use_logo': False,
+                'logo_width': 120,
+                'logo_height': 40,
+                'site_logo2': None,
+                'use_logo2': False,
+                'logo2_width': 120,
+                'logo2_height': 40,
+                'welcome_title': 'Welcome to Pebdeq',
+                'welcome_subtitle': 'Crafted. Vintage. Smart.',
+                'welcome_background_image': None,
+                'welcome_background_color': '#667eea',
+                'welcome_text_color': '#ffffff',
+                'welcome_button_text': 'Explore Products',
+                'welcome_button_link': '/products',
+                'welcome_button_color': '#00b894'
+            })
+        
+        return jsonify({
+            'site_name': settings.site_name,
+            'site_logo': settings.site_logo,
+            'use_logo': settings.use_logo,
+            'logo_width': settings.logo_width,
+            'logo_height': settings.logo_height,
+            'site_logo2': settings.site_logo2,
+            'use_logo2': settings.use_logo2,
+            'logo2_width': settings.logo2_width,
+            'logo2_height': settings.logo2_height,
+            'welcome_title': settings.welcome_title,
+            'welcome_subtitle': settings.welcome_subtitle,
+            'welcome_background_image': settings.welcome_background_image,
+            'welcome_background_color': settings.welcome_background_color,
+            'welcome_text_color': settings.welcome_text_color,
+            'welcome_button_text': settings.welcome_button_text,
+            'welcome_button_link': settings.welcome_button_link,
+            'welcome_button_color': settings.welcome_button_color
         })
     
     except Exception as e:

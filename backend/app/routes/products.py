@@ -64,7 +64,10 @@ def product_list():
                 'category': p.category.name,
                 'category_slug': p.category.slug,
                 'is_featured': p.is_featured,
-                'stock_quantity': p.stock_quantity
+                'stock_quantity': p.stock_quantity,
+                'has_variations': p.has_variations,
+                'variation_type': p.variation_type,
+                'variation_name': p.variation_name
             } for p in products.items],
             'pagination': {
                 'page': products.page,
@@ -100,10 +103,19 @@ def product_detail(slug):
                 'price': product.price,
                 'original_price': product.original_price,
                 'images': product.images,
+                'video_url': product.video_url,
                 'category': product.category.name,
                 'category_slug': product.category.slug,
                 'stock_quantity': product.stock_quantity,
                 'is_featured': product.is_featured,
+                'is_active': product.is_active,
+                'has_variations': product.has_variations,
+                'variation_type': product.variation_type,
+                'variation_name': product.variation_name,
+                'variation_options': product.variation_options,
+                'weight': product.weight,
+                'dimensions': product.dimensions,
+                'material': product.material,
                 'created_at': product.created_at.isoformat(),
                 'updated_at': product.updated_at.isoformat()
             },

@@ -59,6 +59,16 @@ main {
   letter-spacing: 1px;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.site-logo {
+  object-fit: contain;
+}
+
 .nav {
   display: flex;
   gap: 2rem;
@@ -614,7 +624,7 @@ main {
 }
 
 .product-image {
-  height: 200px;
+  height: 250px;
   background: #f8f9fa;
   display: flex;
   align-items: center;
@@ -624,9 +634,10 @@ main {
 }
 
 .product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  padding: 10px !important;
 }
 
 .no-image {
@@ -1523,5 +1534,773 @@ input[type="file"]:disabled {
   .video-preview video {
     width: 100%;
     max-width: 200px;
+  }
+}
+
+/* Variations Management Styles */
+.variations-content {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.variations-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.variation-types-section,
+.variation-options-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.variation-types-section h3,
+.variation-options-section h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.variation-types-table table,
+.variation-options-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.variation-types-table th,
+.variation-types-table td,
+.variation-options-table th,
+.variation-options-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.variation-types-table th,
+.variation-options-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.variation-types-table tr:hover,
+.variation-options-table tr:hover {
+  background: #f8f9fa;
+}
+
+.add-variation-type-form,
+.add-variation-option-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.add-variation-type-form h4,
+.add-variation-option-form h4 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.add-variation-type-form .form-row,
+.add-variation-option-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.add-variation-type-form .form-group,
+.add-variation-option-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-variation-type-form label,
+.add-variation-option-form label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.add-variation-type-form input,
+.add-variation-type-form select,
+.add-variation-type-form textarea,
+.add-variation-option-form input,
+.add-variation-option-form select,
+.add-variation-option-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-variation-type-form input:focus,
+.add-variation-type-form select:focus,
+.add-variation-type-form textarea:focus,
+.add-variation-option-form input:focus,
+.add-variation-option-form select:focus,
+.add-variation-option-form textarea:focus {
+  outline: none;
+  border-color: #4a7c8c;
+  box-shadow: 0 0 0 2px rgba(74, 124, 140, 0.2);
+}
+
+.add-variation-type-form input[type="checkbox"],
+.add-variation-option-form input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+.add-variation-type-form button[type="submit"],
+.add-variation-option-form button[type="submit"] {
+  background: #4a7c8c;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-variation-type-form button[type="submit"]:hover,
+.add-variation-option-form button[type="submit"]:hover {
+  background: #3a6b7a;
+}
+
+/* Color display for variation options */
+.variation-options-table td div[style*="backgroundColor"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+/* Responsive design for variations */
+@media (max-width: 768px) {
+  .variations-sections {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .add-variation-type-form .form-row,
+  .add-variation-option-form .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .variation-types-table,
+  .variation-options-table {
+    overflow-x: auto;
+  }
+  
+  .variation-types-table table,
+  .variation-options-table table {
+    min-width: 600px;
+  }
+}
+
+/* Ürün Varyasyon Setup Styles */
+.variation-setup {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border: 2px solid #e9ecef;
+}
+
+.variation-setup h4 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.variation-setup h5 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.variation-options-setup {
+  margin-top: 20px;
+}
+
+.variation-options-setup p {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.variation-option-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.variation-option-item input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.variation-option-item .btn {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+/* Yeni Varyasyon Yönetimi Styles */
+.variation-products {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-variation-products {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+}
+
+.variation-products-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.variation-products-table th,
+.variation-products-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.variation-products-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.product-info strong {
+  color: #2c3e50;
+}
+
+.product-info small {
+  color: #6c757d;
+}
+
+.variation-type-badge {
+  background: #e9ecef;
+  color: #495057;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.variation-options-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.option-tag {
+  background: #007bff;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.text-muted {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.large-modal .modal-content {
+  max-width: 800px;
+  width: 90%;
+}
+
+.variation-management {
+  padding: 20px;
+}
+
+.variation-options-management {
+  margin-top: 20px;
+}
+
+.variation-option-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.option-header h5 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.option-details .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.option-details .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.option-details label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.option-details input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.option-details small {
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+.option-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.option-image {
+  position: relative;
+  display: inline-block;
+}
+
+.option-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.option-image .btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+}
+
+/* Varyasyon Yönetimi Stilleri */
+.variation-management-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  background: #fff8e1;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+}
+
+.variation-management-section h4 {
+  margin-bottom: 1rem;
+  color: #e65100;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.variation-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.variation-controls .btn {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-warning {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background: #e0a800;
+}
+
+.current-variation-info {
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+  border-left: 4px solid #007bff;
+}
+
+.current-variation-info p {
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+.current-variation-info strong {
+  color: #212529;
+}
+
+.no-variation-info {
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 6px;
+  border-left: 4px solid #2196f3;
+}
+
+.no-variation-info p {
+  margin: 0;
+  color: #1565c0;
+  font-style: italic;
+}
+
+.variation-type-selection {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background: white;
+}
+
+.variation-options-setup {
+  margin-top: 1rem;
+}
+
+.variation-options-setup h5 {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.variation-options-setup p {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.variation-option-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: #f8f9fa;
+}
+
+.variation-option-item input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.variation-option-item input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.variation-option-item .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Ürün Detay Sayfası Stilleri */
+.product-detail {
+  padding: 2rem 0;
+}
+
+.product-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-images {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.main-image {
+  width: 100%;
+  height: 400px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.main-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  padding: 10px !important;
+}
+
+.no-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 3rem;
+}
+
+.no-image p {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.image-thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+}
+
+.image-thumbnails img {
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: contain !important;
+  border: 2px solid #e9ecef;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  padding: 5px !important;
+  background: white;
+}
+
+.image-thumbnails img:hover {
+  border-color: #007bff;
+}
+
+.image-thumbnails img.active {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.product-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.product-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.category {
+  background: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.featured-badge {
+  background: #ffc107;
+  color: #212529;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.product-price {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.current-price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.original-price {
+  font-size: 1.5rem;
+  color: #6c757d;
+  text-decoration: line-through;
+}
+
+.product-stock {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.in-stock {
+  color: #28a745;
+}
+
+.out-of-stock {
+  color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .product-detail-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .main-image {
+    height: 300px;
+  }
+  
+  .product-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .current-price {
+    font-size: 1.5rem;
+  }
+}
+
+/* Site Settings */
+.settings-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.site-settings-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px dashed #e9ecef;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.logo-preview img {
+  display: block;
+  margin: 0 auto 1rem auto;
+}
+
+.logo-preview-header {
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Welcome Section Styles */
+.welcome-preview {
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.background-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.background-preview img {
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.background-preview .btn {
+  margin-left: auto;
+}
+
+/* Responsive Welcome Section */
+@media (max-width: 768px) {
+  .welcome-preview {
+    padding: 1.5rem !important;
+  }
+  
+  .welcome-preview h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  .welcome-preview p {
+    font-size: 1rem !important;
+  }
+  
+  .background-preview {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .background-preview .btn {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-preview {
+    padding: 1rem !important;
+  }
+  
+  .welcome-preview h2 {
+    font-size: 1.3rem !important;
+  }
+  
+  .welcome-preview button {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.9rem !important;
   }
 } 

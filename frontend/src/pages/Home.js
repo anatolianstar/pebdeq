@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 
 const categories = [
@@ -33,15 +33,60 @@ const categories = [
 ];
 
 const Home = () => {
+  const [siteSettings, setSiteSettings] = useState({
+    welcome_title: 'Welcome to Pebdeq',
+    welcome_subtitle: 'Crafted. Vintage. Smart.',
+    welcome_background_image: null,
+    welcome_background_color: '#667eea',
+    welcome_text_color: '#ffffff',
+    welcome_button_text: 'Explore Products',
+    welcome_button_link: '/products',
+    welcome_button_color: '#00b894'
+  });
+
+  useEffect(() => {
+    const fetchSiteSettings = async () => {
+      try {
+        const response = await fetch('/api/site-settings');
+        const data = await response.json();
+        
+        if (response.ok) {
+          setSiteSettings(data);
+        }
+      } catch (error) {
+        console.error('Error fetching site settings:', error);
+      }
+    };
+
+    fetchSiteSettings();
+  }, []);
+
   return (
     <div className="home-container">
 
       {/* Hero */}
-      <section className="hero-section">
+      <section 
+        className="hero-section"
+        style={{
+          background: siteSettings.welcome_background_image 
+            ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(http://localhost:5005${siteSettings.welcome_background_image}) center/cover`
+            : `linear-gradient(135deg, ${siteSettings.welcome_background_color} 0%, #764ba2 100%)`
+        }}
+      >
         <div className="hero-overlay">
-          <h1 className="hero-title">Welcome to Pebdeq</h1>
-          <p className="hero-subtitle">Crafted. Vintage. Smart.</p>
-          <a href="/products" className="hero-button">Explore Products</a>
+          <h1 className="hero-title" style={{ color: siteSettings.welcome_text_color }}>
+            {siteSettings.welcome_title}
+          </h1>
+          <p className="hero-subtitle" style={{ color: siteSettings.welcome_text_color }}>
+            {siteSettings.welcome_subtitle}
+          </p>
+          <a 
+            href={siteSettings.welcome_button_link} 
+            className="hero-button"
+            style={{ backgroundColor: siteSettings.welcome_button_color }}
+          >
+            {siteSettings.welcome_button_text}
+          </a>
         </div>
       </section>
 

@@ -21,32 +21,28 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual Environment
+# Virtual environments
 venv/
-ENV/
 env/
-.venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Database
-*.db
-*.sqlite3
+# Flask
 instance/
+.webassets-cache
 
-# Environment Variables
+# Environment variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.venv
 
 # Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
 
-# Build files
+# Build outputs
 build/
 dist/
 
@@ -59,17 +55,17 @@ dist/
 
 # OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
 # Logs
-logs
 *.log
 
-# Uploads
-backend/uploads/
-uploads/ 
+# Database
+*.db
+*.sqlite3
+
+# Uploads (keep structure but not content)
+backend/uploads/products/*
+backend/uploads/site/*
+!backend/uploads/products/.gitkeep
+!backend/uploads/site/.gitkeep 

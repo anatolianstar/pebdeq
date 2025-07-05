@@ -28,7 +28,7 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      let url = 'http://localhost:5000/api/products/?';
+      let url = 'http://localhost:5005/api/products/?';
       
       // Build query parameters
       const params = new URLSearchParams();
@@ -57,7 +57,7 @@ const Products = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/categories/');
+      const response = await fetch('http://localhost:5005/api/categories/');
       const data = await response.json();
       if (response.ok) {
         setCategories(data.categories || []);
@@ -126,6 +126,16 @@ const Products = () => {
             <span className="out-of-stock">Out of Stock</span>
           )}
         </div>
+        {product.has_variations && product.variation_type && (
+          <div className="product-variations">
+            <small>
+              {product.variation_type === 'custom' ? product.variation_name : 
+               product.variation_type === 'color' ? 'Renk' :
+               product.variation_type === 'size' ? 'Boyut' :
+               product.variation_type === 'weight' ? 'Ağırlık' : 'Seçenekler'} varyasyonları mevcut
+            </small>
+          </div>
+        )}
         <div className="product-actions">
           <button 
             className="btn btn-primary"

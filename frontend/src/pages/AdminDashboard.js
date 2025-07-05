@@ -15,6 +15,8 @@ const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
   const [categories, setCategories] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [variationTypes, setVariationTypes] = useState([]);
+  const [variationOptions, setVariationOptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [newProduct, setNewProduct] = useState({
@@ -28,7 +30,14 @@ const AdminDashboard = () => {
     images: [],
     video_url: '',
     is_featured: false,
-    is_active: true
+    is_active: true,
+    has_variations: false,
+    variation_type: '', // 'color', 'size', 'weight', 'custom'
+    variation_name: '', // Özel varyasyon adı
+    variation_options: [], // [{name: 'Kırmızı', value: 'red', price_modifier: 0, stock: 10, images: []}]
+    weight: '',
+    dimensions: '',
+    material: ''
   });
 
   const [editingProduct, setEditingProduct] = useState(null);
@@ -45,6 +54,52 @@ const AdminDashboard = () => {
   const [uploadingCategoryImage, setUploadingCategoryImage] = useState(false);
   const [uploadingProductImages, setUploadingProductImages] = useState(false);
   const [uploadingProductVideo, setUploadingProductVideo] = useState(false);
+
+  const [newVariationType, setNewVariationType] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    is_active: true
+  });
+
+  const [editingVariationType, setEditingVariationType] = useState(null);
+
+  const [newVariationOption, setNewVariationOption] = useState({
+    variation_type_id: '',
+    name: '',
+    value: '',
+    hex_color: '',
+    image_url: '',
+    sort_order: 0,
+    is_active: true
+  });
+
+  const [editingVariationOption, setEditingVariationOption] = useState(null);
+  const [selectedProductForVariations, setSelectedProductForVariations] = useState(null);
+  
+  // Site Settings State
+  const [siteSettings, setSiteSettings] = useState({
+    site_name: 'pebdeq',
+    site_logo: null,
+    use_logo: false,
+    logo_width: 120,
+    logo_height: 40,
+    site_logo2: null,
+    use_logo2: false,
+    logo2_width: 120,
+    logo2_height: 40,
+    welcome_title: 'Welcome to Pebdeq',
+    welcome_subtitle: 'Crafted. Vintage. Smart.',
+    welcome_background_image: null,
+    welcome_background_color: '#667eea',
+    welcome_text_color: '#ffffff',
+    welcome_button_text: 'Explore Products',
+    welcome_button_link: '/products',
+    welcome_button_color: '#00b894'
+  });
+  const [uploadingSiteLogo, setUploadingSiteLogo] = useState(false);
+  const [uploadingSiteLogo2, setUploadingSiteLogo2] = useState(false);
+  const [uploadingWelcomeBackground, setUploadingWelcomeBackground] = useState(false);
 
   const getAuthHeaders = () => ({
     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -140,6 +195,185 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchVariationTypes = async () => {
+    try {
+      const response = await fetch('/api/admin/variation-types', { headers: getAuthHeaders() });
+      const data = await response.json();
+      
+      if (response.ok) {
+        setVariationTypes(data.variation_types);
+      } else {
+        toast.error('Failed to fetch variation types');
+      }
+    } catch (error) {
+      console.error('Error fetching variation types:', error);
+      toast.error('Error fetching variation types');
+    }
+  };
+
+  const fetchVariationOptions = async () => {
+    try {
+      const response = await fetch('/api/admin/variation-options', { headers: getAuthHeaders() });
+      const data = await response.json();
+      
+      if (response.ok) {
+        setVariationOptions(data.variation_options);
+      } else {
+        toast.error('Failed to fetch variation options');
+      }
+    } catch (error) {
+      console.error('Error fetching variation options:', error);
+      toast.error('Error fetching variation options');
+    }
+  };
+
+  const fetchSiteSettings = async () => {
+    try {
+      const response = await fetch('/api/admin/site-settings', { headers: getAuthHeaders() });
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSiteSettings(data);
+      } else {
+        toast.error('Failed to fetch site settings');
+      }
+    } catch (error) {
+      console.error('Error fetching site settings:', error);
+      toast.error('Error fetching site settings');
+    }
+  };
+
+  const handleUpdateSiteSettings = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('/api/admin/site-settings', {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(siteSettings)
+      });
+
+      if (response.ok) {
+        toast.success('Site settings updated successfully');
+        fetchSiteSettings();
+      } else {
+        const error = await response.json();
+        toast.error(error.error || 'Failed to update site settings');
+      }
+    } catch (error) {
+      console.error('Error updating site settings:', error);
+      toast.error('Error updating site settings');
+    }
+  };
+
+  const handleSiteLogoUpload = async (file) => {
+    if (!file) return;
+    
+    setUploadingSiteLogo(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/admin/upload/site-logo', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSiteSettings(prev => ({
+          ...prev,
+          site_logo: data.logo_url
+        }));
+        toast.success('Logo uploaded successfully');
+      } else {
+        toast.error(data.error || 'Failed to upload logo');
+      }
+    } catch (error) {
+      console.error('Error uploading logo:', error);
+      toast.error('Error uploading logo');
+    } finally {
+      setUploadingSiteLogo(false);
+    }
+  };
+
+  const handleSiteLogo2Upload = async (file) => {
+    if (!file) return;
+    
+    setUploadingSiteLogo2(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/admin/upload/site-logo2', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSiteSettings(prev => ({
+          ...prev,
+          site_logo2: data.logo_url
+        }));
+        toast.success('Second logo uploaded successfully');
+      } else {
+        toast.error(data.error || 'Failed to upload second logo');
+      }
+    } catch (error) {
+      console.error('Error uploading second logo:', error);
+      toast.error('Error uploading second logo');
+    } finally {
+      setUploadingSiteLogo2(false);
+    }
+  };
+
+  const handleWelcomeBackgroundUpload = async (file) => {
+    if (!file) return;
+    
+    setUploadingWelcomeBackground(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/admin/upload/welcome-background', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSiteSettings(prev => ({
+          ...prev,
+          welcome_background_image: data.background_url
+        }));
+        toast.success('Welcome background uploaded successfully');
+      } else {
+        toast.error(data.error || 'Failed to upload welcome background');
+      }
+    } catch (error) {
+      console.error('Error uploading welcome background:', error);
+      toast.error('Error uploading welcome background');
+    } finally {
+      setUploadingWelcomeBackground(false);
+    }
+  };
+
   const generateSlug = (name) => {
     return name
       .toLowerCase()
@@ -149,17 +383,28 @@ const AdminDashboard = () => {
       .trim();
   };
 
+  const filterEmptyVariations = (variationOptions) => {
+    if (!variationOptions || !Array.isArray(variationOptions)) return [];
+    return variationOptions.filter(option => 
+      option && typeof option === 'object' && option.name && option.name.trim()
+    );
+  };
+
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     
     try {
+      // Boş varyasyonları filtrele
+      const filteredVariations = filterEmptyVariations(newProduct.variation_options);
+      
       const productData = {
         ...newProduct,
         slug: newProduct.slug || generateSlug(newProduct.name),
         price: parseFloat(newProduct.price),
         original_price: newProduct.original_price ? parseFloat(newProduct.original_price) : null,
         stock_quantity: parseInt(newProduct.stock_quantity),
-        category_id: parseInt(newProduct.category_id)
+        category_id: parseInt(newProduct.category_id),
+        variation_options: filteredVariations
       };
 
       const response = await fetch('/api/admin/products', {
@@ -180,6 +425,7 @@ const AdminDashboard = () => {
           category_id: '',
           images: [],
           video_url: '',
+
           is_featured: false,
           is_active: true
         });
@@ -198,13 +444,17 @@ const AdminDashboard = () => {
     e.preventDefault();
     
     try {
+      // Boş varyasyonları filtrele
+      const filteredVariations = filterEmptyVariations(editingProduct.variation_options);
+      
       const productData = {
         ...editingProduct,
         slug: editingProduct.slug || generateSlug(editingProduct.name),
         price: parseFloat(editingProduct.price),
         original_price: editingProduct.original_price ? parseFloat(editingProduct.original_price) : null,
         stock_quantity: parseInt(editingProduct.stock_quantity),
-        category_id: parseInt(editingProduct.category_id)
+        category_id: parseInt(editingProduct.category_id),
+        variation_options: filteredVariations
       };
 
       const response = await fetch(`/api/admin/products/${editingProduct.id}`, {
@@ -505,6 +755,185 @@ const AdminDashboard = () => {
     }
   };
 
+  // Variation Type CRUD
+  const createVariationType = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/admin/variation-types', {
+        method: 'POST',
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newVariationType)
+      });
+      
+      if (response.ok) {
+        setNewVariationType({
+          name: '',
+          slug: '',
+          description: '',
+          is_active: true
+        });
+        fetchVariationTypes();
+        toast.success('Variation type created successfully');
+      } else {
+        toast.error('Failed to create variation type');
+      }
+    } catch (error) {
+      console.error('Error creating variation type:', error);
+      toast.error('Error creating variation type');
+    }
+  };
+
+  const updateVariationType = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/admin/variation-types/${editingVariationType.id}`, {
+        method: 'PUT',
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editingVariationType)
+      });
+      
+      if (response.ok) {
+        setEditingVariationType(null);
+        fetchVariationTypes();
+        toast.success('Variation type updated successfully');
+      } else {
+        toast.error('Failed to update variation type');
+      }
+    } catch (error) {
+      console.error('Error updating variation type:', error);
+      toast.error('Error updating variation type');
+    }
+  };
+
+  const deleteVariationType = async (typeId) => {
+    try {
+      const response = await fetch(`/api/admin/variation-types/${typeId}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
+      
+      if (response.ok) {
+        fetchVariationTypes();
+        toast.success('Variation type deleted successfully');
+      } else {
+        toast.error('Failed to delete variation type');
+      }
+    } catch (error) {
+      console.error('Error deleting variation type:', error);
+      toast.error('Error deleting variation type');
+    }
+  };
+
+  // Variation Option CRUD
+  const createVariationOption = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/admin/variation-options', {
+        method: 'POST',
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newVariationOption)
+      });
+      
+      if (response.ok) {
+        setNewVariationOption({
+          variation_type_id: '',
+          name: '',
+          value: '',
+          hex_color: '',
+          image_url: '',
+          sort_order: 0,
+          is_active: true
+        });
+        fetchVariationOptions();
+        toast.success('Variation option created successfully');
+      } else {
+        toast.error('Failed to create variation option');
+      }
+    } catch (error) {
+      console.error('Error creating variation option:', error);
+      toast.error('Error creating variation option');
+    }
+  };
+
+  const updateVariationOption = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/admin/variation-options/${editingVariationOption.id}`, {
+        method: 'PUT',
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editingVariationOption)
+      });
+      
+      if (response.ok) {
+        setEditingVariationOption(null);
+        fetchVariationOptions();
+        toast.success('Variation option updated successfully');
+      } else {
+        toast.error('Failed to update variation option');
+      }
+    } catch (error) {
+      console.error('Error updating variation option:', error);
+      toast.error('Error updating variation option');
+    }
+  };
+
+  const deleteVariationOption = async (optionId) => {
+    try {
+      const response = await fetch(`/api/admin/variation-options/${optionId}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
+      
+      if (response.ok) {
+        fetchVariationOptions();
+        toast.success('Variation option deleted successfully');
+      } else {
+        toast.error('Failed to delete variation option');
+      }
+    } catch (error) {
+      console.error('Error deleting variation option:', error);
+      toast.error('Error deleting variation option');
+    }
+  };
+
+  const saveProductVariations = async (product) => {
+    try {
+      const response = await fetch(`/api/admin/products/${product.id}`, {
+        method: 'PUT',
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          variation_options: product.variation_options
+        })
+      });
+      
+      if (response.ok) {
+        setSelectedProductForVariations(null);
+        fetchProducts();
+        toast.success('Varyasyonlar başarıyla kaydedildi');
+      } else {
+        toast.error('Varyasyonlar kaydedilemedi');
+      }
+    } catch (error) {
+      console.error('Error saving variations:', error);
+      toast.error('Varyasyonlar kaydedilemedi');
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (!user || !user.is_admin) {
@@ -518,7 +947,8 @@ const AdminDashboard = () => {
         fetchProducts(),
         fetchOrders(),
         fetchCategories(),
-        fetchMessages()
+        fetchMessages(),
+        fetchSiteSettings()
       ]);
       setLoading(false);
     };
@@ -594,6 +1024,18 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab('categories')}
           >
             Categories
+          </button>
+          <button 
+            className={activeTab === 'variations' ? 'active' : ''}
+            onClick={() => setActiveTab('variations')}
+          >
+            Variations
+          </button>
+          <button 
+            className={activeTab === 'settings' ? 'active' : ''}
+            onClick={() => setActiveTab('settings')}
+          >
+            Site Settings
           </button>
         </div>
 
@@ -710,7 +1152,14 @@ const AdminDashboard = () => {
                               images: product.images || [],
                               video_url: product.video_url || '',
                               is_featured: product.is_featured,
-                              is_active: product.is_active
+                              is_active: product.is_active,
+                              has_variations: product.has_variations || false,
+                              variation_type: product.variation_type || '',
+                              variation_name: product.variation_name || '',
+                              variation_options: product.variation_options || [],
+                              weight: product.weight || '',
+                              dimensions: product.dimensions || '',
+                              material: product.material || ''
                             });
                           }}
                         >
@@ -798,7 +1247,7 @@ const AdminDashboard = () => {
                           <img 
                             src={imageUrl} 
                             alt={`Product ${index + 1}`}
-                            style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
+                            style={{ width: '80px', height: '80px', objectFit: 'contain', borderRadius: '4px', padding: '5px' }}
                           />
                           <button 
                             type="button"
@@ -900,6 +1349,149 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 
+                {/* Varyasyon Seçenekleri */}
+                <div className="form-group">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={newProduct.has_variations}
+                      onChange={(e) => {
+                        setNewProduct({
+                          ...newProduct, 
+                          has_variations: e.target.checked,
+                          variation_type: e.target.checked ? newProduct.variation_type : '',
+                          variation_name: e.target.checked ? newProduct.variation_name : '',
+                          variation_options: e.target.checked ? newProduct.variation_options : []
+                        });
+                      }}
+                    />
+                    Bu ürünün varyasyonları var (renk, boyut, ağırlık vs.)
+                  </label>
+                </div>
+
+                {newProduct.has_variations && (
+                  <div className="variation-setup">
+                    <h4>Varyasyon Ayarları</h4>
+                    
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Varyasyon Türü</label>
+                        <select
+                          value={newProduct.variation_type}
+                          onChange={(e) => {
+                            setNewProduct({
+                              ...newProduct, 
+                              variation_type: e.target.value,
+                              variation_name: e.target.value === 'custom' ? newProduct.variation_name : ''
+                            });
+                          }}
+                          required
+                        >
+                          <option value="">Seçin</option>
+                          <option value="color">Renk</option>
+                          <option value="size">Boyut</option>
+                          <option value="weight">Ağırlık</option>
+                          <option value="custom">Özel</option>
+                        </select>
+                      </div>
+                      
+                      {newProduct.variation_type === 'custom' && (
+                        <div className="form-group">
+                          <label>Özel Varyasyon Adı</label>
+                          <input
+                            type="text"
+                            value={newProduct.variation_name}
+                            onChange={(e) => setNewProduct({...newProduct, variation_name: e.target.value})}
+                            placeholder="Örn: Malzeme, Stil, vs."
+                            required
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="variation-options-setup">
+                      <h5>Varyasyon Seçenekleri</h5>
+                      <p>Ürün kaydedildikten sonra Varyasyon sekmesinde detayları ayarlayabilirsiniz.</p>
+                      
+                      {newProduct.variation_options.map((option, index) => (
+                        <div key={index} className="variation-option-item">
+                          <input
+                            type="text"
+                            value={option.name}
+                            onChange={(e) => {
+                              const newOptions = [...newProduct.variation_options];
+                              newOptions[index].name = e.target.value;
+                              setNewProduct({...newProduct, variation_options: newOptions});
+                            }}
+                            placeholder="Seçenek adı (Örn: Kırmızı, Large, 1kg)"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-danger"
+                            onClick={() => {
+                              const newOptions = newProduct.variation_options.filter((_, i) => i !== index);
+                              setNewProduct({...newProduct, variation_options: newOptions});
+                            }}
+                          >
+                            Sil
+                          </button>
+                        </div>
+                      ))}
+                      
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => {
+                          const newOptions = [...newProduct.variation_options, {
+                            name: '',
+                            value: '',
+                            price_modifier: 0,
+                            stock: 0,
+                            images: []
+                          }];
+                          setNewProduct({...newProduct, variation_options: newOptions});
+                        }}
+                      >
+                        + Seçenek Ekle
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Ürün Özellikleri */}
+                <div className="form-section">
+                  <h4>Ürün Özellikleri</h4>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Ağırlık</label>
+                      <input
+                        type="text"
+                        value={newProduct.weight}
+                        onChange={(e) => setNewProduct({...newProduct, weight: e.target.value})}
+                        placeholder="Örn: 1.5kg, 250g"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Boyutlar</label>
+                      <input
+                        type="text"
+                        value={newProduct.dimensions}
+                        onChange={(e) => setNewProduct({...newProduct, dimensions: e.target.value})}
+                        placeholder="Örn: 30x20x10 cm"
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Malzeme</label>
+                    <input
+                      type="text"
+                      value={newProduct.material}
+                      onChange={(e) => setNewProduct({...newProduct, material: e.target.value})}
+                      placeholder="Örn: Plastik, Metal, Ahşap"
+                    />
+                  </div>
+                </div>
+
                 <div className="form-row">
                   <div className="form-group">
                     <label>
@@ -944,6 +1536,54 @@ const AdminDashboard = () => {
                   </div>
                   
                   <form onSubmit={handleUpdateProduct}>
+                    {/* Varyasyon Yönetimi - Üst Kısım */}
+                    <div className="variation-management-section">
+                      <h4>🎨 Varyasyon Yönetimi</h4>
+                      
+                      {editingProduct.has_variations ? (
+                        <>
+                          <div className="variation-controls">
+                            <button
+                              type="button"
+                              className="btn btn-warning"
+                              onClick={() => {
+                                if (window.confirm('Tüm varyasyonları sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+                                  // Varyasyonları sıfırla
+                                  setEditingProduct({
+                                    ...editingProduct,
+                                    has_variations: false,
+                                    variation_type: '',
+                                    variation_name: '',
+                                    variation_options: []
+                                  });
+                                  toast.success('Varyasyonlar sıfırlandı');
+                                }
+                              }}
+                            >
+                              🗑️ Varyasyonları Sıfırla
+                            </button>
+                          </div>
+                          
+                          <div className="current-variation-info">
+                            <p><strong>Mevcut Varyasyon Türü:</strong> {
+                              editingProduct.variation_type === 'custom' ? editingProduct.variation_name :
+                              editingProduct.variation_type === 'color' ? 'Renk' :
+                              editingProduct.variation_type === 'size' ? 'Boyut' :
+                              editingProduct.variation_type === 'weight' ? 'Ağırlık' : 'Bilinmeyen'
+                            }</p>
+                            <p><strong>Seçenek Sayısı:</strong> {editingProduct.variation_options?.length || 0}</p>
+                            <p><strong>Seçenekler:</strong> {
+                              editingProduct.variation_options?.map(opt => opt.name).join(', ') || 'Yok'
+                            }</p>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="no-variation-info">
+                          <p>Bu ürünün henüz varyasyonu yok. Aşağıdaki checkbox'ı işaretleyerek varyasyon ekleyebilirsiniz.</p>
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="form-row">
                       <div className="form-group">
                         <label>Name</label>
@@ -1007,11 +1647,11 @@ const AdminDashboard = () => {
                           <div className="image-preview-grid">
                             {editingProduct.images.map((imageUrl, index) => (
                               <div key={index} className="image-preview-item">
-                                <img 
-                                  src={imageUrl} 
-                                  alt={`Product ${index + 1}`}
-                                  style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
-                                />
+                                                          <img 
+                            src={imageUrl} 
+                            alt={`Product ${index + 1}`}
+                            style={{ width: '80px', height: '80px', objectFit: 'contain', borderRadius: '4px', padding: '5px' }}
+                          />
                                 <button 
                                   type="button"
                                   className="btn btn-sm btn-danger"
@@ -1109,6 +1749,189 @@ const AdminDashboard = () => {
                             </option>
                           ))}
                         </select>
+                      </div>
+                    </div>
+                    
+
+                    
+                    {/* Varyasyon Ekleme/Düzenleme */}
+                    <div className="variation-setup">
+                      <h4>🎨 Varyasyon Yönetimi</h4>
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={editingProduct.has_variations || false}
+                            onChange={(e) => {
+                              const isChecked = e.target.checked;
+                              setEditingProduct({
+                                ...editingProduct,
+                                has_variations: isChecked,
+                                variation_type: isChecked ? 'color' : '',
+                                variation_name: '',
+                                variation_options: isChecked ? [{ name: '', price_modifier: 0, stock: 0, images: [] }] : []
+                              });
+                            }}
+                          />
+                          Bu ürün için varyasyon ekle (renk, boyut, ağırlık vs.)
+                        </label>
+                      </div>
+                      
+                      {/* Varyasyon Türü Seçimi */}
+                      {editingProduct.has_variations && (
+                        <div className="variation-type-selection">
+                          <div className="form-group">
+                            <label>Varyasyon Türü</label>
+                            <select
+                              value={editingProduct.variation_type || ''}
+                              onChange={(e) => {
+                                const newType = e.target.value;
+                                setEditingProduct({
+                                  ...editingProduct,
+                                  variation_type: newType,
+                                  variation_name: newType === 'custom' ? editingProduct.variation_name : '',
+                                  variation_options: newType ? [{ name: '', price_modifier: 0, stock: 0, images: [] }] : []
+                                });
+                              }}
+                            >
+                              <option value="">Seçiniz</option>
+                              <option value="color">Renk</option>
+                              <option value="size">Boyut</option>
+                              <option value="weight">Ağırlık</option>
+                              <option value="custom">Özel</option>
+                            </select>
+                          </div>
+                          
+                          {editingProduct.variation_type === 'custom' && (
+                            <div className="form-group">
+                              <label>Özel Varyasyon Adı</label>
+                              <input
+                                type="text"
+                                value={editingProduct.variation_name || ''}
+                                onChange={(e) => setEditingProduct({
+                                  ...editingProduct,
+                                  variation_name: e.target.value
+                                })}
+                                placeholder="Örn: Malzeme, Stil, Desen"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Varyasyon Seçenekleri */}
+                          {editingProduct.variation_type && (
+                            <div className="variation-options-setup">
+                              <h5>Varyasyon Seçenekleri</h5>
+                              <p>Her varyasyon için seçenek ekleyin:</p>
+                              
+                              {(editingProduct.variation_options || []).map((option, index) => (
+                                <div key={index} className="variation-option-item">
+                                  <input
+                                    type="text"
+                                    value={option.name || ''}
+                                    onChange={(e) => {
+                                      const newOptions = [...(editingProduct.variation_options || [])];
+                                      newOptions[index] = { ...option, name: e.target.value };
+                                      setEditingProduct({
+                                        ...editingProduct,
+                                        variation_options: newOptions
+                                      });
+                                    }}
+                                    placeholder="Seçenek adı"
+                                  />
+                                  <input
+                                    type="number"
+                                    step="0.01"
+                                    value={option.price_modifier || 0}
+                                    onChange={(e) => {
+                                      const newOptions = [...(editingProduct.variation_options || [])];
+                                      newOptions[index] = { ...option, price_modifier: parseFloat(e.target.value) || 0 };
+                                      setEditingProduct({
+                                        ...editingProduct,
+                                        variation_options: newOptions
+                                      });
+                                    }}
+                                    placeholder="Fiyat farkı"
+                                  />
+                                  <input
+                                    type="number"
+                                    value={option.stock || 0}
+                                    onChange={(e) => {
+                                      const newOptions = [...(editingProduct.variation_options || [])];
+                                      newOptions[index] = { ...option, stock: parseInt(e.target.value) || 0 };
+                                      setEditingProduct({
+                                        ...editingProduct,
+                                        variation_options: newOptions
+                                      });
+                                    }}
+                                    placeholder="Stok"
+                                  />
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => {
+                                      const newOptions = editingProduct.variation_options.filter((_, i) => i !== index);
+                                      setEditingProduct({
+                                        ...editingProduct,
+                                        variation_options: newOptions
+                                      });
+                                    }}
+                                  >
+                                    Sil
+                                  </button>
+                                </div>
+                              ))}
+                              
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => {
+                                  const newOptions = [...(editingProduct.variation_options || [])];
+                                  newOptions.push({ name: '', price_modifier: 0, stock: 0, images: [] });
+                                  setEditingProduct({
+                                    ...editingProduct,
+                                    variation_options: newOptions
+                                  });
+                                }}
+                              >
+                                + Seçenek Ekle
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Ürün Özellikleri */}
+                    <div className="form-section">
+                      <h4>Ürün Özellikleri</h4>
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Ağırlık</label>
+                          <input
+                            type="text"
+                            value={editingProduct.weight || ''}
+                            onChange={(e) => setEditingProduct({...editingProduct, weight: e.target.value})}
+                            placeholder="Örn: 1.5kg, 250g"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Boyutlar</label>
+                          <input
+                            type="text"
+                            value={editingProduct.dimensions || ''}
+                            onChange={(e) => setEditingProduct({...editingProduct, dimensions: e.target.value})}
+                            placeholder="Örn: 30x20x10 cm"
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label>Malzeme</label>
+                        <input
+                          type="text"
+                          value={editingProduct.material || ''}
+                          onChange={(e) => setEditingProduct({...editingProduct, material: e.target.value})}
+                          placeholder="Örn: Plastik, Metal, Ahşap"
+                        />
                       </div>
                     </div>
                     
@@ -1534,6 +2357,650 @@ const AdminDashboard = () => {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'variations' && (
+          <div className="variations-content">
+            <div className="section-header">
+              <h2>Product Variations Management</h2>
+              <p>Varyasyonlu ürünlerin detaylarını yönetin (fiyat, stok, resim vs.)</p>
+            </div>
+
+            <div className="variation-products">
+              <h3>Varyasyonlu Ürünler</h3>
+              
+              {products.filter(product => product.has_variations).length === 0 ? (
+                <div className="no-variation-products">
+                  <p>Henüz varyasyonlu ürün yok. Ürün eklerken "Bu ürünün varyasyonları var" seçeneğini işaretleyin.</p>
+                </div>
+              ) : (
+                <div className="variation-products-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Ürün</th>
+                        <th>Varyasyon Türü</th>
+                        <th>Seçenekler</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.filter(product => product.has_variations).map(product => (
+                        <tr key={product.id}>
+                          <td>
+                            <div className="product-info">
+                              <strong>{product.name}</strong>
+                              <br />
+                              <small>Base Price: ${product.price}</small>
+                            </div>
+                          </td>
+                          <td>
+                            <span className="variation-type-badge">
+                              {product.variation_type === 'color' && 'Renk'}
+                              {product.variation_type === 'size' && 'Boyut'}
+                              {product.variation_type === 'weight' && 'Ağırlık'}
+                              {product.variation_type === 'custom' && product.variation_name}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="variation-options-preview">
+                              {product.variation_options && product.variation_options.length > 0 ? (
+                                product.variation_options.map((option, index) => (
+                                  <span key={index} className="option-tag">
+                                    {option.name}
+                                  </span>
+                                ))
+                              ) : (
+                                <span className="text-muted">Henüz seçenek eklenmemiş</span>
+                              )}
+                            </div>
+                          </td>
+                          <td>
+                            <button 
+                              className="btn btn-sm btn-primary"
+                              onClick={() => setSelectedProductForVariations(product)}
+                            >
+                              Varyasyonları Yönet
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Product Variation Management Modal */}
+            {selectedProductForVariations && (
+              <div className="modal-overlay" onClick={() => setSelectedProductForVariations(null)}>
+                <div className="modal-content large-modal" onClick={(e) => e.stopPropagation()}>
+                  <div className="modal-header">
+                    <h3>{selectedProductForVariations.name} - Varyasyon Yönetimi</h3>
+                    <button 
+                      className="modal-close"
+                      onClick={() => setSelectedProductForVariations(null)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                  
+                  <div className="variation-management">
+                    <p>
+                      <strong>Varyasyon Türü:</strong> {' '}
+                      {selectedProductForVariations.variation_type === 'color' && 'Renk'}
+                      {selectedProductForVariations.variation_type === 'size' && 'Boyut'}
+                      {selectedProductForVariations.variation_type === 'weight' && 'Ağırlık'}
+                      {selectedProductForVariations.variation_type === 'custom' && selectedProductForVariations.variation_name}
+                    </p>
+                    
+                    <div className="variation-options-management">
+                      <h4>Varyasyon Seçenekleri</h4>
+                      
+                      {selectedProductForVariations.variation_options && selectedProductForVariations.variation_options.map((option, index) => (
+                        <div key={index} className="variation-option-card">
+                          <div className="option-header">
+                            <h5>{option.name}</h5>
+                          </div>
+                          
+                          <div className="option-details">
+                            <div className="form-row">
+                              <div className="form-group">
+                                <label>Fiyat Farkı</label>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={option.price_modifier || 0}
+                                  onChange={(e) => {
+                                    const newOptions = [...selectedProductForVariations.variation_options];
+                                    newOptions[index].price_modifier = parseFloat(e.target.value) || 0;
+                                    setSelectedProductForVariations({
+                                      ...selectedProductForVariations,
+                                      variation_options: newOptions
+                                    });
+                                  }}
+                                  placeholder="0.00"
+                                />
+                                <small>Ana fiyata eklenecek/çıkarılacak miktar</small>
+                              </div>
+                              
+                              <div className="form-group">
+                                <label>Stok</label>
+                                <input
+                                  type="number"
+                                  value={option.stock || 0}
+                                  onChange={(e) => {
+                                    const newOptions = [...selectedProductForVariations.variation_options];
+                                    newOptions[index].stock = parseInt(e.target.value) || 0;
+                                    setSelectedProductForVariations({
+                                      ...selectedProductForVariations,
+                                      variation_options: newOptions
+                                    });
+                                  }}
+                                  placeholder="0"
+                                />
+                              </div>
+                            </div>
+                            
+                            <div className="form-group">
+                              <label>Bu Seçeneğe Özel Resimler</label>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={async (e) => {
+                                  const files = Array.from(e.target.files);
+                                  if (files.length > 0) {
+                                    const imageUrls = await handleProductImagesUpload(files);
+                                    if (imageUrls.length > 0) {
+                                      const newOptions = [...selectedProductForVariations.variation_options];
+                                      newOptions[index].images = [...(newOptions[index].images || []), ...imageUrls];
+                                      setSelectedProductForVariations({
+                                        ...selectedProductForVariations,
+                                        variation_options: newOptions
+                                      });
+                                    }
+                                  }
+                                }}
+                              />
+                              
+                              {option.images && option.images.length > 0 && (
+                                <div className="option-images">
+                                  {option.images.map((imageUrl, imgIndex) => (
+                                    <div key={imgIndex} className="option-image">
+                                      <img src={imageUrl} alt={`${option.name} ${imgIndex + 1}`} />
+                                      <button
+                                        type="button"
+                                        className="btn btn-sm btn-danger"
+                                        onClick={() => {
+                                          const newOptions = [...selectedProductForVariations.variation_options];
+                                          newOptions[index].images = newOptions[index].images.filter((_, i) => i !== imgIndex);
+                                          setSelectedProductForVariations({
+                                            ...selectedProductForVariations,
+                                            variation_options: newOptions
+                                          });
+                                        }}
+                                      >
+                                        Sil
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="modal-actions">
+                      <button 
+                        type="button" 
+                        className="btn btn-secondary" 
+                        onClick={() => setSelectedProductForVariations(null)}
+                      >
+                        İptal
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn btn-primary"
+                        onClick={() => saveProductVariations(selectedProductForVariations)}
+                      >
+                        Varyasyonları Kaydet
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="settings-content">
+            <div className="section-header">
+              <h2>Site Ayarları</h2>
+            </div>
+
+            <form onSubmit={handleUpdateSiteSettings} className="site-settings-form">
+              <div className="form-group">
+                <label>Site Adı</label>
+                <input
+                  type="text"
+                  value={siteSettings.site_name}
+                  onChange={(e) => setSiteSettings(prev => ({
+                    ...prev,
+                    site_name: e.target.value
+                  }))}
+                  placeholder="pebdeq"
+                  required
+                />
+                <small>Header'da gösterilecek site adı (küçük harflerle)</small>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={siteSettings.use_logo}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      use_logo: e.target.checked
+                    }))}
+                  />
+                  Logo kullan (işaretlenmezse yazı gösterilir)
+                </label>
+              </div>
+
+              {siteSettings.use_logo && (
+                <>
+                  <div className="form-group">
+                    <label>Site Logosu</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          handleSiteLogoUpload(file);
+                        }
+                      }}
+                      disabled={uploadingSiteLogo}
+                    />
+                    {uploadingSiteLogo && <p>Logo yükleniyor...</p>}
+                    
+                    {siteSettings.site_logo && (
+                      <div className="logo-preview">
+                        <img 
+                          src={`http://localhost:5005${siteSettings.site_logo}`} 
+                          alt="Site Logo" 
+                          style={{ 
+                            width: `${siteSettings.logo_width}px`,
+                            height: `${siteSettings.logo_height}px`,
+                            objectFit: 'contain' 
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger"
+                          onClick={() => setSiteSettings(prev => ({
+                            ...prev,
+                            site_logo: null
+                          }))}
+                        >
+                          Logoyu Kaldır
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Logo Genişliği (piksel)</label>
+                      <input
+                        type="number"
+                        min="20"
+                        max="500"
+                        value={siteSettings.logo_width}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          logo_width: parseInt(e.target.value) || 120
+                        }))}
+                        placeholder="120"
+                      />
+                      <small>20-500 piksel arası</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Logo Yüksekliği (piksel)</label>
+                      <input
+                        type="number"
+                        min="20"
+                        max="200"
+                        value={siteSettings.logo_height}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          logo_height: parseInt(e.target.value) || 40
+                        }))}
+                        placeholder="40"
+                      />
+                      <small>20-200 piksel arası</small>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={siteSettings.use_logo2}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      use_logo2: e.target.checked
+                    }))}
+                  />
+                  İkinci logo kullan
+                </label>
+              </div>
+
+              {siteSettings.use_logo2 && (
+                <>
+                  <div className="form-group">
+                    <label>İkinci Logo</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          handleSiteLogo2Upload(file);
+                        }
+                      }}
+                      disabled={uploadingSiteLogo2}
+                    />
+                    {uploadingSiteLogo2 && <p>İkinci logo yükleniyor...</p>}
+                    
+                    {siteSettings.site_logo2 && (
+                      <div className="logo-preview">
+                        <img 
+                          src={`http://localhost:5005${siteSettings.site_logo2}`} 
+                          alt="Second Site Logo" 
+                          style={{ 
+                            width: `${siteSettings.logo2_width}px`,
+                            height: `${siteSettings.logo2_height}px`,
+                            objectFit: 'contain' 
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger"
+                          onClick={() => setSiteSettings(prev => ({
+                            ...prev,
+                            site_logo2: null
+                          }))}
+                        >
+                          İkinci Logoyu Kaldır
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>İkinci Logo Genişliği (piksel)</label>
+                      <input
+                        type="number"
+                        min="20"
+                        max="500"
+                        value={siteSettings.logo2_width}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          logo2_width: parseInt(e.target.value) || 120
+                        }))}
+                        placeholder="120"
+                      />
+                      <small>20-500 piksel arası</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>İkinci Logo Yüksekliği (piksel)</label>
+                      <input
+                        type="number"
+                        min="20"
+                        max="200"
+                        value={siteSettings.logo2_height}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          logo2_height: parseInt(e.target.value) || 40
+                        }))}
+                        placeholder="40"
+                      />
+                      <small>20-200 piksel arası</small>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="form-group">
+                <h4>Welcome Section Ayarları</h4>
+                <p>Ana sayfadaki karşılama bölümünün görünümünü özelleştirin</p>
+              </div>
+
+              <div className="form-group">
+                <label>Welcome Başlığı</label>
+                <input
+                  type="text"
+                  value={siteSettings.welcome_title}
+                  onChange={(e) => setSiteSettings(prev => ({
+                    ...prev,
+                    welcome_title: e.target.value
+                  }))}
+                  placeholder="Welcome to Pebdeq"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Welcome Alt Başlığı</label>
+                <input
+                  type="text"
+                  value={siteSettings.welcome_subtitle}
+                  onChange={(e) => setSiteSettings(prev => ({
+                    ...prev,
+                    welcome_subtitle: e.target.value
+                  }))}
+                  placeholder="Crafted. Vintage. Smart."
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Welcome Arka Plan Resmi</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      handleWelcomeBackgroundUpload(file);
+                    }
+                  }}
+                  disabled={uploadingWelcomeBackground}
+                />
+                {uploadingWelcomeBackground && <p>Arka plan resmi yükleniyor...</p>}
+                
+                {siteSettings.welcome_background_image && (
+                  <div className="background-preview">
+                    <img 
+                      src={`http://localhost:5005${siteSettings.welcome_background_image}`} 
+                      alt="Welcome Background" 
+                      style={{ 
+                        width: '200px',
+                        height: '120px',
+                        objectFit: 'cover',
+                        borderRadius: '4px'
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger"
+                      onClick={() => setSiteSettings(prev => ({
+                        ...prev,
+                        welcome_background_image: null
+                      }))}
+                    >
+                      Arka Plan Resmini Kaldır
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Arka Plan Rengi</label>
+                  <input
+                    type="color"
+                    value={siteSettings.welcome_background_color}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      welcome_background_color: e.target.value
+                    }))}
+                  />
+                  <small>Arka plan resmi yoksa kullanılacak renk</small>
+                </div>
+
+                <div className="form-group">
+                  <label>Yazı Rengi</label>
+                  <input
+                    type="color"
+                    value={siteSettings.welcome_text_color}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      welcome_text_color: e.target.value
+                    }))}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Buton Metni</label>
+                <input
+                  type="text"
+                  value={siteSettings.welcome_button_text}
+                  onChange={(e) => setSiteSettings(prev => ({
+                    ...prev,
+                    welcome_button_text: e.target.value
+                  }))}
+                  placeholder="Explore Products"
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Buton Linki</label>
+                  <input
+                    type="text"
+                    value={siteSettings.welcome_button_link}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      welcome_button_link: e.target.value
+                    }))}
+                    placeholder="/products"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Buton Rengi</label>
+                  <input
+                    type="color"
+                    value={siteSettings.welcome_button_color}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      welcome_button_color: e.target.value
+                    }))}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <h4>Önizleme</h4>
+                <div className="logo-preview-header">
+                  <div className="logo-container">
+                    {siteSettings.use_logo && siteSettings.site_logo ? (
+                      <img 
+                        src={`http://localhost:5005${siteSettings.site_logo}`} 
+                        alt={siteSettings.site_name} 
+                        style={{ 
+                          width: `${siteSettings.logo_width}px`,
+                          height: `${siteSettings.logo_height}px`,
+                          objectFit: 'contain' 
+                        }}
+                      />
+                    ) : (
+                      <h1 style={{ 
+                        margin: 0, 
+                        fontSize: '1.8rem', 
+                        fontWeight: 700, 
+                        color: '#2c3e50' 
+                      }}>
+                        {siteSettings.site_name}
+                      </h1>
+                    )}
+                    {siteSettings.use_logo2 && siteSettings.site_logo2 && (
+                      <img 
+                        src={`http://localhost:5005${siteSettings.site_logo2}`} 
+                        alt="Second Logo" 
+                        style={{ 
+                          width: `${siteSettings.logo2_width}px`,
+                          height: `${siteSettings.logo2_height}px`,
+                          objectFit: 'contain' 
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+                
+                <div className="welcome-preview" style={{
+                  background: siteSettings.welcome_background_image 
+                    ? `url(http://localhost:5005${siteSettings.welcome_background_image}) center/cover`
+                    : siteSettings.welcome_background_color,
+                  padding: '2rem',
+                  borderRadius: '8px',
+                  textAlign: 'center',
+                  color: siteSettings.welcome_text_color,
+                  marginTop: '1rem'
+                }}>
+                  <h2 style={{ 
+                    fontSize: '2rem', 
+                    margin: '0 0 0.5rem 0',
+                    color: siteSettings.welcome_text_color
+                  }}>
+                    {siteSettings.welcome_title}
+                  </h2>
+                  <p style={{ 
+                    fontSize: '1.1rem', 
+                    margin: '0 0 1rem 0',
+                    color: siteSettings.welcome_text_color
+                  }}>
+                    {siteSettings.welcome_subtitle}
+                  </p>
+                  <button style={{
+                    backgroundColor: siteSettings.welcome_button_color,
+                    color: '#fff',
+                    padding: '0.5rem 1rem',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}>
+                    {siteSettings.welcome_button_text}
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" className="btn btn-primary">
+                Ayarları Kaydet
+              </button>
+            </form>
           </div>
         )}
       </div>

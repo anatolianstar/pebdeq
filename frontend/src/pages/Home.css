@@ -4,7 +4,6 @@
   }
   
   .hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background-size: cover;
     background-position: center;
     height: 60vh;
@@ -23,22 +22,25 @@
   
   .hero-title {
     font-size: 3rem;
-    color: #fff;
+    margin: 0 0 10px 0;
   }
   
   .hero-subtitle {
     font-size: 1.2rem;
-    color: #ccc;
     margin: 10px 0;
   }
   
   .hero-button {
-    background-color: #00b894;
     color: #fff;
     padding: 10px 20px;
     border-radius: 20px;
     text-decoration: none;
     font-weight: bold;
+    transition: opacity 0.3s ease;
+  }
+  
+  .hero-button:hover {
+    opacity: 0.9;
   }
   
   .category-section {

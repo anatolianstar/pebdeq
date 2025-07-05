@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models.models import User, Category, Product, Order, OrderItem, BlogPost, ContactMessage
+from app.models.models import User, Category, Product, Order, OrderItem, BlogPost, ContactMessage, VariationType, VariationOption, ProductVariation, SiteSettings
 import os
 from dotenv import load_dotenv
 
@@ -17,7 +17,11 @@ def make_shell_context():
         'Order': Order,
         'OrderItem': OrderItem,
         'BlogPost': BlogPost,
-        'ContactMessage': ContactMessage
+        'ContactMessage': ContactMessage,
+        'VariationType': VariationType,
+        'VariationOption': VariationOption,
+        'ProductVariation': ProductVariation,
+        'SiteSettings': SiteSettings
     }
 
 def init_database():
@@ -186,7 +190,59 @@ def init_database():
             db.session.add(admin)
             db.session.commit()
             print("Admin user created! Email: admin@pebdeq.com, Password: adminx999")
+        
+        # Create sample variation types if they don't exist
+        if not VariationType.query.first():
+            variation_types = [
+                VariationType(name='Renk', slug='renk', description='Ürün renk seçenekleri'),
+                VariationType(name='Boyut', slug='boyut', description='Ürün boyut seçenekleri'),
+                VariationType(name='Malzeme', slug='malzeme', description='Ürün malzeme seçenekleri'),
+                VariationType(name='Stil', slug='stil', description='Ürün stil seçenekleri')
+            ]
+            
+            for vtype in variation_types:
+                db.session.add(vtype)
+            
+            db.session.commit()
+            print("Sample variation types created!")
+            
+            # Create sample variation options
+            variation_options = [
+                # Renk seçenekleri
+                VariationOption(variation_type_id=1, name='Kırmızı', value='red', hex_color='#FF0000'),
+                VariationOption(variation_type_id=1, name='Mavi', value='blue', hex_color='#0000FF'),
+                VariationOption(variation_type_id=1, name='Yeşil', value='green', hex_color='#00FF00'),
+                VariationOption(variation_type_id=1, name='Sarı', value='yellow', hex_color='#FFFF00'),
+                VariationOption(variation_type_id=1, name='Siyah', value='black', hex_color='#000000'),
+                VariationOption(variation_type_id=1, name='Beyaz', value='white', hex_color='#FFFFFF'),
+                
+                # Boyut seçenekleri
+                VariationOption(variation_type_id=2, name='XS', value='xs'),
+                VariationOption(variation_type_id=2, name='S', value='small'),
+                VariationOption(variation_type_id=2, name='M', value='medium'),
+                VariationOption(variation_type_id=2, name='L', value='large'),
+                VariationOption(variation_type_id=2, name='XL', value='xl'),
+                VariationOption(variation_type_id=2, name='XXL', value='xxl'),
+                
+                # Malzeme seçenekleri
+                VariationOption(variation_type_id=3, name='Plastik', value='plastic'),
+                VariationOption(variation_type_id=3, name='Metal', value='metal'),
+                VariationOption(variation_type_id=3, name='Ahşap', value='wood'),
+                VariationOption(variation_type_id=3, name='Cam', value='glass'),
+                
+                # Stil seçenekleri
+                VariationOption(variation_type_id=4, name='Modern', value='modern'),
+                VariationOption(variation_type_id=4, name='Klasik', value='classic'),
+                VariationOption(variation_type_id=4, name='Vintage', value='vintage'),
+                VariationOption(variation_type_id=4, name='Minimalist', value='minimalist')
+            ]
+            
+            for option in variation_options:
+                db.session.add(option)
+            
+            db.session.commit()
+            print("Sample variation options created!")
 
 if __name__ == '__main__':
     init_database()
-    app.run(debug=True, host='0.0.0.0', port=5000) 
+    app.run(debug=True, host='0.0.0.0', port=5005) 
