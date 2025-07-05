@@ -1,37 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 
-const categories = [
-  {
-    title: "3D Print",
-    icon: "🔧",
-    className: "print-3d",
-    description: "Custom 3D designs and prints",
-    link: "/products?category=3dprint"
-  },
-  {
-    title: "Tools",
-    icon: "🔨",
-    className: "tools",
-    description: "Quality second-hand tools",
-    link: "/products?category=tools"
-  },
-  {
-    title: "Vintage Bulbs",
-    icon: "💡",
-    className: "bulbs",
-    description: "Decorative antique lamps",
-    link: "/products?category=bulbs"
-  },
-  {
-    title: "Laser Engraving",
-    icon: "⚡",
-    className: "laser",
-    description: "Personalized laser engraving",
-    link: "/products?category=laser"
-  }
-];
-
 const Home = () => {
   const [siteSettings, setSiteSettings] = useState({
     welcome_title: 'Welcome to Pebdeq',
@@ -41,25 +10,63 @@ const Home = () => {
     welcome_text_color: '#ffffff',
     welcome_button_text: 'Explore Products',
     welcome_button_link: '/products',
-    welcome_button_color: '#00b894'
+    welcome_button_color: '#00b894',
+    collections_title: 'Our Collections',
+    collections_show_categories: [],
+    collections_categories_per_row: 4,
+    collections_max_rows: 1,
+    collections_show_section: true
   });
 
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
-    const fetchSiteSettings = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('/api/site-settings');
-        const data = await response.json();
+        const [siteResponse, categoriesResponse] = await Promise.all([
+          fetch('/api/site-settings'),
+          fetch('/api/categories')
+        ]);
         
-        if (response.ok) {
-          setSiteSettings(data);
+        const siteData = await siteResponse.json();
+        const categoriesData = await categoriesResponse.json();
+        
+        if (siteResponse.ok) {
+          setSiteSettings(siteData);
+        }
+        
+        if (categoriesResponse.ok) {
+          setCategories(categoriesData.categories);
         }
       } catch (error) {
-        console.error('Error fetching site settings:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchSiteSettings();
+    fetchData();
   }, []);
+
+  // Get categories to display based on settings
+  const getDisplayCategories = () => {
+    if (!siteSettings.collections_show_section) {
+      return [];
+    }
+
+    let categoriesToShow = categories.filter(cat => cat.is_active);
+    
+    // If specific categories are selected, filter by them
+    if (siteSettings.collections_show_categories.length > 0) {
+      categoriesToShow = categoriesToShow.filter(cat => 
+        siteSettings.collections_show_categories.includes(cat.id)
+      );
+    }
+    
+    // Limit by max categories (per_row * max_rows)
+    const maxCategories = siteSettings.collections_categories_per_row * siteSettings.collections_max_rows;
+    return categoriesToShow.slice(0, maxCategories);
+  };
+
+  const displayCategories = getDisplayCategories();
 
   return (
     <div className="home-container">
@@ -91,20 +98,51 @@ const Home = () => {
       </section>
 
       {/* Categories */}
-      <section className="category-section">
-        <h2 className="section-title">Our Collections</h2>
-                 <div className="category-grid">
-           {categories.map((cat, index) => (
-             <a href={cat.link} key={index} className="category-card">
-               <div className={`category-image ${cat.className}`}>
-                 {cat.icon}
-               </div>
-               <h3>{cat.title}</h3>
-               <p>{cat.description}</p>
-             </a>
-           ))}
-         </div>
-      </section>
+      {siteSettings.collections_show_section && displayCategories.length > 0 && (
+        <section className="category-section">
+          <h2 className="section-title">{siteSettings.collections_title}</h2>
+          <div 
+            className="category-grid"
+            style={{
+              gridTemplateColumns: `repeat(${siteSettings.collections_categories_per_row}, 1fr)`
+            }}
+          >
+            {displayCategories.map((category) => (
+              <a 
+                href={`/products?category=${category.slug}`} 
+                key={category.id} 
+                className="category-card"
+                style={{
+                  background: category.background_image_url 
+                    ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(http://localhost:5005${category.background_image_url}) center/cover`
+                    : category.background_color || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: category.background_image_url || category.background_color ? '#fff' : '#333'
+                }}
+              >
+                <div className="category-content">
+                  {category.image_url && (
+                    <div className="category-icon">
+                      <img 
+                        src={`http://localhost:5005${category.image_url}`} 
+                        alt={category.name}
+                        style={{ 
+                          width: '60px', 
+                          height: '60px', 
+                          objectFit: 'cover', 
+                          borderRadius: '50%',
+                          marginBottom: '1rem'
+                        }}
+                      />
+                    </div>
+                  )}
+                  <h3>{category.name}</h3>
+                  <p>{category.description || 'Discover our collection'}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Highlights */}
       <section className="features-section">

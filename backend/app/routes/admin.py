@@ -277,6 +277,8 @@ def get_categories():
                 'slug': c.slug,
                 'description': c.description,
                 'image_url': c.image_url,
+                'background_image_url': c.background_image_url,
+                'background_color': c.background_color,
                 'is_active': c.is_active,
                 'products_count': len(c.products)
             } for c in categories]
@@ -303,6 +305,8 @@ def create_category():
             slug=data['slug'],
             description=data.get('description', ''),
             image_url=data.get('image_url', ''),
+            background_image_url=data.get('background_image_url', ''),
+            background_color=data.get('background_color', ''),
             is_active=data.get('is_active', True)
         )
         
@@ -335,6 +339,10 @@ def update_category(category_id):
             category.description = data['description']
         if 'image_url' in data:
             category.image_url = data['image_url']
+        if 'background_image_url' in data:
+            category.background_image_url = data['background_image_url']
+        if 'background_color' in data:
+            category.background_color = data['background_color']
         if 'is_active' in data:
             category.is_active = data['is_active']
         
@@ -435,6 +443,50 @@ def upload_category_image():
         return jsonify({
             'message': 'Image uploaded successfully',
             'file_url': file_url,
+            'filename': unique_filename
+        }), 200
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/upload/category-background', methods=['POST'])
+@admin_required
+def upload_category_background():
+    try:
+        if 'background' not in request.files:
+            return jsonify({'error': 'No background file provided'}), 400
+        
+        file = request.files['background']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if not allowed_file(file.filename, 'image'):
+            return jsonify({'error': 'Invalid file type. Only PNG, JPG, JPEG, GIF, WEBP allowed'}), 400
+        
+        # Check file size
+        file.seek(0, 2)  # Seek to end
+        file_size = file.tell()
+        file.seek(0)  # Reset to beginning
+        
+        if file_size > MAX_IMAGE_SIZE:
+            return jsonify({'error': 'File too large. Maximum size is 5MB'}), 400
+        
+        # Create upload folders
+        base_path = create_upload_folders()
+        
+        # Generate unique filename
+        unique_filename = generate_unique_filename(file.filename)
+        
+        # Save file
+        file_path = os.path.join(base_path, 'categories', unique_filename)
+        file.save(file_path)
+        
+        # Return the URL
+        file_url = f'/uploads/categories/{unique_filename}'
+        
+        return jsonify({
+            'message': 'Background image uploaded successfully',
+            'background_url': file_url,
             'filename': unique_filename
         }), 200
     
@@ -791,7 +843,12 @@ def get_site_settings():
             'welcome_text_color': settings.welcome_text_color,
             'welcome_button_text': settings.welcome_button_text,
             'welcome_button_link': settings.welcome_button_link,
-            'welcome_button_color': settings.welcome_button_color
+            'welcome_button_color': settings.welcome_button_color,
+            'collections_title': settings.collections_title,
+            'collections_show_categories': settings.collections_show_categories,
+            'collections_categories_per_row': settings.collections_categories_per_row,
+            'collections_max_rows': settings.collections_max_rows,
+            'collections_show_section': settings.collections_show_section
         })
     
     except Exception as e:
@@ -844,6 +901,18 @@ def update_site_settings():
             settings.welcome_button_link = data['welcome_button_link']
         if 'welcome_button_color' in data:
             settings.welcome_button_color = data['welcome_button_color']
+        
+        # Collections settings
+        if 'collections_title' in data:
+            settings.collections_title = data['collections_title']
+        if 'collections_show_categories' in data:
+            settings.collections_show_categories = data['collections_show_categories']
+        if 'collections_categories_per_row' in data:
+            settings.collections_categories_per_row = data['collections_categories_per_row']
+        if 'collections_max_rows' in data:
+            settings.collections_max_rows = data['collections_max_rows']
+        if 'collections_show_section' in data:
+            settings.collections_show_section = data['collections_show_section']
         
         db.session.commit()
         

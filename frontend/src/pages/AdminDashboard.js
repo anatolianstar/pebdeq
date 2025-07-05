@@ -47,11 +47,14 @@ const AdminDashboard = () => {
     slug: '',
     description: '',
     image_url: '',
+    background_image_url: '',
+    background_color: '',
     is_active: true
   });
 
   const [editingCategory, setEditingCategory] = useState(null);
   const [uploadingCategoryImage, setUploadingCategoryImage] = useState(false);
+  const [uploadingCategoryBackground, setUploadingCategoryBackground] = useState(false);
   const [uploadingProductImages, setUploadingProductImages] = useState(false);
   const [uploadingProductVideo, setUploadingProductVideo] = useState(false);
 
@@ -95,7 +98,12 @@ const AdminDashboard = () => {
     welcome_text_color: '#ffffff',
     welcome_button_text: 'Explore Products',
     welcome_button_link: '/products',
-    welcome_button_color: '#00b894'
+    welcome_button_color: '#00b894',
+    collections_title: 'Our Collections',
+    collections_show_categories: [],
+    collections_categories_per_row: 4,
+    collections_max_rows: 1,
+    collections_show_section: true
   });
   const [uploadingSiteLogo, setUploadingSiteLogo] = useState(false);
   const [uploadingSiteLogo2, setUploadingSiteLogo2] = useState(false);
@@ -563,6 +571,8 @@ const AdminDashboard = () => {
           slug: '',
           description: '',
           image_url: '',
+          background_image_url: '',
+          background_color: '',
           is_active: true
         });
         fetchCategories();
@@ -658,6 +668,40 @@ const AdminDashboard = () => {
       return null;
     } finally {
       setUploadingCategoryImage(false);
+    }
+  };
+
+  const handleCategoryBackgroundUpload = async (file) => {
+    if (!file) return null;
+    
+    setUploadingCategoryBackground(true);
+    const formData = new FormData();
+    formData.append('background', file);
+    
+    try {
+      const response = await fetch('/api/admin/upload/category-background', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        toast.success('Background image uploaded successfully');
+        return data.background_url;
+      } else {
+        const error = await response.json();
+        toast.error(error.error || 'Upload failed');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error uploading background:', error);
+      toast.error('Upload failed');
+      return null;
+    } finally {
+      setUploadingCategoryBackground(false);
     }
   };
 
@@ -2108,7 +2152,7 @@ const AdminDashboard = () => {
                         <td>
                           {category.image_url ? (
                             <img 
-                              src={category.image_url} 
+                              src={`http://localhost:5005${category.image_url}`} 
                               alt={category.name}
                               style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
                             />
@@ -2132,6 +2176,8 @@ const AdminDashboard = () => {
                               slug: category.slug,
                               description: category.description || '',
                               image_url: category.image_url || '',
+                              background_image_url: category.background_image_url || '',
+                              background_color: category.background_color || '',
                               is_active: category.is_active
                             });
                           }}
@@ -2199,7 +2245,7 @@ const AdminDashboard = () => {
                     {newCategory.image_url && (
                       <div className="image-preview">
                         <img 
-                          src={newCategory.image_url} 
+                          src={`http://localhost:5005${newCategory.image_url}`} 
                           alt="Category"
                           style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px' }}
                         />
@@ -2227,6 +2273,51 @@ const AdminDashboard = () => {
                       disabled={uploadingCategoryImage}
                     />
                     {uploadingCategoryImage && <span>Uploading...</span>}
+                  </div>
+
+                  <div className="form-group">
+                    <label>Background Image</label>
+                    {newCategory.background_image_url && (
+                      <div className="image-preview">
+                        <img 
+                          src={`http://localhost:5005${newCategory.background_image_url}`} 
+                          alt="Category Background"
+                          style={{ width: '150px', height: '75px', objectFit: 'cover', borderRadius: '4px' }}
+                        />
+                        <button 
+                          type="button"
+                          className="btn btn-sm btn-danger"
+                          onClick={() => setNewCategory({...newCategory, background_image_url: ''})}
+                        >
+                          Remove Background
+                        </button>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const backgroundUrl = await handleCategoryBackgroundUpload(file);
+                          if (backgroundUrl) {
+                            setNewCategory({...newCategory, background_image_url: backgroundUrl});
+                          }
+                        }
+                      }}
+                      disabled={uploadingCategoryBackground}
+                    />
+                    {uploadingCategoryBackground && <span>Uploading background...</span>}
+                  </div>
+
+                  <div className="form-group">
+                    <label>Background Color (Hex)</label>
+                    <input
+                      type="color"
+                      value={newCategory.background_color || '#ffffff'}
+                      onChange={(e) => setNewCategory({...newCategory, background_color: e.target.value})}
+                    />
+                    <small>Bu renk, arka plan resmi yoksa kullanılacak</small>
                   </div>
                 
                 <div className="form-group">
@@ -2304,7 +2395,7 @@ const AdminDashboard = () => {
                         {editingCategory.image_url && (
                           <div className="image-preview">
                             <img 
-                              src={editingCategory.image_url} 
+                              src={`http://localhost:5005${editingCategory.image_url}`} 
                               alt="Category"
                               style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px' }}
                             />
@@ -2332,6 +2423,51 @@ const AdminDashboard = () => {
                           disabled={uploadingCategoryImage}
                         />
                         {uploadingCategoryImage && <span>Uploading...</span>}
+                      </div>
+
+                      <div className="form-group">
+                        <label>Background Image</label>
+                        {editingCategory.background_image_url && (
+                          <div className="image-preview">
+                            <img 
+                              src={`http://localhost:5005${editingCategory.background_image_url}`} 
+                              alt="Category Background"
+                              style={{ width: '150px', height: '75px', objectFit: 'cover', borderRadius: '4px' }}
+                            />
+                            <button 
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => setEditingCategory({...editingCategory, background_image_url: ''})}
+                            >
+                              Remove Background
+                            </button>
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const backgroundUrl = await handleCategoryBackgroundUpload(file);
+                              if (backgroundUrl) {
+                                setEditingCategory({...editingCategory, background_image_url: backgroundUrl});
+                              }
+                            }
+                          }}
+                          disabled={uploadingCategoryBackground}
+                        />
+                        {uploadingCategoryBackground && <span>Uploading background...</span>}
+                      </div>
+
+                      <div className="form-group">
+                        <label>Background Color (Hex)</label>
+                        <input
+                          type="color"
+                          value={editingCategory.background_color || '#ffffff'}
+                          onChange={(e) => setEditingCategory({...editingCategory, background_color: e.target.value})}
+                        />
+                        <small>Bu renk, arka plan resmi yoksa kullanılacak</small>
                       </div>
                     
                     <div className="form-group">
@@ -2921,6 +3057,232 @@ const AdminDashboard = () => {
                   />
                 </div>
               </div>
+
+              <div className="form-group">
+                <h4>Önizleme</h4>
+                <div className="logo-preview-header">
+                  <div className="logo-container">
+                    {siteSettings.use_logo && siteSettings.site_logo ? (
+                      <img 
+                        src={`http://localhost:5005${siteSettings.site_logo}`} 
+                        alt={siteSettings.site_name} 
+                        style={{ 
+                          width: `${siteSettings.logo_width}px`,
+                          height: `${siteSettings.logo_height}px`,
+                          objectFit: 'contain' 
+                        }}
+                      />
+                    ) : (
+                      <h1 style={{ 
+                        margin: 0, 
+                        fontSize: '1.8rem', 
+                        fontWeight: 700, 
+                        color: '#2c3e50' 
+                      }}>
+                        {siteSettings.site_name}
+                      </h1>
+                    )}
+                    {siteSettings.use_logo2 && siteSettings.site_logo2 && (
+                      <img 
+                        src={`http://localhost:5005${siteSettings.site_logo2}`} 
+                        alt="Second Logo" 
+                        style={{ 
+                          width: `${siteSettings.logo2_width}px`,
+                          height: `${siteSettings.logo2_height}px`,
+                          objectFit: 'contain' 
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+                
+                <div className="welcome-preview" style={{
+                  background: siteSettings.welcome_background_image 
+                    ? `url(http://localhost:5005${siteSettings.welcome_background_image}) center/cover`
+                    : siteSettings.welcome_background_color,
+                  padding: '2rem',
+                  borderRadius: '8px',
+                  textAlign: 'center',
+                  color: siteSettings.welcome_text_color,
+                  marginTop: '1rem'
+                }}>
+                  <h2 style={{ 
+                    fontSize: '2rem', 
+                    margin: '0 0 0.5rem 0',
+                    color: siteSettings.welcome_text_color
+                  }}>
+                    {siteSettings.welcome_title}
+                  </h2>
+                  <p style={{ 
+                    fontSize: '1.1rem', 
+                    margin: '0 0 1rem 0',
+                    color: siteSettings.welcome_text_color
+                  }}>
+                    {siteSettings.welcome_subtitle}
+                  </p>
+                  <button style={{
+                    backgroundColor: siteSettings.welcome_button_color,
+                    color: '#fff',
+                    padding: '0.5rem 1rem',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}>
+                    {siteSettings.welcome_button_text}
+                  </button>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <h4>Collections Section Ayarları</h4>
+                <p>Ana sayfadaki "Our Collections" bölümünün görünümünü özelleştirin</p>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={siteSettings.collections_show_section}
+                    onChange={(e) => setSiteSettings(prev => ({
+                      ...prev,
+                      collections_show_section: e.target.checked
+                    }))}
+                  />
+                  Collections bölümünü göster
+                </label>
+              </div>
+
+              {siteSettings.collections_show_section && (
+                <>
+                  <div className="form-group">
+                    <label>Collections Başlığı</label>
+                    <input
+                      type="text"
+                      value={siteSettings.collections_title}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        collections_title: e.target.value
+                      }))}
+                      placeholder="Our Collections"
+                    />
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Satır Başına Kategori Sayısı</label>
+                      <select
+                        value={siteSettings.collections_categories_per_row}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          collections_categories_per_row: parseInt(e.target.value)
+                        }))}
+                      >
+                        <option value={2}>2 Kategori</option>
+                        <option value={3}>3 Kategori</option>
+                        <option value={4}>4 Kategori</option>
+                        <option value={6}>6 Kategori</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Maksimum Satır Sayısı</label>
+                      <select
+                        value={siteSettings.collections_max_rows}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          collections_max_rows: parseInt(e.target.value)
+                        }))}
+                      >
+                        <option value={1}>1 Satır</option>
+                        <option value={2}>2 Satır</option>
+                        <option value={3}>3 Satır</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Gösterilecek Kategoriler</label>
+                    <div className="categories-selection">
+                      {categories.map(category => (
+                        <label key={category.id} className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.collections_show_categories.includes(category.id)}
+                            onChange={(e) => {
+                              const newShowCategories = e.target.checked
+                                ? [...siteSettings.collections_show_categories, category.id]
+                                : siteSettings.collections_show_categories.filter(id => id !== category.id);
+                              
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                collections_show_categories: newShowCategories
+                              }));
+                            }}
+                          />
+                          {category.name}
+                        </label>
+                      ))}
+                    </div>
+                    <small>
+                      Seçilen kategoriler gösterilecek. Boş bırakılırsa tüm aktif kategoriler gösterilir. 
+                      Maksimum {siteSettings.collections_categories_per_row * siteSettings.collections_max_rows} kategori gösterilecek.
+                    </small>
+                  </div>
+
+                  <div className="form-group">
+                    <h5>Collections Önizleme</h5>
+                    <div className="collections-preview" style={{
+                      padding: '2rem',
+                      background: '#f8f9fa',
+                      borderRadius: '8px',
+                      marginTop: '1rem'
+                    }}>
+                      <h3 style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        {siteSettings.collections_title}
+                      </h3>
+                      <div 
+                        className="categories-grid-preview"
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: `repeat(${siteSettings.collections_categories_per_row}, 1fr)`,
+                          gap: '1rem',
+                          maxWidth: '1200px',
+                          margin: '0 auto'
+                        }}
+                      >
+                        {(siteSettings.collections_show_categories.length > 0 
+                          ? categories.filter(cat => siteSettings.collections_show_categories.includes(cat.id))
+                          : categories.filter(cat => cat.is_active)
+                        )
+                        .slice(0, siteSettings.collections_categories_per_row * siteSettings.collections_max_rows)
+                        .map(category => (
+                          <div 
+                            key={category.id}
+                            style={{
+                              background: category.background_image_url 
+                                ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(http://localhost:5005${category.background_image_url}) center/cover`
+                                : category.background_color || '#e9ecef',
+                              borderRadius: '12px',
+                              padding: '2rem',
+                              textAlign: 'center',
+                              color: category.background_image_url || category.background_color ? '#fff' : '#333',
+                              minHeight: '150px',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <h4 style={{ margin: '0 0 0.5rem 0' }}>{category.name}</h4>
+                            <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.9 }}>
+                              {category.description || 'Category description'}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div className="form-group">
                 <h4>Önizleme</h4>

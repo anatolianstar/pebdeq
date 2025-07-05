@@ -28,6 +28,8 @@ class Category(db.Model):
     slug = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text)
     image_url = db.Column(db.String(255))
+    background_image_url = db.Column(db.String(255))  # Kategori arka plan resmi
+    background_color = db.Column(db.String(7))  # Kategori arka plan rengi (hex)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -172,6 +174,13 @@ class SiteSettings(db.Model):
     welcome_button_text = db.Column(db.String(100), default='Explore Products')
     welcome_button_link = db.Column(db.String(255), default='/products')
     welcome_button_color = db.Column(db.String(7), default='#00b894')  # Buton rengi (hex)
+    
+    # Collections Section Settings
+    collections_title = db.Column(db.String(200), default='Our Collections')
+    collections_show_categories = db.Column(db.JSON, default=lambda: [])  # Gösterilecek kategori ID'leri
+    collections_categories_per_row = db.Column(db.Integer, default=4)  # Satırda kaç kategori
+    collections_max_rows = db.Column(db.Integer, default=1)  # Maksimum satır sayısı
+    collections_show_section = db.Column(db.Boolean, default=True)  # Bölüm gösterilsin mi
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 
