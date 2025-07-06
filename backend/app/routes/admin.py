@@ -812,6 +812,7 @@ def delete_variation_option(variation_option_id):
         return jsonify({'error': str(e)}), 500
 
 # Site Settings Management
+# Site Settings - Ana endpoint (tüm ayarları döndürür)
 @admin_bp.route('/site-settings', methods=['GET'])
 @admin_required
 def get_site_settings():
@@ -827,33 +828,127 @@ def get_site_settings():
             db.session.commit()
         
         return jsonify({
-            'site_name': settings.site_name,
-            'site_logo': settings.site_logo,
-            'use_logo': settings.use_logo,
-            'logo_width': settings.logo_width,
-            'logo_height': settings.logo_height,
-            'site_logo2': settings.site_logo2,
-            'use_logo2': settings.use_logo2,
-            'logo2_width': settings.logo2_width,
-            'logo2_height': settings.logo2_height,
-            'welcome_title': settings.welcome_title,
-            'welcome_subtitle': settings.welcome_subtitle,
-            'welcome_background_image': settings.welcome_background_image,
-            'welcome_background_color': settings.welcome_background_color,
-            'welcome_text_color': settings.welcome_text_color,
-            'welcome_button_text': settings.welcome_button_text,
-            'welcome_button_link': settings.welcome_button_link,
-            'welcome_button_color': settings.welcome_button_color,
-            'collections_title': settings.collections_title,
-            'collections_show_categories': settings.collections_show_categories,
-            'collections_categories_per_row': settings.collections_categories_per_row,
-            'collections_max_rows': settings.collections_max_rows,
-            'collections_show_section': settings.collections_show_section
+            # Site Identity
+            'site_identity': {
+                'site_name': settings.site_name,
+                'site_logo': settings.site_logo,
+                'use_logo': settings.use_logo,
+                'logo_width': settings.logo_width,
+                'logo_height': settings.logo_height,
+                'site_logo2': settings.site_logo2,
+                'use_logo2': settings.use_logo2,
+                'logo2_width': settings.logo2_width,
+                'logo2_height': settings.logo2_height
+            },
+            # Welcome Section
+            'welcome_section': {
+                'welcome_title': settings.welcome_title,
+                'welcome_subtitle': settings.welcome_subtitle,
+                'welcome_background_image': settings.welcome_background_image,
+                'welcome_background_color': settings.welcome_background_color,
+                'welcome_text_color': settings.welcome_text_color,
+                'welcome_button_text': settings.welcome_button_text,
+                'welcome_button_link': settings.welcome_button_link,
+                'welcome_button_color': settings.welcome_button_color
+            },
+            # Collections Section
+            'collections_section': {
+                'collections_title': settings.collections_title,
+                'collections_show_categories': settings.collections_show_categories,
+                'collections_categories_per_row': settings.collections_categories_per_row,
+                'collections_max_rows': settings.collections_max_rows,
+                'collections_show_section': settings.collections_show_section
+            },
+            # Contact & Social
+            'contact_social': {
+                'contact_phone': settings.contact_phone,
+                'contact_email': settings.contact_email,
+                'contact_address': settings.contact_address,
+                'social_instagram': settings.social_instagram,
+                'social_facebook': settings.social_facebook,
+                'social_twitter': settings.social_twitter,
+                'social_youtube': settings.social_youtube,
+                'social_linkedin': settings.social_linkedin
+            },
+            # SEO Settings
+            'seo_settings': {
+                'meta_title': settings.meta_title,
+                'meta_description': settings.meta_description,
+                'meta_keywords': settings.meta_keywords
+            },
+            # Business Settings
+            'business_settings': {
+                'currency_symbol': settings.currency_symbol,
+                'currency_code': settings.currency_code,
+                'shipping_cost': settings.shipping_cost,
+                'free_shipping_threshold': settings.free_shipping_threshold
+            },
+            # Feature Flags
+            'feature_flags': {
+                'enable_reviews': settings.enable_reviews,
+                'enable_wishlist': settings.enable_wishlist,
+                'enable_compare': settings.enable_compare,
+                'enable_newsletter': settings.enable_newsletter,
+                'maintenance_mode': settings.maintenance_mode
+            },
+            # Footer Settings
+            'footer_settings': {
+                'footer_show_section': settings.footer_show_section,
+                'footer_background_color': settings.footer_background_color,
+                'footer_text_color': settings.footer_text_color,
+                'footer_company_name': settings.footer_company_name,
+                'footer_company_description': settings.footer_company_description,
+                'footer_copyright_text': settings.footer_copyright_text,
+                'footer_support_title': settings.footer_support_title,
+                'footer_support_show_section': settings.footer_support_show_section,
+                'footer_support_links': settings.footer_support_links,
+                'footer_quick_links_title': settings.footer_quick_links_title,
+                'footer_quick_links_show_section': settings.footer_quick_links_show_section,
+                'footer_quick_links': settings.footer_quick_links,
+                'footer_social_title': settings.footer_social_title,
+                'footer_social_show_section': settings.footer_social_show_section,
+                'footer_newsletter_title': settings.footer_newsletter_title,
+                'footer_newsletter_show_section': settings.footer_newsletter_show_section,
+                'footer_newsletter_description': settings.footer_newsletter_description,
+                'footer_newsletter_placeholder': settings.footer_newsletter_placeholder,
+                'footer_newsletter_button_text': settings.footer_newsletter_button_text
+            },
+            # Homepage Products Settings
+            'homepage_products_settings': {
+                'homepage_products_show_section': settings.homepage_products_show_section,
+                'homepage_products_title': settings.homepage_products_title,
+                'homepage_products_subtitle': settings.homepage_products_subtitle,
+                'homepage_products_max_rows': settings.homepage_products_max_rows,
+                'homepage_products_per_row': settings.homepage_products_per_row,
+                'homepage_products_max_items': settings.homepage_products_max_items,
+                'homepage_products_show_images': settings.homepage_products_show_images,
+                'homepage_products_image_height': settings.homepage_products_image_height,
+                'homepage_products_image_width': settings.homepage_products_image_width,
+                'homepage_products_show_favorite': settings.homepage_products_show_favorite,
+                'homepage_products_show_buy_now': settings.homepage_products_show_buy_now,
+                'homepage_products_show_details': settings.homepage_products_show_details,
+                'homepage_products_show_price': settings.homepage_products_show_price,
+                'homepage_products_show_original_price': settings.homepage_products_show_original_price,
+                'homepage_products_show_stock': settings.homepage_products_show_stock,
+                'homepage_products_show_category': settings.homepage_products_show_category,
+                'homepage_products_sort_by': settings.homepage_products_sort_by,
+                'homepage_products_filter_categories': settings.homepage_products_filter_categories,
+                'homepage_products_show_view_all': settings.homepage_products_show_view_all,
+                'homepage_products_view_all_text': settings.homepage_products_view_all_text,
+                'homepage_products_view_all_link': settings.homepage_products_view_all_link,
+                'homepage_products_card_style': settings.homepage_products_card_style,
+                'homepage_products_card_shadow': settings.homepage_products_card_shadow,
+                'homepage_products_card_hover_effect': settings.homepage_products_card_hover_effect,
+                'homepage_products_show_badges': settings.homepage_products_show_badges,
+                'homepage_products_show_rating': settings.homepage_products_show_rating,
+                'homepage_products_show_quick_view': settings.homepage_products_show_quick_view
+            }
         })
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Site Settings - Genel güncelleme endpoint'i (geriye uyumluluk için)
 @admin_bp.route('/site-settings', methods=['PUT'])
 @admin_required
 def update_site_settings():
@@ -865,6 +960,7 @@ def update_site_settings():
             settings = SiteSettings()
             db.session.add(settings)
         
+        # Site Identity
         if 'site_name' in data:
             settings.site_name = data['site_name']
         if 'site_logo' in data:
@@ -913,6 +1009,158 @@ def update_site_settings():
             settings.collections_max_rows = data['collections_max_rows']
         if 'collections_show_section' in data:
             settings.collections_show_section = data['collections_show_section']
+        
+        # Contact & Social
+        if 'contact_phone' in data:
+            settings.contact_phone = data['contact_phone']
+        if 'contact_email' in data:
+            settings.contact_email = data['contact_email']
+        if 'contact_address' in data:
+            settings.contact_address = data['contact_address']
+        if 'social_instagram' in data:
+            settings.social_instagram = data['social_instagram']
+        if 'social_facebook' in data:
+            settings.social_facebook = data['social_facebook']
+        if 'social_twitter' in data:
+            settings.social_twitter = data['social_twitter']
+        if 'social_youtube' in data:
+            settings.social_youtube = data['social_youtube']
+        if 'social_linkedin' in data:
+            settings.social_linkedin = data['social_linkedin']
+        
+        # SEO Settings
+        if 'meta_title' in data:
+            settings.meta_title = data['meta_title']
+        if 'meta_description' in data:
+            settings.meta_description = data['meta_description']
+        if 'meta_keywords' in data:
+            settings.meta_keywords = data['meta_keywords']
+        
+        # Business Settings
+        if 'currency_symbol' in data:
+            settings.currency_symbol = data['currency_symbol']
+        if 'currency_code' in data:
+            settings.currency_code = data['currency_code']
+        if 'shipping_cost' in data:
+            settings.shipping_cost = data['shipping_cost']
+        if 'free_shipping_threshold' in data:
+            settings.free_shipping_threshold = data['free_shipping_threshold']
+        
+        # Feature Flags
+        if 'enable_reviews' in data:
+            settings.enable_reviews = data['enable_reviews']
+        if 'enable_wishlist' in data:
+            settings.enable_wishlist = data['enable_wishlist']
+        if 'enable_compare' in data:
+            settings.enable_compare = data['enable_compare']
+        if 'enable_newsletter' in data:
+            settings.enable_newsletter = data['enable_newsletter']
+        if 'maintenance_mode' in data:
+            settings.maintenance_mode = data['maintenance_mode']
+        
+        # Footer Settings
+        if 'footer_show_section' in data:
+            settings.footer_show_section = data['footer_show_section']
+        if 'footer_background_color' in data:
+            settings.footer_background_color = data['footer_background_color']
+        if 'footer_text_color' in data:
+            settings.footer_text_color = data['footer_text_color']
+        if 'footer_company_name' in data:
+            settings.footer_company_name = data['footer_company_name']
+        if 'footer_company_description' in data:
+            settings.footer_company_description = data['footer_company_description']
+        if 'footer_copyright_text' in data:
+            settings.footer_copyright_text = data['footer_copyright_text']
+        
+        # Footer Support Section
+        if 'footer_support_title' in data:
+            settings.footer_support_title = data['footer_support_title']
+        if 'footer_support_show_section' in data:
+            settings.footer_support_show_section = data['footer_support_show_section']
+        if 'footer_support_links' in data:
+            settings.footer_support_links = data['footer_support_links']
+        
+        # Footer Quick Links Section
+        if 'footer_quick_links_title' in data:
+            settings.footer_quick_links_title = data['footer_quick_links_title']
+        if 'footer_quick_links_show_section' in data:
+            settings.footer_quick_links_show_section = data['footer_quick_links_show_section']
+        if 'footer_quick_links' in data:
+            settings.footer_quick_links = data['footer_quick_links']
+        
+        # Footer Social Section
+        if 'footer_social_title' in data:
+            settings.footer_social_title = data['footer_social_title']
+        if 'footer_social_show_section' in data:
+            settings.footer_social_show_section = data['footer_social_show_section']
+        
+        # Footer Newsletter Section
+        if 'footer_newsletter_title' in data:
+            settings.footer_newsletter_title = data['footer_newsletter_title']
+        if 'footer_newsletter_show_section' in data:
+            settings.footer_newsletter_show_section = data['footer_newsletter_show_section']
+        if 'footer_newsletter_description' in data:
+            settings.footer_newsletter_description = data['footer_newsletter_description']
+        if 'footer_newsletter_placeholder' in data:
+            settings.footer_newsletter_placeholder = data['footer_newsletter_placeholder']
+        if 'footer_newsletter_button_text' in data:
+            settings.footer_newsletter_button_text = data['footer_newsletter_button_text']
+        
+        # Homepage Products Settings
+        if 'homepage_products_show_section' in data:
+            settings.homepage_products_show_section = data['homepage_products_show_section']
+        if 'homepage_products_title' in data:
+            settings.homepage_products_title = data['homepage_products_title']
+        if 'homepage_products_subtitle' in data:
+            settings.homepage_products_subtitle = data['homepage_products_subtitle']
+        if 'homepage_products_max_rows' in data:
+            settings.homepage_products_max_rows = data['homepage_products_max_rows']
+        if 'homepage_products_per_row' in data:
+            settings.homepage_products_per_row = data['homepage_products_per_row']
+        if 'homepage_products_max_items' in data:
+            settings.homepage_products_max_items = data['homepage_products_max_items']
+        if 'homepage_products_show_images' in data:
+            settings.homepage_products_show_images = data['homepage_products_show_images']
+        if 'homepage_products_image_height' in data:
+            settings.homepage_products_image_height = data['homepage_products_image_height']
+        if 'homepage_products_image_width' in data:
+            settings.homepage_products_image_width = data['homepage_products_image_width']
+        if 'homepage_products_show_favorite' in data:
+            settings.homepage_products_show_favorite = data['homepage_products_show_favorite']
+        if 'homepage_products_show_buy_now' in data:
+            settings.homepage_products_show_buy_now = data['homepage_products_show_buy_now']
+        if 'homepage_products_show_details' in data:
+            settings.homepage_products_show_details = data['homepage_products_show_details']
+        if 'homepage_products_show_price' in data:
+            settings.homepage_products_show_price = data['homepage_products_show_price']
+        if 'homepage_products_show_original_price' in data:
+            settings.homepage_products_show_original_price = data['homepage_products_show_original_price']
+        if 'homepage_products_show_stock' in data:
+            settings.homepage_products_show_stock = data['homepage_products_show_stock']
+        if 'homepage_products_show_category' in data:
+            settings.homepage_products_show_category = data['homepage_products_show_category']
+        if 'homepage_products_sort_by' in data:
+            settings.homepage_products_sort_by = data['homepage_products_sort_by']
+        if 'homepage_products_filter_categories' in data:
+            settings.homepage_products_filter_categories = data['homepage_products_filter_categories']
+        if 'homepage_products_show_view_all' in data:
+            settings.homepage_products_show_view_all = data['homepage_products_show_view_all']
+        if 'homepage_products_view_all_text' in data:
+            settings.homepage_products_view_all_text = data['homepage_products_view_all_text']
+        if 'homepage_products_view_all_link' in data:
+            settings.homepage_products_view_all_link = data['homepage_products_view_all_link']
+        if 'homepage_products_card_style' in data:
+            settings.homepage_products_card_style = data['homepage_products_card_style']
+        if 'homepage_products_card_shadow' in data:
+            settings.homepage_products_card_shadow = data['homepage_products_card_shadow']
+        if 'homepage_products_card_hover_effect' in data:
+            settings.homepage_products_card_hover_effect = data['homepage_products_card_hover_effect']
+        if 'homepage_products_show_badges' in data:
+            settings.homepage_products_show_badges = data['homepage_products_show_badges']
+        if 'homepage_products_show_rating' in data:
+            settings.homepage_products_show_rating = data['homepage_products_show_rating']
+        if 'homepage_products_show_quick_view' in data:
+            settings.homepage_products_show_quick_view = data['homepage_products_show_quick_view']
         
         db.session.commit()
         
@@ -1016,4 +1264,384 @@ def upload_welcome_background():
             return jsonify({'error': 'Invalid file type'}), 400
     
     except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Kategorilere göre ayrılmış site settings endpoint'leri
+
+# Site Identity Settings
+@admin_bp.route('/site-settings/identity', methods=['GET'])
+@admin_required
+def get_site_identity():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'site_name': settings.site_name,
+            'site_logo': settings.site_logo,
+            'use_logo': settings.use_logo,
+            'logo_width': settings.logo_width,
+            'logo_height': settings.logo_height,
+            'site_logo2': settings.site_logo2,
+            'use_logo2': settings.use_logo2,
+            'logo2_width': settings.logo2_width,
+            'logo2_height': settings.logo2_height
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/identity', methods=['PUT'])
+@admin_required
+def update_site_identity():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Site Identity fields
+        if 'site_name' in data:
+            settings.site_name = data['site_name']
+        if 'site_logo' in data:
+            settings.site_logo = data['site_logo']
+        if 'use_logo' in data:
+            settings.use_logo = data['use_logo']
+        if 'logo_width' in data:
+            settings.logo_width = data['logo_width']
+        if 'logo_height' in data:
+            settings.logo_height = data['logo_height']
+        if 'site_logo2' in data:
+            settings.site_logo2 = data['site_logo2']
+        if 'use_logo2' in data:
+            settings.use_logo2 = data['use_logo2']
+        if 'logo2_width' in data:
+            settings.logo2_width = data['logo2_width']
+        if 'logo2_height' in data:
+            settings.logo2_height = data['logo2_height']
+        
+        db.session.commit()
+        return jsonify({'message': 'Site identity updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Welcome Section Settings
+@admin_bp.route('/site-settings/welcome', methods=['GET'])
+@admin_required
+def get_welcome_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'welcome_title': settings.welcome_title,
+            'welcome_subtitle': settings.welcome_subtitle,
+            'welcome_background_image': settings.welcome_background_image,
+            'welcome_background_color': settings.welcome_background_color,
+            'welcome_text_color': settings.welcome_text_color,
+            'welcome_button_text': settings.welcome_button_text,
+            'welcome_button_link': settings.welcome_button_link,
+            'welcome_button_color': settings.welcome_button_color
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/welcome', methods=['PUT'])
+@admin_required
+def update_welcome_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Welcome section fields
+        if 'welcome_title' in data:
+            settings.welcome_title = data['welcome_title']
+        if 'welcome_subtitle' in data:
+            settings.welcome_subtitle = data['welcome_subtitle']
+        if 'welcome_background_image' in data:
+            settings.welcome_background_image = data['welcome_background_image']
+        if 'welcome_background_color' in data:
+            settings.welcome_background_color = data['welcome_background_color']
+        if 'welcome_text_color' in data:
+            settings.welcome_text_color = data['welcome_text_color']
+        if 'welcome_button_text' in data:
+            settings.welcome_button_text = data['welcome_button_text']
+        if 'welcome_button_link' in data:
+            settings.welcome_button_link = data['welcome_button_link']
+        if 'welcome_button_color' in data:
+            settings.welcome_button_color = data['welcome_button_color']
+        
+        db.session.commit()
+        return jsonify({'message': 'Welcome section updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Collections Section Settings
+@admin_bp.route('/site-settings/collections', methods=['GET'])
+@admin_required
+def get_collections_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'collections_title': settings.collections_title,
+            'collections_show_categories': settings.collections_show_categories,
+            'collections_categories_per_row': settings.collections_categories_per_row,
+            'collections_max_rows': settings.collections_max_rows,
+            'collections_show_section': settings.collections_show_section
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/collections', methods=['PUT'])
+@admin_required
+def update_collections_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Collections section fields
+        if 'collections_title' in data:
+            settings.collections_title = data['collections_title']
+        if 'collections_show_categories' in data:
+            settings.collections_show_categories = data['collections_show_categories']
+        if 'collections_categories_per_row' in data:
+            settings.collections_categories_per_row = data['collections_categories_per_row']
+        if 'collections_max_rows' in data:
+            settings.collections_max_rows = data['collections_max_rows']
+        if 'collections_show_section' in data:
+            settings.collections_show_section = data['collections_show_section']
+        
+        db.session.commit()
+        return jsonify({'message': 'Collections section updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Contact & Social Settings
+@admin_bp.route('/site-settings/contact-social', methods=['GET'])
+@admin_required
+def get_contact_social_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'contact_phone': settings.contact_phone,
+            'contact_email': settings.contact_email,
+            'contact_address': settings.contact_address,
+            'social_instagram': settings.social_instagram,
+            'social_facebook': settings.social_facebook,
+            'social_twitter': settings.social_twitter,
+            'social_youtube': settings.social_youtube,
+            'social_linkedin': settings.social_linkedin
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/contact-social', methods=['PUT'])
+@admin_required
+def update_contact_social_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Contact & Social fields
+        if 'contact_phone' in data:
+            settings.contact_phone = data['contact_phone']
+        if 'contact_email' in data:
+            settings.contact_email = data['contact_email']
+        if 'contact_address' in data:
+            settings.contact_address = data['contact_address']
+        if 'social_instagram' in data:
+            settings.social_instagram = data['social_instagram']
+        if 'social_facebook' in data:
+            settings.social_facebook = data['social_facebook']
+        if 'social_twitter' in data:
+            settings.social_twitter = data['social_twitter']
+        if 'social_youtube' in data:
+            settings.social_youtube = data['social_youtube']
+        if 'social_linkedin' in data:
+            settings.social_linkedin = data['social_linkedin']
+        
+        db.session.commit()
+        return jsonify({'message': 'Contact & social settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# SEO Settings
+@admin_bp.route('/site-settings/seo', methods=['GET'])
+@admin_required
+def get_seo_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'meta_title': settings.meta_title,
+            'meta_description': settings.meta_description,
+            'meta_keywords': settings.meta_keywords
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/seo', methods=['PUT'])
+@admin_required
+def update_seo_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # SEO fields
+        if 'meta_title' in data:
+            settings.meta_title = data['meta_title']
+        if 'meta_description' in data:
+            settings.meta_description = data['meta_description']
+        if 'meta_keywords' in data:
+            settings.meta_keywords = data['meta_keywords']
+        
+        db.session.commit()
+        return jsonify({'message': 'SEO settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Business Settings
+@admin_bp.route('/site-settings/business', methods=['GET'])
+@admin_required
+def get_business_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'currency_symbol': settings.currency_symbol,
+            'currency_code': settings.currency_code,
+            'shipping_cost': settings.shipping_cost,
+            'free_shipping_threshold': settings.free_shipping_threshold
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/business', methods=['PUT'])
+@admin_required
+def update_business_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Business fields
+        if 'currency_symbol' in data:
+            settings.currency_symbol = data['currency_symbol']
+        if 'currency_code' in data:
+            settings.currency_code = data['currency_code']
+        if 'shipping_cost' in data:
+            settings.shipping_cost = data['shipping_cost']
+        if 'free_shipping_threshold' in data:
+            settings.free_shipping_threshold = data['free_shipping_threshold']
+        
+        db.session.commit()
+        return jsonify({'message': 'Business settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Feature Flags
+@admin_bp.route('/site-settings/features', methods=['GET'])
+@admin_required
+def get_feature_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'enable_reviews': settings.enable_reviews,
+            'enable_wishlist': settings.enable_wishlist,
+            'enable_compare': settings.enable_compare,
+            'enable_newsletter': settings.enable_newsletter,
+            'maintenance_mode': settings.maintenance_mode
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/features', methods=['PUT'])
+@admin_required
+def update_feature_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Feature flag fields
+        if 'enable_reviews' in data:
+            settings.enable_reviews = data['enable_reviews']
+        if 'enable_wishlist' in data:
+            settings.enable_wishlist = data['enable_wishlist']
+        if 'enable_compare' in data:
+            settings.enable_compare = data['enable_compare']
+        if 'enable_newsletter' in data:
+            settings.enable_newsletter = data['enable_newsletter']
+        if 'maintenance_mode' in data:
+            settings.maintenance_mode = data['maintenance_mode']
+        
+        db.session.commit()
+        return jsonify({'message': 'Feature settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
         return jsonify({'error': str(e)}), 500 

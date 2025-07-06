@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 const AdminDashboard = () => {
   const { user, loading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [settingsTab, setSettingsTab] = useState('identity');
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -33,8 +34,8 @@ const AdminDashboard = () => {
     is_active: true,
     has_variations: false,
     variation_type: '', // 'color', 'size', 'weight', 'custom'
-    variation_name: '', // Özel varyasyon adı
-    variation_options: [], // [{name: 'Kırmızı', value: 'red', price_modifier: 0, stock: 10, images: []}]
+      variation_name: '', // Custom variation name
+  variation_options: [], // [{name: 'Red', value: 'red', price_modifier: 0, stock: 10, images: []}]
     weight: '',
     dimensions: '',
     material: ''
@@ -82,6 +83,7 @@ const AdminDashboard = () => {
   
   // Site Settings State
   const [siteSettings, setSiteSettings] = useState({
+    // Site Identity
     site_name: 'pebdeq',
     site_logo: null,
     use_logo: false,
@@ -91,6 +93,8 @@ const AdminDashboard = () => {
     use_logo2: false,
     logo2_width: 120,
     logo2_height: 40,
+    
+    // Welcome Section
     welcome_title: 'Welcome to Pebdeq',
     welcome_subtitle: 'Crafted. Vintage. Smart.',
     welcome_background_image: null,
@@ -99,11 +103,109 @@ const AdminDashboard = () => {
     welcome_button_text: 'Explore Products',
     welcome_button_link: '/products',
     welcome_button_color: '#00b894',
+    
+    // Collections Section
     collections_title: 'Our Collections',
     collections_show_categories: [],
     collections_categories_per_row: 4,
     collections_max_rows: 1,
-    collections_show_section: true
+    collections_show_section: true,
+    
+    // Contact & Social
+    contact_phone: '',
+    contact_email: '',
+    contact_address: '',
+    social_instagram: '',
+    social_facebook: '',
+    social_twitter: '',
+    social_youtube: '',
+    social_linkedin: '',
+    
+    // SEO Settings
+    meta_title: '',
+    meta_description: '',
+    meta_keywords: '',
+    
+    // Business Settings
+    currency_symbol: '₺',
+    currency_code: 'TRY',
+    shipping_cost: 0.0,
+    free_shipping_threshold: 0.0,
+    
+    // Feature Flags
+    enable_reviews: true,
+    enable_wishlist: true,
+    enable_compare: true,
+    enable_newsletter: true,
+    maintenance_mode: false,
+    
+    // Footer Settings
+    footer_show_section: true,
+    footer_background_color: '#2c3e50',
+    footer_text_color: '#ffffff',
+    footer_company_name: 'PEBDEQ',
+    footer_company_description: 'Crafted with passion, delivered with precision.',
+    footer_copyright_text: '© 2024 PEBDEQ. All rights reserved.',
+    
+    // Footer Support Section
+    footer_support_title: 'Support',
+    footer_support_show_section: true,
+    footer_support_links: [
+      {title: 'Contact Us', url: '/contact', is_external: false},
+      {title: 'FAQ', url: '/faq', is_external: false},
+      {title: 'Shipping Info', url: '/shipping', is_external: false},
+      {title: 'Returns', url: '/returns', is_external: false}
+    ],
+    
+    // Footer Quick Links Section
+    footer_quick_links_title: 'Quick Links',
+    footer_quick_links_show_section: true,
+    footer_quick_links: [
+      {title: 'About Us', url: '/about', is_external: false},
+      {title: 'Products', url: '/products', is_external: false},
+      {title: 'Blog', url: '/blog', is_external: false},
+      {title: 'Privacy Policy', url: '/privacy', is_external: false}
+    ],
+    
+    // Footer Social Section
+    footer_social_title: 'Follow Us',
+    footer_social_show_section: true,
+    
+    // Footer Newsletter Section
+    footer_newsletter_title: 'Newsletter',
+    footer_newsletter_show_section: true,
+    footer_newsletter_description: 'Subscribe to get updates about new products and offers.',
+    footer_newsletter_placeholder: 'Enter your email address',
+    footer_newsletter_button_text: 'Subscribe',
+    
+    // Homepage Products Settings
+    homepage_products_show_section: true,
+    homepage_products_title: 'Featured Products',
+    homepage_products_subtitle: 'Discover our most popular items',
+    homepage_products_max_rows: 2,
+    homepage_products_per_row: 4,
+    homepage_products_max_items: 8,
+    homepage_products_show_images: true,
+    homepage_products_image_height: 200,
+    homepage_products_image_width: 300,
+    homepage_products_show_favorite: true,
+    homepage_products_show_buy_now: true,
+    homepage_products_show_details: true,
+    homepage_products_show_price: true,
+    homepage_products_show_original_price: true,
+    homepage_products_show_stock: true,
+    homepage_products_show_category: true,
+    homepage_products_sort_by: 'featured', // featured, newest, price_low, price_high, name
+    homepage_products_filter_categories: [],
+    homepage_products_show_view_all: true,
+    homepage_products_view_all_text: 'View All Products',
+    homepage_products_view_all_link: '/products',
+    homepage_products_card_style: 'modern', // modern, classic, minimal
+    homepage_products_card_shadow: true,
+    homepage_products_card_hover_effect: true,
+    homepage_products_show_badges: true,
+    homepage_products_show_rating: false,
+    homepage_products_show_quick_view: false
   });
   const [uploadingSiteLogo, setUploadingSiteLogo] = useState(false);
   const [uploadingSiteLogo2, setUploadingSiteLogo2] = useState(false);
@@ -241,7 +343,28 @@ const AdminDashboard = () => {
       const data = await response.json();
       
       if (response.ok) {
-        setSiteSettings(data);
+        // Flatten the categorized data structure
+        const flattenedData = {
+          // Site Identity
+          ...data.site_identity,
+          // Welcome Section
+          ...data.welcome_section,
+          // Collections Section
+          ...data.collections_section,
+          // Contact & Social
+          ...data.contact_social,
+          // SEO Settings
+          ...data.seo_settings,
+          // Business Settings
+          ...data.business_settings,
+          // Feature Flags
+          ...data.feature_flags,
+          // Footer Settings
+          ...data.footer_settings,
+          // Homepage Products Settings
+          ...data.homepage_products_settings
+        };
+        setSiteSettings(flattenedData);
       } else {
         toast.error('Failed to fetch site settings');
       }
@@ -402,7 +525,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     
     try {
-      // Boş varyasyonları filtrele
+      // Filter empty variations
       const filteredVariations = filterEmptyVariations(newProduct.variation_options);
       
       const productData = {
@@ -452,7 +575,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     
     try {
-      // Boş varyasyonları filtrele
+      // Filter empty variations
       const filteredVariations = filterEmptyVariations(editingProduct.variation_options);
       
       const productData = {
@@ -968,13 +1091,13 @@ const AdminDashboard = () => {
       if (response.ok) {
         setSelectedProductForVariations(null);
         fetchProducts();
-        toast.success('Varyasyonlar başarıyla kaydedildi');
+        toast.success('Variations saved successfully');
       } else {
-        toast.error('Varyasyonlar kaydedilemedi');
+        toast.error('Failed to save variations');
       }
     } catch (error) {
       console.error('Error saving variations:', error);
-      toast.error('Varyasyonlar kaydedilemedi');
+      toast.error('Failed to save variations');
     }
   };
 
@@ -1243,7 +1366,7 @@ const AdminDashboard = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Slug (otomatik oluşturulur)</label>
+                    <label>Slug (auto-generated)</label>
                     <input
                       type="text"
                       value={newProduct.slug}
@@ -1264,26 +1387,35 @@ const AdminDashboard = () => {
                 
                 <div className="form-group">
                   <label>Product Images (Maximum 10)</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={async (e) => {
-                      const files = Array.from(e.target.files);
-                      if (files.length > 10) {
-                        toast.error('Maximum 10 images allowed');
-                        return;
-                      }
-                      if (files.length > 0) {
-                        const imageUrls = await handleProductImagesUpload(files);
-                        if (imageUrls.length > 0) {
-                          setNewProduct({...newProduct, images: imageUrls});
+                  <div className="custom-file-input">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={async (e) => {
+                        const files = Array.from(e.target.files);
+                        if (files.length > 10) {
+                          toast.error('Maximum 10 images allowed');
+                          return;
                         }
-                      }
-                    }}
-                    disabled={uploadingProductImages}
-                  />
-                  {uploadingProductImages && <span>Uploading images...</span>}
+                        if (files.length > 0) {
+                          const imageUrls = await handleProductImagesUpload(files);
+                          if (imageUrls.length > 0) {
+                            setNewProduct({...newProduct, images: imageUrls});
+                          }
+                        }
+                      }}
+                      disabled={uploadingProductImages}
+                    />
+                    <div className={`custom-file-button ${newProduct.images.length > 0 ? 'file-selected' : ''}`}>
+                      {uploadingProductImages ? 'Uploading...' : 
+                       newProduct.images.length > 0 ? `${newProduct.images.length} image(s) selected` : 
+                       'Choose Images'}
+                    </div>
+                  </div>
+                  <div className="file-upload-info">
+                    Maximum 10 images, formats: JPG, PNG, GIF
+                  </div>
                   {newProduct.images.length > 0 && (
                     <div className="image-preview-grid">
                       {newProduct.images.map((imageUrl, index) => (
@@ -1311,21 +1443,30 @@ const AdminDashboard = () => {
 
                 <div className="form-group">
                   <label>Product Video (Optional)</label>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={async (e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        const videoUrl = await handleProductVideoUpload(file);
-                        if (videoUrl) {
-                          setNewProduct({...newProduct, video_url: videoUrl});
+                  <div className="custom-file-input">
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const videoUrl = await handleProductVideoUpload(file);
+                          if (videoUrl) {
+                            setNewProduct({...newProduct, video_url: videoUrl});
+                          }
                         }
-                      }
-                    }}
-                    disabled={uploadingProductVideo}
-                  />
-                  {uploadingProductVideo && <span>Uploading video...</span>}
+                      }}
+                      disabled={uploadingProductVideo}
+                    />
+                    <div className={`custom-file-button ${newProduct.video_url ? 'file-selected' : ''}`}>
+                      {uploadingProductVideo ? 'Uploading...' : 
+                       newProduct.video_url ? 'Video selected' : 
+                       'Choose Video'}
+                    </div>
+                  </div>
+                  <div className="file-upload-info">
+                    Formats: MP4, WebM, AVI
+                  </div>
                   {newProduct.video_url && (
                     <div className="video-preview">
                       <video 
@@ -1393,7 +1534,7 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 
-                {/* Varyasyon Seçenekleri */}
+                {/* Variation Options */}
                 <div className="form-group">
                   <label>
                     <input
@@ -1409,17 +1550,17 @@ const AdminDashboard = () => {
                         });
                       }}
                     />
-                    Bu ürünün varyasyonları var (renk, boyut, ağırlık vs.)
+                    This product has variations (color, size, weight, etc.)
                   </label>
                 </div>
 
                 {newProduct.has_variations && (
                   <div className="variation-setup">
-                    <h4>Varyasyon Ayarları</h4>
+                    <h4>Variation Settings</h4>
                     
                     <div className="form-row">
                       <div className="form-group">
-                        <label>Varyasyon Türü</label>
+                        <label>Variation Type</label>
                         <select
                           value={newProduct.variation_type}
                           onChange={(e) => {
@@ -1431,22 +1572,22 @@ const AdminDashboard = () => {
                           }}
                           required
                         >
-                          <option value="">Seçin</option>
-                          <option value="color">Renk</option>
-                          <option value="size">Boyut</option>
-                          <option value="weight">Ağırlık</option>
-                          <option value="custom">Özel</option>
+                          <option value="">Select</option>
+                          <option value="color">Color</option>
+                          <option value="size">Size</option>
+                          <option value="weight">Weight</option>
+                          <option value="custom">Custom</option>
                         </select>
                       </div>
                       
                       {newProduct.variation_type === 'custom' && (
                         <div className="form-group">
-                          <label>Özel Varyasyon Adı</label>
+                          <label>Custom Variation Name</label>
                           <input
                             type="text"
                             value={newProduct.variation_name}
                             onChange={(e) => setNewProduct({...newProduct, variation_name: e.target.value})}
-                            placeholder="Örn: Malzeme, Stil, vs."
+                            placeholder="e.g.: Material, Style, etc."
                             required
                           />
                         </div>
@@ -1454,8 +1595,8 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="variation-options-setup">
-                      <h5>Varyasyon Seçenekleri</h5>
-                      <p>Ürün kaydedildikten sonra Varyasyon sekmesinde detayları ayarlayabilirsiniz.</p>
+                      <h5>Variation Options</h5>
+                      <p>You can configure details in the Variation tab after saving the product.</p>
                       
                       {newProduct.variation_options.map((option, index) => (
                         <div key={index} className="variation-option-item">
@@ -1467,7 +1608,7 @@ const AdminDashboard = () => {
                               newOptions[index].name = e.target.value;
                               setNewProduct({...newProduct, variation_options: newOptions});
                             }}
-                            placeholder="Seçenek adı (Örn: Kırmızı, Large, 1kg)"
+                            placeholder="Option name (e.g.: Red, Large, 1kg)"
                           />
                           <button
                             type="button"
@@ -1477,7 +1618,7 @@ const AdminDashboard = () => {
                               setNewProduct({...newProduct, variation_options: newOptions});
                             }}
                           >
-                            Sil
+                            Delete
                           </button>
                         </div>
                       ))}
@@ -1496,42 +1637,42 @@ const AdminDashboard = () => {
                           setNewProduct({...newProduct, variation_options: newOptions});
                         }}
                       >
-                        + Seçenek Ekle
+                        + Add Option
                       </button>
                     </div>
                   </div>
                 )}
 
-                {/* Ürün Özellikleri */}
+                {/* Product Specifications */}
                 <div className="form-section">
-                  <h4>Ürün Özellikleri</h4>
+                  <h4>Product Specifications</h4>
                   <div className="form-row">
                     <div className="form-group">
-                      <label>Ağırlık</label>
+                      <label>Weight</label>
                       <input
                         type="text"
                         value={newProduct.weight}
                         onChange={(e) => setNewProduct({...newProduct, weight: e.target.value})}
-                        placeholder="Örn: 1.5kg, 250g"
+                        placeholder="e.g.: 1.5kg, 250g"
                       />
                     </div>
                     <div className="form-group">
-                      <label>Boyutlar</label>
+                      <label>Dimensions</label>
                       <input
                         type="text"
                         value={newProduct.dimensions}
                         onChange={(e) => setNewProduct({...newProduct, dimensions: e.target.value})}
-                        placeholder="Örn: 30x20x10 cm"
+                        placeholder="e.g.: 30x20x10 cm"
                       />
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Malzeme</label>
+                    <label>Material</label>
                     <input
                       type="text"
                       value={newProduct.material}
                       onChange={(e) => setNewProduct({...newProduct, material: e.target.value})}
-                      placeholder="Örn: Plastik, Metal, Ahşap"
+                      placeholder="e.g.: Plastic, Metal, Wood"
                     />
                   </div>
                 </div>
@@ -1580,9 +1721,9 @@ const AdminDashboard = () => {
                   </div>
                   
                   <form onSubmit={handleUpdateProduct}>
-                    {/* Varyasyon Yönetimi - Üst Kısım */}
+                    {/* Variation Management - Top Section */}
                     <div className="variation-management-section">
-                      <h4>🎨 Varyasyon Yönetimi</h4>
+                      <h4>🎨 Variation Management</h4>
                       
                       {editingProduct.has_variations ? (
                         <>
@@ -1591,8 +1732,8 @@ const AdminDashboard = () => {
                               type="button"
                               className="btn btn-warning"
                               onClick={() => {
-                                if (window.confirm('Tüm varyasyonları sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
-                                  // Varyasyonları sıfırla
+                                if (window.confirm('Are you sure you want to reset all variations? This action cannot be undone.')) {
+                                  // Reset variations
                                   setEditingProduct({
                                     ...editingProduct,
                                     has_variations: false,
@@ -1600,30 +1741,30 @@ const AdminDashboard = () => {
                                     variation_name: '',
                                     variation_options: []
                                   });
-                                  toast.success('Varyasyonlar sıfırlandı');
+                                  toast.success('Variations reset');
                                 }
                               }}
                             >
-                              🗑️ Varyasyonları Sıfırla
+                              🗑️ Reset Variations
                             </button>
                           </div>
                           
                           <div className="current-variation-info">
-                            <p><strong>Mevcut Varyasyon Türü:</strong> {
+                            <p><strong>Current Variation Type:</strong> {
                               editingProduct.variation_type === 'custom' ? editingProduct.variation_name :
-                              editingProduct.variation_type === 'color' ? 'Renk' :
-                              editingProduct.variation_type === 'size' ? 'Boyut' :
-                              editingProduct.variation_type === 'weight' ? 'Ağırlık' : 'Bilinmeyen'
+                              editingProduct.variation_type === 'color' ? 'Color' :
+                              editingProduct.variation_type === 'size' ? 'Size' :
+                              editingProduct.variation_type === 'weight' ? 'Weight' : 'Unknown'
                             }</p>
-                            <p><strong>Seçenek Sayısı:</strong> {editingProduct.variation_options?.length || 0}</p>
-                            <p><strong>Seçenekler:</strong> {
-                              editingProduct.variation_options?.map(opt => opt.name).join(', ') || 'Yok'
+                            <p><strong>Option Count:</strong> {editingProduct.variation_options?.length || 0}</p>
+                            <p><strong>Options:</strong> {
+                              editingProduct.variation_options?.map(opt => opt.name).join(', ') || 'None'
                             }</p>
                           </div>
                         </>
                       ) : (
                         <div className="no-variation-info">
-                          <p>Bu ürünün henüz varyasyonu yok. Aşağıdaki checkbox'ı işaretleyerek varyasyon ekleyebilirsiniz.</p>
+                          <p>This product has no variations yet. You can add variations by checking the checkbox below.</p>
                         </div>
                       )}
                     </div>
@@ -1646,7 +1787,7 @@ const AdminDashboard = () => {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Slug (otomatik oluşturulur)</label>
+                        <label>Slug (auto-generated)</label>
                         <input
                           type="text"
                           value={editingProduct.slug}
@@ -1798,9 +1939,9 @@ const AdminDashboard = () => {
                     
 
                     
-                    {/* Varyasyon Ekleme/Düzenleme */}
+                    {/* Variation Addition/Editing */}
                     <div className="variation-setup">
-                      <h4>🎨 Varyasyon Yönetimi</h4>
+                      <h4>🎨 Variation Management</h4>
                       <div className="form-group">
                         <label>
                           <input
@@ -1817,15 +1958,15 @@ const AdminDashboard = () => {
                               });
                             }}
                           />
-                          Bu ürün için varyasyon ekle (renk, boyut, ağırlık vs.)
+                          Add variations for this product (color, size, weight, etc.)
                         </label>
                       </div>
                       
-                      {/* Varyasyon Türü Seçimi */}
+                      {/* Variation Type Selection */}
                       {editingProduct.has_variations && (
                         <div className="variation-type-selection">
                           <div className="form-group">
-                            <label>Varyasyon Türü</label>
+                            <label>Variation Type</label>
                             <select
                               value={editingProduct.variation_type || ''}
                               onChange={(e) => {
@@ -1838,17 +1979,17 @@ const AdminDashboard = () => {
                                 });
                               }}
                             >
-                              <option value="">Seçiniz</option>
-                              <option value="color">Renk</option>
-                              <option value="size">Boyut</option>
-                              <option value="weight">Ağırlık</option>
-                              <option value="custom">Özel</option>
+                              <option value="">Select</option>
+                              <option value="color">Color</option>
+                              <option value="size">Size</option>
+                              <option value="weight">Weight</option>
+                              <option value="custom">Custom</option>
                             </select>
                           </div>
                           
                           {editingProduct.variation_type === 'custom' && (
                             <div className="form-group">
-                              <label>Özel Varyasyon Adı</label>
+                              <label>Custom Variation Name</label>
                               <input
                                 type="text"
                                 value={editingProduct.variation_name || ''}
@@ -1856,16 +1997,16 @@ const AdminDashboard = () => {
                                   ...editingProduct,
                                   variation_name: e.target.value
                                 })}
-                                placeholder="Örn: Malzeme, Stil, Desen"
+                                placeholder="e.g.: Material, Style, Pattern"
                               />
                             </div>
                           )}
                           
-                          {/* Varyasyon Seçenekleri */}
+                          {/* Variation Options */}
                           {editingProduct.variation_type && (
                             <div className="variation-options-setup">
-                              <h5>Varyasyon Seçenekleri</h5>
-                              <p>Her varyasyon için seçenek ekleyin:</p>
+                              <h5>Variation Options</h5>
+                              <p>Add options for each variation:</p>
                               
                               {(editingProduct.variation_options || []).map((option, index) => (
                                 <div key={index} className="variation-option-item">
@@ -1880,7 +2021,7 @@ const AdminDashboard = () => {
                                         variation_options: newOptions
                                       });
                                     }}
-                                    placeholder="Seçenek adı"
+                                    placeholder="Option name"
                                   />
                                   <input
                                     type="number"
@@ -1894,7 +2035,7 @@ const AdminDashboard = () => {
                                         variation_options: newOptions
                                       });
                                     }}
-                                    placeholder="Fiyat farkı"
+                                    placeholder="Price difference"
                                   />
                                   <input
                                     type="number"
@@ -1907,7 +2048,7 @@ const AdminDashboard = () => {
                                         variation_options: newOptions
                                       });
                                     }}
-                                    placeholder="Stok"
+                                    placeholder="Stock"
                                   />
                                   <button
                                     type="button"
@@ -1920,7 +2061,7 @@ const AdminDashboard = () => {
                                       });
                                     }}
                                   >
-                                    Sil
+                                    Delete
                                   </button>
                                 </div>
                               ))}
@@ -1937,7 +2078,7 @@ const AdminDashboard = () => {
                                   });
                                 }}
                               >
-                                + Seçenek Ekle
+                                + Add Option
                               </button>
                             </div>
                           )}
@@ -1945,36 +2086,36 @@ const AdminDashboard = () => {
                       )}
                     </div>
                     
-                    {/* Ürün Özellikleri */}
+                    {/* Product Specifications */}
                     <div className="form-section">
-                      <h4>Ürün Özellikleri</h4>
+                      <h4>Product Specifications</h4>
                       <div className="form-row">
                         <div className="form-group">
-                          <label>Ağırlık</label>
+                          <label>Weight</label>
                           <input
                             type="text"
                             value={editingProduct.weight || ''}
                             onChange={(e) => setEditingProduct({...editingProduct, weight: e.target.value})}
-                            placeholder="Örn: 1.5kg, 250g"
+                            placeholder="e.g.: 1.5kg, 250g"
                           />
                         </div>
                         <div className="form-group">
-                          <label>Boyutlar</label>
+                          <label>Dimensions</label>
                           <input
                             type="text"
                             value={editingProduct.dimensions || ''}
                             onChange={(e) => setEditingProduct({...editingProduct, dimensions: e.target.value})}
-                            placeholder="Örn: 30x20x10 cm"
+                            placeholder="e.g.: 30x20x10 cm"
                           />
                         </div>
                       </div>
                       <div className="form-group">
-                        <label>Malzeme</label>
+                        <label>Material</label>
                         <input
                           type="text"
                           value={editingProduct.material || ''}
                           onChange={(e) => setEditingProduct({...editingProduct, material: e.target.value})}
-                          placeholder="Örn: Plastik, Metal, Ahşap"
+                          placeholder="e.g.: Plastic, Metal, Wood"
                         />
                       </div>
                     </div>
@@ -2220,7 +2361,7 @@ const AdminDashboard = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Slug (otomatik oluşturulur)</label>
+                    <label>Slug (auto-generated)</label>
                     <input
                       type="text"
                       value={newCategory.slug}
@@ -2317,7 +2458,7 @@ const AdminDashboard = () => {
                       value={newCategory.background_color || '#ffffff'}
                       onChange={(e) => setNewCategory({...newCategory, background_color: e.target.value})}
                     />
-                    <small>Bu renk, arka plan resmi yoksa kullanılacak</small>
+                    <small>This color will be used if no background image</small>
                   </div>
                 
                 <div className="form-group">
@@ -2370,7 +2511,7 @@ const AdminDashboard = () => {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Slug (otomatik oluşturulur)</label>
+                        <label>Slug (auto-generated)</label>
                         <input
                           type="text"
                           value={editingCategory.slug}
@@ -2467,7 +2608,7 @@ const AdminDashboard = () => {
                           value={editingCategory.background_color || '#ffffff'}
                           onChange={(e) => setEditingCategory({...editingCategory, background_color: e.target.value})}
                         />
-                        <small>Bu renk, arka plan resmi yoksa kullanılacak</small>
+                        <small>This color will be used if no background image</small>
                       </div>
                     
                     <div className="form-group">
@@ -2500,24 +2641,24 @@ const AdminDashboard = () => {
           <div className="variations-content">
             <div className="section-header">
               <h2>Product Variations Management</h2>
-              <p>Varyasyonlu ürünlerin detaylarını yönetin (fiyat, stok, resim vs.)</p>
+              <p>Manage details of products with variations (price, stock, images, etc.)</p>
             </div>
 
             <div className="variation-products">
-              <h3>Varyasyonlu Ürünler</h3>
+              <h3>Products with Variations</h3>
               
               {products.filter(product => product.has_variations).length === 0 ? (
                 <div className="no-variation-products">
-                  <p>Henüz varyasyonlu ürün yok. Ürün eklerken "Bu ürünün varyasyonları var" seçeneğini işaretleyin.</p>
+                  <p>No products with variations yet. When adding products, check "This product has variations" option.</p>
                 </div>
               ) : (
                 <div className="variation-products-table">
                   <table>
                     <thead>
                       <tr>
-                        <th>Ürün</th>
-                        <th>Varyasyon Türü</th>
-                        <th>Seçenekler</th>
+                        <th>Product</th>
+                        <th>Variation Type</th>
+                        <th>Options</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -2533,9 +2674,9 @@ const AdminDashboard = () => {
                           </td>
                           <td>
                             <span className="variation-type-badge">
-                              {product.variation_type === 'color' && 'Renk'}
-                              {product.variation_type === 'size' && 'Boyut'}
-                              {product.variation_type === 'weight' && 'Ağırlık'}
+                              {product.variation_type === 'color' && 'Color'}
+                              {product.variation_type === 'size' && 'Size'}
+                              {product.variation_type === 'weight' && 'Weight'}
                               {product.variation_type === 'custom' && product.variation_name}
                             </span>
                           </td>
@@ -2548,7 +2689,7 @@ const AdminDashboard = () => {
                                   </span>
                                 ))
                               ) : (
-                                <span className="text-muted">Henüz seçenek eklenmemiş</span>
+                                <span className="text-muted">No options added yet</span>
                               )}
                             </div>
                           </td>
@@ -2557,7 +2698,7 @@ const AdminDashboard = () => {
                               className="btn btn-sm btn-primary"
                               onClick={() => setSelectedProductForVariations(product)}
                             >
-                              Varyasyonları Yönet
+                              Manage Variations
                             </button>
                           </td>
                         </tr>
@@ -2573,7 +2714,7 @@ const AdminDashboard = () => {
               <div className="modal-overlay" onClick={() => setSelectedProductForVariations(null)}>
                 <div className="modal-content large-modal" onClick={(e) => e.stopPropagation()}>
                   <div className="modal-header">
-                    <h3>{selectedProductForVariations.name} - Varyasyon Yönetimi</h3>
+                    <h3>{selectedProductForVariations.name} - Variation Management</h3>
                     <button 
                       className="modal-close"
                       onClick={() => setSelectedProductForVariations(null)}
@@ -2584,15 +2725,15 @@ const AdminDashboard = () => {
                   
                   <div className="variation-management">
                     <p>
-                      <strong>Varyasyon Türü:</strong> {' '}
-                      {selectedProductForVariations.variation_type === 'color' && 'Renk'}
-                      {selectedProductForVariations.variation_type === 'size' && 'Boyut'}
-                      {selectedProductForVariations.variation_type === 'weight' && 'Ağırlık'}
+                      <strong>Variation Type:</strong> {' '}
+                      {selectedProductForVariations.variation_type === 'color' && 'Color'}
+                      {selectedProductForVariations.variation_type === 'size' && 'Size'}
+                      {selectedProductForVariations.variation_type === 'weight' && 'Weight'}
                       {selectedProductForVariations.variation_type === 'custom' && selectedProductForVariations.variation_name}
                     </p>
                     
                     <div className="variation-options-management">
-                      <h4>Varyasyon Seçenekleri</h4>
+                      <h4>Variation Options</h4>
                       
                       {selectedProductForVariations.variation_options && selectedProductForVariations.variation_options.map((option, index) => (
                         <div key={index} className="variation-option-card">
@@ -2603,7 +2744,7 @@ const AdminDashboard = () => {
                           <div className="option-details">
                             <div className="form-row">
                               <div className="form-group">
-                                <label>Fiyat Farkı</label>
+                                <label>Price Difference</label>
                                 <input
                                   type="number"
                                   step="0.01"
@@ -2618,11 +2759,11 @@ const AdminDashboard = () => {
                                   }}
                                   placeholder="0.00"
                                 />
-                                <small>Ana fiyata eklenecek/çıkarılacak miktar</small>
+                                <small>Amount to add/subtract from base price</small>
                               </div>
                               
                               <div className="form-group">
-                                <label>Stok</label>
+                                <label>Stock</label>
                                 <input
                                   type="number"
                                   value={option.stock || 0}
@@ -2640,26 +2781,31 @@ const AdminDashboard = () => {
                             </div>
                             
                             <div className="form-group">
-                              <label>Bu Seçeneğe Özel Resimler</label>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={async (e) => {
-                                  const files = Array.from(e.target.files);
-                                  if (files.length > 0) {
-                                    const imageUrls = await handleProductImagesUpload(files);
-                                    if (imageUrls.length > 0) {
-                                      const newOptions = [...selectedProductForVariations.variation_options];
-                                      newOptions[index].images = [...(newOptions[index].images || []), ...imageUrls];
-                                      setSelectedProductForVariations({
-                                        ...selectedProductForVariations,
-                                        variation_options: newOptions
-                                      });
+                              <label>Images Specific to This Option</label>
+                              <div className="custom-file-input">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  onChange={async (e) => {
+                                    const files = Array.from(e.target.files);
+                                    if (files.length > 0) {
+                                      const imageUrls = await handleProductImagesUpload(files);
+                                      if (imageUrls.length > 0) {
+                                        const newOptions = [...selectedProductForVariations.variation_options];
+                                        newOptions[index].images = [...(newOptions[index].images || []), ...imageUrls];
+                                        setSelectedProductForVariations({
+                                          ...selectedProductForVariations,
+                                          variation_options: newOptions
+                                        });
+                                      }
                                     }
-                                  }
-                                }}
-                              />
+                                  }}
+                                />
+                                <div className={`custom-file-button ${option.images && option.images.length > 0 ? 'file-selected' : ''}`}>
+                                  {option.images && option.images.length > 0 ? `${option.images.length} image(s)` : 'Choose Images'}
+                                </div>
+                              </div>
                               
                               {option.images && option.images.length > 0 && (
                                 <div className="option-images">
@@ -2678,7 +2824,7 @@ const AdminDashboard = () => {
                                           });
                                         }}
                                       >
-                                        Sil
+                                        Delete
                                       </button>
                                     </div>
                                   ))}
@@ -2696,14 +2842,14 @@ const AdminDashboard = () => {
                         className="btn btn-secondary" 
                         onClick={() => setSelectedProductForVariations(null)}
                       >
-                        İptal
+                        Cancel
                       </button>
                       <button 
                         type="button" 
                         className="btn btn-primary"
                         onClick={() => saveProductVariations(selectedProductForVariations)}
                       >
-                        Varyasyonları Kaydet
+                        Save Variations
                       </button>
                     </div>
                   </div>
@@ -2716,652 +2862,1717 @@ const AdminDashboard = () => {
         {activeTab === 'settings' && (
           <div className="settings-content">
             <div className="section-header">
-              <h2>Site Ayarları</h2>
+              <h2>Site Settings</h2>
+            </div>
+
+            {/* Settings Sub Tabs */}
+            <div className="settings-tabs">
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'identity' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('identity')}
+              >
+                Site Identity
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'welcome' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('welcome')}
+              >
+                Welcome Section
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'collections' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('collections')}
+              >
+                Collections
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'contact' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('contact')}
+              >
+                Contact & Social
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'seo' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('seo')}
+              >
+                SEO Settings
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'business' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('business')}
+              >
+                Business Settings
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'features' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('features')}
+              >
+                Features
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'footer' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('footer')}
+              >
+                Footer
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'homepage-products' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('homepage-products')}
+              >
+                Homepage Products
+              </button>
             </div>
 
             <form onSubmit={handleUpdateSiteSettings} className="site-settings-form">
-              <div className="form-group">
-                <label>Site Adı</label>
-                <input
-                  type="text"
-                  value={siteSettings.site_name}
-                  onChange={(e) => setSiteSettings(prev => ({
-                    ...prev,
-                    site_name: e.target.value
-                  }))}
-                  placeholder="pebdeq"
-                  required
-                />
-                <small>Header'da gösterilecek site adı (küçük harflerle)</small>
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={siteSettings.use_logo}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      use_logo: e.target.checked
-                    }))}
-                  />
-                  Logo kullan (işaretlenmezse yazı gösterilir)
-                </label>
-              </div>
-
-              {siteSettings.use_logo && (
-                <>
+              
+              {/* Site Identity Tab */}
+              {settingsTab === 'identity' && (
+                <div className="settings-section">
+                  <h3>Site Identity</h3>
+                  
                   <div className="form-group">
-                    <label>Site Logosu</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          handleSiteLogoUpload(file);
-                        }
-                      }}
-                      disabled={uploadingSiteLogo}
-                    />
-                    {uploadingSiteLogo && <p>Logo yükleniyor...</p>}
-                    
-                    {siteSettings.site_logo && (
-                      <div className="logo-preview">
-                        <img 
-                          src={`http://localhost:5005${siteSettings.site_logo}`} 
-                          alt="Site Logo" 
-                          style={{ 
-                            width: `${siteSettings.logo_width}px`,
-                            height: `${siteSettings.logo_height}px`,
-                            objectFit: 'contain' 
-                          }}
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-danger"
-                          onClick={() => setSiteSettings(prev => ({
-                            ...prev,
-                            site_logo: null
-                          }))}
-                        >
-                          Logoyu Kaldır
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Logo Genişliği (piksel)</label>
-                      <input
-                        type="number"
-                        min="20"
-                        max="500"
-                        value={siteSettings.logo_width}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          logo_width: parseInt(e.target.value) || 120
-                        }))}
-                        placeholder="120"
-                      />
-                      <small>20-500 piksel arası</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Logo Yüksekliği (piksel)</label>
-                      <input
-                        type="number"
-                        min="20"
-                        max="200"
-                        value={siteSettings.logo_height}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          logo_height: parseInt(e.target.value) || 40
-                        }))}
-                        placeholder="40"
-                      />
-                      <small>20-200 piksel arası</small>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              <div className="form-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={siteSettings.use_logo2}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      use_logo2: e.target.checked
-                    }))}
-                  />
-                  İkinci logo kullan
-                </label>
-              </div>
-
-              {siteSettings.use_logo2 && (
-                <>
-                  <div className="form-group">
-                    <label>İkinci Logo</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          handleSiteLogo2Upload(file);
-                        }
-                      }}
-                      disabled={uploadingSiteLogo2}
-                    />
-                    {uploadingSiteLogo2 && <p>İkinci logo yükleniyor...</p>}
-                    
-                    {siteSettings.site_logo2 && (
-                      <div className="logo-preview">
-                        <img 
-                          src={`http://localhost:5005${siteSettings.site_logo2}`} 
-                          alt="Second Site Logo" 
-                          style={{ 
-                            width: `${siteSettings.logo2_width}px`,
-                            height: `${siteSettings.logo2_height}px`,
-                            objectFit: 'contain' 
-                          }}
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-danger"
-                          onClick={() => setSiteSettings(prev => ({
-                            ...prev,
-                            site_logo2: null
-                          }))}
-                        >
-                          İkinci Logoyu Kaldır
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>İkinci Logo Genişliği (piksel)</label>
-                      <input
-                        type="number"
-                        min="20"
-                        max="500"
-                        value={siteSettings.logo2_width}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          logo2_width: parseInt(e.target.value) || 120
-                        }))}
-                        placeholder="120"
-                      />
-                      <small>20-500 piksel arası</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>İkinci Logo Yüksekliği (piksel)</label>
-                      <input
-                        type="number"
-                        min="20"
-                        max="200"
-                        value={siteSettings.logo2_height}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          logo2_height: parseInt(e.target.value) || 40
-                        }))}
-                        placeholder="40"
-                      />
-                      <small>20-200 piksel arası</small>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              <div className="form-group">
-                <h4>Welcome Section Ayarları</h4>
-                <p>Ana sayfadaki karşılama bölümünün görünümünü özelleştirin</p>
-              </div>
-
-              <div className="form-group">
-                <label>Welcome Başlığı</label>
-                <input
-                  type="text"
-                  value={siteSettings.welcome_title}
-                  onChange={(e) => setSiteSettings(prev => ({
-                    ...prev,
-                    welcome_title: e.target.value
-                  }))}
-                  placeholder="Welcome to Pebdeq"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Welcome Alt Başlığı</label>
-                <input
-                  type="text"
-                  value={siteSettings.welcome_subtitle}
-                  onChange={(e) => setSiteSettings(prev => ({
-                    ...prev,
-                    welcome_subtitle: e.target.value
-                  }))}
-                  placeholder="Crafted. Vintage. Smart."
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Welcome Arka Plan Resmi</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      handleWelcomeBackgroundUpload(file);
-                    }
-                  }}
-                  disabled={uploadingWelcomeBackground}
-                />
-                {uploadingWelcomeBackground && <p>Arka plan resmi yükleniyor...</p>}
-                
-                {siteSettings.welcome_background_image && (
-                  <div className="background-preview">
-                    <img 
-                      src={`http://localhost:5005${siteSettings.welcome_background_image}`} 
-                      alt="Welcome Background" 
-                      style={{ 
-                        width: '200px',
-                        height: '120px',
-                        objectFit: 'cover',
-                        borderRadius: '4px'
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger"
-                      onClick={() => setSiteSettings(prev => ({
-                        ...prev,
-                        welcome_background_image: null
-                      }))}
-                    >
-                      Arka Plan Resmini Kaldır
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Arka Plan Rengi</label>
-                  <input
-                    type="color"
-                    value={siteSettings.welcome_background_color}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      welcome_background_color: e.target.value
-                    }))}
-                  />
-                  <small>Arka plan resmi yoksa kullanılacak renk</small>
-                </div>
-
-                <div className="form-group">
-                  <label>Yazı Rengi</label>
-                  <input
-                    type="color"
-                    value={siteSettings.welcome_text_color}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      welcome_text_color: e.target.value
-                    }))}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Buton Metni</label>
-                <input
-                  type="text"
-                  value={siteSettings.welcome_button_text}
-                  onChange={(e) => setSiteSettings(prev => ({
-                    ...prev,
-                    welcome_button_text: e.target.value
-                  }))}
-                  placeholder="Explore Products"
-                />
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Buton Linki</label>
-                  <input
-                    type="text"
-                    value={siteSettings.welcome_button_link}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      welcome_button_link: e.target.value
-                    }))}
-                    placeholder="/products"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Buton Rengi</label>
-                  <input
-                    type="color"
-                    value={siteSettings.welcome_button_color}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      welcome_button_color: e.target.value
-                    }))}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <h4>Önizleme</h4>
-                <div className="logo-preview-header">
-                  <div className="logo-container">
-                    {siteSettings.use_logo && siteSettings.site_logo ? (
-                      <img 
-                        src={`http://localhost:5005${siteSettings.site_logo}`} 
-                        alt={siteSettings.site_name} 
-                        style={{ 
-                          width: `${siteSettings.logo_width}px`,
-                          height: `${siteSettings.logo_height}px`,
-                          objectFit: 'contain' 
-                        }}
-                      />
-                    ) : (
-                      <h1 style={{ 
-                        margin: 0, 
-                        fontSize: '1.8rem', 
-                        fontWeight: 700, 
-                        color: '#2c3e50' 
-                      }}>
-                        {siteSettings.site_name}
-                      </h1>
-                    )}
-                    {siteSettings.use_logo2 && siteSettings.site_logo2 && (
-                      <img 
-                        src={`http://localhost:5005${siteSettings.site_logo2}`} 
-                        alt="Second Logo" 
-                        style={{ 
-                          width: `${siteSettings.logo2_width}px`,
-                          height: `${siteSettings.logo2_height}px`,
-                          objectFit: 'contain' 
-                        }}
-                      />
-                    )}
-                  </div>
-                </div>
-                
-                <div className="welcome-preview" style={{
-                  background: siteSettings.welcome_background_image 
-                    ? `url(http://localhost:5005${siteSettings.welcome_background_image}) center/cover`
-                    : siteSettings.welcome_background_color,
-                  padding: '2rem',
-                  borderRadius: '8px',
-                  textAlign: 'center',
-                  color: siteSettings.welcome_text_color,
-                  marginTop: '1rem'
-                }}>
-                  <h2 style={{ 
-                    fontSize: '2rem', 
-                    margin: '0 0 0.5rem 0',
-                    color: siteSettings.welcome_text_color
-                  }}>
-                    {siteSettings.welcome_title}
-                  </h2>
-                  <p style={{ 
-                    fontSize: '1.1rem', 
-                    margin: '0 0 1rem 0',
-                    color: siteSettings.welcome_text_color
-                  }}>
-                    {siteSettings.welcome_subtitle}
-                  </p>
-                  <button style={{
-                    backgroundColor: siteSettings.welcome_button_color,
-                    color: '#fff',
-                    padding: '0.5rem 1rem',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                  }}>
-                    {siteSettings.welcome_button_text}
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <h4>Collections Section Ayarları</h4>
-                <p>Ana sayfadaki "Our Collections" bölümünün görünümünü özelleştirin</p>
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={siteSettings.collections_show_section}
-                    onChange={(e) => setSiteSettings(prev => ({
-                      ...prev,
-                      collections_show_section: e.target.checked
-                    }))}
-                  />
-                  Collections bölümünü göster
-                </label>
-              </div>
-
-              {siteSettings.collections_show_section && (
-                <>
-                  <div className="form-group">
-                    <label>Collections Başlığı</label>
+                    <label>Site Name</label>
                     <input
                       type="text"
-                      value={siteSettings.collections_title}
+                      value={siteSettings.site_name}
                       onChange={(e) => setSiteSettings(prev => ({
                         ...prev,
-                        collections_title: e.target.value
+                        site_name: e.target.value
                       }))}
-                      placeholder="Our Collections"
+                      placeholder="pebdeq"
+                      required
+                    />
+                    <small>Site name to be displayed in header (lowercase)</small>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.use_logo}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          use_logo: e.target.checked
+                        }))}
+                      />
+                      Use logo (if unchecked, text will be shown)
+                    </label>
+                  </div>
+
+                  {siteSettings.use_logo && (
+                    <>
+                      <div className="form-group">
+                        <label>Site Logo</label>
+                        <div className="custom-file-input">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                handleSiteLogoUpload(file);
+                              }
+                            }}
+                            disabled={uploadingSiteLogo}
+                          />
+                          <div className={`custom-file-button ${siteSettings.site_logo ? 'file-selected' : ''}`}>
+                            {uploadingSiteLogo ? 'Uploading...' : 
+                             siteSettings.site_logo ? 'Logo uploaded' : 
+                             'Choose Logo'}
+                          </div>
+                        </div>
+                        
+                        {siteSettings.site_logo && (
+                          <div className="logo-preview">
+                            <img 
+                              src={`http://localhost:5005${siteSettings.site_logo}`} 
+                              alt="Site Logo" 
+                              style={{ 
+                                width: `${siteSettings.logo_width}px`,
+                                height: `${siteSettings.logo_height}px`,
+                                objectFit: 'contain' 
+                              }}
+                            />
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => setSiteSettings(prev => ({
+                                ...prev,
+                                site_logo: null
+                              }))}
+                            >
+                              Remove Logo
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Logo Width (pixels)</label>
+                          <input
+                            type="number"
+                            min="20"
+                            max="500"
+                            value={siteSettings.logo_width}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              logo_width: parseInt(e.target.value) || 120
+                            }))}
+                            placeholder="120"
+                          />
+                          <small>Between 20-500 pixels</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Logo Height (pixels)</label>
+                          <input
+                            type="number"
+                            min="20"
+                            max="200"
+                            value={siteSettings.logo_height}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              logo_height: parseInt(e.target.value) || 40
+                            }))}
+                            placeholder="40"
+                          />
+                          <small>Between 20-200 pixels</small>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.use_logo2}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          use_logo2: e.target.checked
+                        }))}
+                      />
+                      Use second logo
+                    </label>
+                  </div>
+
+                  {siteSettings.use_logo2 && (
+                    <>
+                      <div className="form-group">
+                        <label>Second Logo</label>
+                        <div className="custom-file-input">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                handleSiteLogo2Upload(file);
+                              }
+                            }}
+                            disabled={uploadingSiteLogo2}
+                          />
+                          <div className={`custom-file-button ${siteSettings.site_logo2 ? 'file-selected' : ''}`}>
+                            {uploadingSiteLogo2 ? 'Uploading...' : 
+                             siteSettings.site_logo2 ? 'Second logo uploaded' : 
+                             'Choose Second Logo'}
+                          </div>
+                        </div>
+                        
+                        {siteSettings.site_logo2 && (
+                          <div className="logo-preview">
+                            <img 
+                              src={`http://localhost:5005${siteSettings.site_logo2}`} 
+                              alt="Second Site Logo" 
+                              style={{ 
+                                width: `${siteSettings.logo2_width}px`,
+                                height: `${siteSettings.logo2_height}px`,
+                                objectFit: 'contain' 
+                              }}
+                            />
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => setSiteSettings(prev => ({
+                                ...prev,
+                                site_logo2: null
+                              }))}
+                            >
+                              Remove Second Logo
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Second Logo Width (pixels)</label>
+                          <input
+                            type="number"
+                            min="20"
+                            max="500"
+                            value={siteSettings.logo2_width}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              logo2_width: parseInt(e.target.value) || 120
+                            }))}
+                            placeholder="120"
+                          />
+                          <small>Between 20-500 pixels</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Second Logo Height (pixels)</label>
+                          <input
+                            type="number"
+                            min="20"
+                            max="200"
+                            value={siteSettings.logo2_height}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              logo2_height: parseInt(e.target.value) || 40
+                            }))}
+                            placeholder="40"
+                          />
+                          <small>Between 20-200 pixels</small>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Welcome Section Tab */}
+              {settingsTab === 'welcome' && (
+                <div className="settings-section">
+                  <h3>Welcome Section</h3>
+                  <p>Customize the appearance of the welcome section on the home page</p>
+
+                  <div className="form-group">
+                    <label>Welcome Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.welcome_title}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        welcome_title: e.target.value
+                      }))}
+                      placeholder="Welcome to Pebdeq"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Welcome Subtitle</label>
+                    <input
+                      type="text"
+                      value={siteSettings.welcome_subtitle}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        welcome_subtitle: e.target.value
+                      }))}
+                      placeholder="Crafted. Vintage. Smart."
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Welcome Background Image</label>
+                    <div className="custom-file-input">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            handleWelcomeBackgroundUpload(file);
+                          }
+                        }}
+                        disabled={uploadingWelcomeBackground}
+                      />
+                      <div className={`custom-file-button ${siteSettings.welcome_background_image ? 'file-selected' : ''}`}>
+                        {uploadingWelcomeBackground ? 'Uploading...' : 
+                         siteSettings.welcome_background_image ? 'Background image uploaded' : 
+                         'Choose Background Image'}
+                      </div>
+                    </div>
+                    
+                    {siteSettings.welcome_background_image && (
+                      <div className="background-preview">
+                        <img 
+                          src={`http://localhost:5005${siteSettings.welcome_background_image}`} 
+                          alt="Welcome Background" 
+                          style={{ 
+                            width: '200px',
+                            height: '120px',
+                            objectFit: 'cover',
+                            borderRadius: '4px'
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger"
+                          onClick={() => setSiteSettings(prev => ({
+                            ...prev,
+                            welcome_background_image: null
+                          }))}
+                        >
+                          Remove Background Image
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Background Color</label>
+                      <input
+                        type="color"
+                        value={siteSettings.welcome_background_color}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          welcome_background_color: e.target.value
+                        }))}
+                      />
+                      <small>Color to use if no background image</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Text Color</label>
+                      <input
+                        type="color"
+                        value={siteSettings.welcome_text_color}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          welcome_text_color: e.target.value
+                        }))}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Button Text</label>
+                    <input
+                      type="text"
+                      value={siteSettings.welcome_button_text}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        welcome_button_text: e.target.value
+                      }))}
+                      placeholder="Explore Products"
                     />
                   </div>
 
                   <div className="form-row">
                     <div className="form-group">
-                      <label>Satır Başına Kategori Sayısı</label>
-                      <select
-                        value={siteSettings.collections_categories_per_row}
+                      <label>Button Link</label>
+                      <input
+                        type="text"
+                        value={siteSettings.welcome_button_link}
                         onChange={(e) => setSiteSettings(prev => ({
                           ...prev,
-                          collections_categories_per_row: parseInt(e.target.value)
+                          welcome_button_link: e.target.value
                         }))}
-                      >
-                        <option value={2}>2 Kategori</option>
-                        <option value={3}>3 Kategori</option>
-                        <option value={4}>4 Kategori</option>
-                        <option value={6}>6 Kategori</option>
-                      </select>
+                        placeholder="/products"
+                      />
                     </div>
 
                     <div className="form-group">
-                      <label>Maksimum Satır Sayısı</label>
-                      <select
-                        value={siteSettings.collections_max_rows}
+                      <label>Button Color</label>
+                      <input
+                        type="color"
+                        value={siteSettings.welcome_button_color}
                         onChange={(e) => setSiteSettings(prev => ({
                           ...prev,
-                          collections_max_rows: parseInt(e.target.value)
+                          welcome_button_color: e.target.value
                         }))}
-                      >
-                        <option value={1}>1 Satır</option>
-                        <option value={2}>2 Satır</option>
-                        <option value={3}>3 Satır</option>
-                      </select>
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Collections Section Tab */}
+              {settingsTab === 'collections' && (
+                <div className="settings-section">
+                  <h3>Collections Section</h3>
+                  
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.collections_show_section}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          collections_show_section: e.target.checked
+                        }))}
+                      />
+                      Show collections section
+                    </label>
+                  </div>
+
+                  {siteSettings.collections_show_section && (
+                    <>
+                      <div className="form-group">
+                        <label>Collections Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.collections_title}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            collections_title: e.target.value
+                          }))}
+                          placeholder="Our Collections"
+                        />
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Categories Per Row</label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="6"
+                            value={siteSettings.collections_categories_per_row}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              collections_categories_per_row: parseInt(e.target.value) || 4
+                            }))}
+                            placeholder="4"
+                          />
+                          <small>Between 1-6</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Maximum Rows</label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            value={siteSettings.collections_max_rows}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              collections_max_rows: parseInt(e.target.value) || 1
+                            }))}
+                            placeholder="1"
+                          />
+                          <small>Between 1-5</small>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Contact & Social Tab */}
+              {settingsTab === 'contact' && (
+                <div className="settings-section">
+                  <h3>Contact & Social Media</h3>
+                  
+                  <div className="form-group">
+                    <h4>Contact Information</h4>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Phone</label>
+                    <input
+                      type="text"
+                      value={siteSettings.contact_phone || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        contact_phone: e.target.value
+                      }))}
+                      placeholder="+90 555 123 4567"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      value={siteSettings.contact_email || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        contact_email: e.target.value
+                      }))}
+                      placeholder="info@pebdeq.com"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Address</label>
+                    <textarea
+                      value={siteSettings.contact_address || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        contact_address: e.target.value
+                      }))}
+                      placeholder="Istanbul, Turkey"
+                      rows="3"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <h4>Social Media Accounts</h4>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Instagram</label>
+                      <input
+                        type="text"
+                        value={siteSettings.social_instagram || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          social_instagram: e.target.value
+                        }))}
+                        placeholder="@pebdeq"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Facebook</label>
+                      <input
+                        type="text"
+                        value={siteSettings.social_facebook || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          social_facebook: e.target.value
+                        }))}
+                        placeholder="pebdeq"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Twitter</label>
+                      <input
+                        type="text"
+                        value={siteSettings.social_twitter || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          social_twitter: e.target.value
+                        }))}
+                        placeholder="@pebdeq"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>YouTube</label>
+                      <input
+                        type="text"
+                        value={siteSettings.social_youtube || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          social_youtube: e.target.value
+                        }))}
+                        placeholder="pebdeq"
+                      />
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label>Gösterilecek Kategoriler</label>
+                    <label>LinkedIn</label>
+                    <input
+                      type="text"
+                      value={siteSettings.social_linkedin || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        social_linkedin: e.target.value
+                      }))}
+                      placeholder="pebdeq"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* SEO Settings Tab */}
+              {settingsTab === 'seo' && (
+                <div className="settings-section">
+                  <h3>SEO Settings</h3>
+                  
+                  <div className="form-group">
+                    <label>Meta Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.meta_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        meta_title: e.target.value
+                      }))}
+                      placeholder="PEBDEQ - Craft, Vintage, Innovation"
+                      maxLength="60"
+                    />
+                    <small>Maximum 60 characters recommended</small>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Meta Description</label>
+                    <textarea
+                      value={siteSettings.meta_description || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        meta_description: e.target.value
+                      }))}
+                      placeholder="Discover unique 3D printed items, vintage tools, antique light bulbs, and custom laser engraving services."
+                      maxLength="160"
+                      rows="3"
+                    />
+                    <small>Maximum 160 characters recommended</small>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Meta Keywords</label>
+                    <textarea
+                      value={siteSettings.meta_keywords || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        meta_keywords: e.target.value
+                      }))}
+                      placeholder="3D printing, vintage tools, antique bulbs, laser engraving, custom products"
+                      rows="2"
+                    />
+                    <small>Separate with commas</small>
+                  </div>
+                </div>
+              )}
+
+              {/* Business Settings Tab */}
+              {settingsTab === 'business' && (
+                <div className="settings-section">
+                  <h3>Business Settings</h3>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Currency Symbol</label>
+                      <input
+                        type="text"
+                        value={siteSettings.currency_symbol || '₺'}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          currency_symbol: e.target.value
+                        }))}
+                        placeholder="₺"
+                        maxLength="3"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Currency Code</label>
+                      <input
+                        type="text"
+                        value={siteSettings.currency_code || 'TRY'}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          currency_code: e.target.value.toUpperCase()
+                        }))}
+                        placeholder="TRY"
+                        maxLength="3"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Shipping Cost</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={siteSettings.shipping_cost || 0}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          shipping_cost: parseFloat(e.target.value) || 0
+                        }))}
+                        placeholder="15.00"
+                      />
+                      <small>Default shipping cost</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Free Shipping Threshold</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={siteSettings.free_shipping_threshold || 0}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          free_shipping_threshold: parseFloat(e.target.value) || 0
+                        }))}
+                        placeholder="200.00"
+                      />
+                      <small>Free shipping above this amount</small>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Features Tab */}
+              {settingsTab === 'features' && (
+                <div className="settings-section">
+                  <h3>Feature Settings</h3>
+                  
+                  <div className="form-group">
+                    <h4>Site Features</h4>
+                    <p>Choose which features to enable</p>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.enable_reviews || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          enable_reviews: e.target.checked
+                        }))}
+                      />
+                      Enable product reviews
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.enable_wishlist || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          enable_wishlist: e.target.checked
+                        }))}
+                      />
+                      Enable wishlist feature
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.enable_compare || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          enable_compare: e.target.checked
+                        }))}
+                      />
+                      Enable product comparison feature
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.enable_newsletter || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          enable_newsletter: e.target.checked
+                        }))}
+                      />
+                      Enable newsletter subscription
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <h4>System Settings</h4>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.maintenance_mode || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          maintenance_mode: e.target.checked
+                        }))}
+                      />
+                      Maintenance mode (Site will be closed for visitors)
+                    </label>
+                    <small style={{color: 'red'}}>⚠️ If you enable this option, the site will be inaccessible to visitors!</small>
+                  </div>
+                </div>
+              )}
+
+              {/* Footer Tab */}
+              {settingsTab === 'footer' && (
+                <div className="settings-section">
+                  <h3>Footer Settings</h3>
+                  
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.footer_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_show_section: e.target.checked
+                        }))}
+                      />
+                      Show footer section
+                    </label>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Footer Background Color</label>
+                      <input
+                        type="color"
+                        value={siteSettings.footer_background_color || '#2c3e50'}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_background_color: e.target.value
+                        }))}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Footer Text Color</label>
+                      <input
+                        type="color"
+                        value={siteSettings.footer_text_color || '#ffffff'}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_text_color: e.target.value
+                        }))}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Company Name</label>
+                    <input
+                      type="text"
+                      value={siteSettings.footer_company_name || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_company_name: e.target.value
+                      }))}
+                      placeholder="PEBDEQ"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Company Description</label>
+                    <textarea
+                      value={siteSettings.footer_company_description || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_company_description: e.target.value
+                      }))}
+                      placeholder="Crafted with passion, delivered with precision."
+                      rows="3"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Copyright Text</label>
+                    <input
+                      type="text"
+                      value={siteSettings.footer_copyright_text || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_copyright_text: e.target.value
+                      }))}
+                      placeholder="© 2024 PEBDEQ. All rights reserved."
+                    />
+                  </div>
+
+                  <hr />
+
+                  {/* Support Section */}
+                  <div className="form-group">
+                    <h4>Support Section</h4>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.footer_support_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_support_show_section: e.target.checked
+                        }))}
+                      />
+                      Show support section
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Support Section Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.footer_support_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_support_title: e.target.value
+                      }))}
+                      placeholder="Support"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Support Links</label>
+                    <div className="links-manager">
+                      {(siteSettings.footer_support_links || []).map((link, index) => (
+                        <div key={index} className="link-item">
+                          <input
+                            type="text"
+                            placeholder="Link Title"
+                            value={link.title || ''}
+                            onChange={(e) => {
+                              const newLinks = [...(siteSettings.footer_support_links || [])];
+                              newLinks[index] = { ...newLinks[index], title: e.target.value };
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_support_links: newLinks
+                              }));
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Link URL"
+                            value={link.url || ''}
+                            onChange={(e) => {
+                              const newLinks = [...(siteSettings.footer_support_links || [])];
+                              newLinks[index] = { ...newLinks[index], url: e.target.value };
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_support_links: newLinks
+                              }));
+                            }}
+                          />
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={link.is_external || false}
+                              onChange={(e) => {
+                                const newLinks = [...(siteSettings.footer_support_links || [])];
+                                newLinks[index] = { ...newLinks[index], is_external: e.target.checked };
+                                setSiteSettings(prev => ({
+                                  ...prev,
+                                  footer_support_links: newLinks
+                                }));
+                              }}
+                            />
+                            External Link
+                          </label>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-danger"
+                            onClick={() => {
+                              const newLinks = [...(siteSettings.footer_support_links || [])];
+                              newLinks.splice(index, 1);
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_support_links: newLinks
+                              }));
+                            }}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => {
+                          const newLinks = [...(siteSettings.footer_support_links || [])];
+                          newLinks.push({ title: '', url: '', is_external: false });
+                          setSiteSettings(prev => ({
+                            ...prev,
+                            footer_support_links: newLinks
+                          }));
+                        }}
+                      >
+                        Add Support Link
+                      </button>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Quick Links Section */}
+                  <div className="form-group">
+                    <h4>Quick Links Section</h4>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.footer_quick_links_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_quick_links_show_section: e.target.checked
+                        }))}
+                      />
+                      Show quick links section
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Quick Links Section Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.footer_quick_links_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_quick_links_title: e.target.value
+                      }))}
+                      placeholder="Quick Links"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Quick Links</label>
+                    <div className="links-manager">
+                      {(siteSettings.footer_quick_links || []).map((link, index) => (
+                        <div key={index} className="link-item">
+                          <input
+                            type="text"
+                            placeholder="Link Title"
+                            value={link.title || ''}
+                            onChange={(e) => {
+                              const newLinks = [...(siteSettings.footer_quick_links || [])];
+                              newLinks[index] = { ...newLinks[index], title: e.target.value };
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_quick_links: newLinks
+                              }));
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Link URL"
+                            value={link.url || ''}
+                            onChange={(e) => {
+                              const newLinks = [...(siteSettings.footer_quick_links || [])];
+                              newLinks[index] = { ...newLinks[index], url: e.target.value };
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_quick_links: newLinks
+                              }));
+                            }}
+                          />
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={link.is_external || false}
+                              onChange={(e) => {
+                                const newLinks = [...(siteSettings.footer_quick_links || [])];
+                                newLinks[index] = { ...newLinks[index], is_external: e.target.checked };
+                                setSiteSettings(prev => ({
+                                  ...prev,
+                                  footer_quick_links: newLinks
+                                }));
+                              }}
+                            />
+                            External Link
+                          </label>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-danger"
+                            onClick={() => {
+                              const newLinks = [...(siteSettings.footer_quick_links || [])];
+                              newLinks.splice(index, 1);
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_quick_links: newLinks
+                              }));
+                            }}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => {
+                          const newLinks = [...(siteSettings.footer_quick_links || [])];
+                          newLinks.push({ title: '', url: '', is_external: false });
+                          setSiteSettings(prev => ({
+                            ...prev,
+                            footer_quick_links: newLinks
+                          }));
+                        }}
+                      >
+                        Add Quick Link
+                      </button>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Social Section */}
+                  <div className="form-group">
+                    <h4>Social Section</h4>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.footer_social_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_social_show_section: e.target.checked
+                        }))}
+                      />
+                      Show social section
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Social Section Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.footer_social_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_social_title: e.target.value
+                      }))}
+                      placeholder="Follow Us"
+                    />
+                  </div>
+
+                  <hr />
+
+                  {/* Newsletter Section */}
+                  <div className="form-group">
+                    <h4>Newsletter Section</h4>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.footer_newsletter_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_newsletter_show_section: e.target.checked
+                        }))}
+                      />
+                      Show newsletter section
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Newsletter Section Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.footer_newsletter_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_newsletter_title: e.target.value
+                      }))}
+                      placeholder="Newsletter"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Newsletter Description</label>
+                    <textarea
+                      value={siteSettings.footer_newsletter_description || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        footer_newsletter_description: e.target.value
+                      }))}
+                      placeholder="Subscribe to get updates about new products and offers."
+                      rows="3"
+                    />
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Newsletter Placeholder Text</label>
+                      <input
+                        type="text"
+                        value={siteSettings.footer_newsletter_placeholder || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_newsletter_placeholder: e.target.value
+                        }))}
+                        placeholder="Enter your email address"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Newsletter Button Text</label>
+                      <input
+                        type="text"
+                        value={siteSettings.footer_newsletter_button_text || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_newsletter_button_text: e.target.value
+                        }))}
+                        placeholder="Subscribe"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Homepage Products Tab */}
+              {settingsTab === 'homepage-products' && (
+                <div className="settings-section">
+                  <h3>Homepage Products Settings</h3>
+                  
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_show_section: e.target.checked
+                        }))}
+                      />
+                      Show homepage products section
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Section Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.homepage_products_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products_title: e.target.value
+                      }))}
+                      placeholder="Featured Products"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Section Subtitle</label>
+                    <input
+                      type="text"
+                      value={siteSettings.homepage_products_subtitle || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products_subtitle: e.target.value
+                      }))}
+                      placeholder="Discover our most popular items"
+                    />
+                  </div>
+
+                  <hr />
+
+                  {/* Layout Settings */}
+                  <h4>Layout Settings</h4>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Maximum Rows</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="5"
+                        value={siteSettings.homepage_products_max_rows || 2}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_max_rows: parseInt(e.target.value) || 2
+                        }))}
+                      />
+                      <small>Number of rows to display (1-5)</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Products Per Row</label>
+                      <input
+                        type="number"
+                        min="2"
+                        max="6"
+                        value={siteSettings.homepage_products_per_row || 4}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_per_row: parseInt(e.target.value) || 4
+                        }))}
+                      />
+                      <small>Number of products per row (2-6)</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Maximum Items</label>
+                      <input
+                        type="number"
+                        min="4"
+                        max="30"
+                        value={siteSettings.homepage_products_max_items || 8}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_max_items: parseInt(e.target.value) || 8
+                        }))}
+                      />
+                      <small>Total number of products to show (4-30)</small>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Image Settings */}
+                  <h4>Image Settings</h4>
+                  
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products_show_images || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_show_images: e.target.checked
+                        }))}
+                      />
+                      Show product images
+                    </label>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Image Width (px)</label>
+                      <input
+                        type="number"
+                        min="100"
+                        max="500"
+                        value={siteSettings.homepage_products_image_width || 300}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_image_width: parseInt(e.target.value) || 300
+                        }))}
+                      />
+                      <small>Product image width (100-500px)</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Image Height (px)</label>
+                      <input
+                        type="number"
+                        min="100"
+                        max="400"
+                        value={siteSettings.homepage_products_image_height || 200}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_image_height: parseInt(e.target.value) || 200
+                        }))}
+                      />
+                      <small>Product image height (100-400px)</small>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Button Settings */}
+                  <h4>Button Settings</h4>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_favorite || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_favorite: e.target.checked
+                          }))}
+                        />
+                        Show favorite button
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_buy_now || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_buy_now: e.target.checked
+                          }))}
+                        />
+                        Show buy now button
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_details || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_details: e.target.checked
+                          }))}
+                        />
+                        Show details button
+                      </label>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Information Display */}
+                  <h4>Information Display</h4>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_price || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_price: e.target.checked
+                          }))}
+                        />
+                        Show price
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_original_price || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_original_price: e.target.checked
+                          }))}
+                        />
+                        Show original price (if discounted)
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_stock || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_stock: e.target.checked
+                          }))}
+                        />
+                        Show stock status
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_category || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_category: e.target.checked
+                          }))}
+                        />
+                        Show category
+                      </label>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Sorting and Filtering */}
+                  <h4>Sorting and Filtering</h4>
+                  
+                  <div className="form-group">
+                    <label>Sort Products By</label>
+                    <select
+                      value={siteSettings.homepage_products_sort_by || 'featured'}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products_sort_by: e.target.value
+                      }))}
+                    >
+                      <option value="featured">Featured Products</option>
+                      <option value="newest">Newest First</option>
+                      <option value="price_low">Price: Low to High</option>
+                      <option value="price_high">Price: High to Low</option>
+                      <option value="name">Name: A to Z</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Filter by Categories</label>
                     <div className="categories-selection">
                       {categories.map(category => (
                         <label key={category.id} className="checkbox-label">
                           <input
                             type="checkbox"
-                            checked={siteSettings.collections_show_categories.includes(category.id)}
+                            checked={(siteSettings.homepage_products_filter_categories || []).includes(category.id)}
                             onChange={(e) => {
-                              const newShowCategories = e.target.checked
-                                ? [...siteSettings.collections_show_categories, category.id]
-                                : siteSettings.collections_show_categories.filter(id => id !== category.id);
-                              
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                collections_show_categories: newShowCategories
-                              }));
+                              const currentCategories = siteSettings.homepage_products_filter_categories || [];
+                              if (e.target.checked) {
+                                setSiteSettings(prev => ({
+                                  ...prev,
+                                  homepage_products_filter_categories: [...currentCategories, category.id]
+                                }));
+                              } else {
+                                setSiteSettings(prev => ({
+                                  ...prev,
+                                  homepage_products_filter_categories: currentCategories.filter(id => id !== category.id)
+                                }));
+                              }
                             }}
                           />
                           {category.name}
                         </label>
                       ))}
                     </div>
-                    <small>
-                      Seçilen kategoriler gösterilecek. Boş bırakılırsa tüm aktif kategoriler gösterilir. 
-                      Maksimum {siteSettings.collections_categories_per_row * siteSettings.collections_max_rows} kategori gösterilecek.
-                    </small>
+                    <small>Leave empty to show all categories</small>
                   </div>
 
+                  <hr />
+
+                  {/* View All Button */}
+                  <h4>View All Button</h4>
+                  
                   <div className="form-group">
-                    <h5>Collections Önizleme</h5>
-                    <div className="collections-preview" style={{
-                      padding: '2rem',
-                      background: '#f8f9fa',
-                      borderRadius: '8px',
-                      marginTop: '1rem'
-                    }}>
-                      <h3 style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        {siteSettings.collections_title}
-                      </h3>
-                      <div 
-                        className="categories-grid-preview"
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: `repeat(${siteSettings.collections_categories_per_row}, 1fr)`,
-                          gap: '1rem',
-                          maxWidth: '1200px',
-                          margin: '0 auto'
-                        }}
-                      >
-                        {(siteSettings.collections_show_categories.length > 0 
-                          ? categories.filter(cat => siteSettings.collections_show_categories.includes(cat.id))
-                          : categories.filter(cat => cat.is_active)
-                        )
-                        .slice(0, siteSettings.collections_categories_per_row * siteSettings.collections_max_rows)
-                        .map(category => (
-                          <div 
-                            key={category.id}
-                            style={{
-                              background: category.background_image_url 
-                                ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(http://localhost:5005${category.background_image_url}) center/cover`
-                                : category.background_color || '#e9ecef',
-                              borderRadius: '12px',
-                              padding: '2rem',
-                              textAlign: 'center',
-                              color: category.background_image_url || category.background_color ? '#fff' : '#333',
-                              minHeight: '150px',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              justifyContent: 'center'
-                            }}
-                          >
-                            <h4 style={{ margin: '0 0 0.5rem 0' }}>{category.name}</h4>
-                            <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.9 }}>
-                              {category.description || 'Category description'}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products_show_view_all || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_show_view_all: e.target.checked
+                        }))}
+                      />
+                      Show "View All Products" button
+                    </label>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Button Text</label>
+                      <input
+                        type="text"
+                        value={siteSettings.homepage_products_view_all_text || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_view_all_text: e.target.value
+                        }))}
+                        placeholder="View All Products"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Button Link</label>
+                      <input
+                        type="text"
+                        value={siteSettings.homepage_products_view_all_link || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products_view_all_link: e.target.value
+                        }))}
+                        placeholder="/products"
+                      />
                     </div>
                   </div>
-                </>
-              )}
 
-              <div className="form-group">
-                <h4>Önizleme</h4>
-                <div className="logo-preview-header">
-                  <div className="logo-container">
-                    {siteSettings.use_logo && siteSettings.site_logo ? (
-                      <img 
-                        src={`http://localhost:5005${siteSettings.site_logo}`} 
-                        alt={siteSettings.site_name} 
-                        style={{ 
-                          width: `${siteSettings.logo_width}px`,
-                          height: `${siteSettings.logo_height}px`,
-                          objectFit: 'contain' 
-                        }}
-                      />
-                    ) : (
-                      <h1 style={{ 
-                        margin: 0, 
-                        fontSize: '1.8rem', 
-                        fontWeight: 700, 
-                        color: '#2c3e50' 
-                      }}>
-                        {siteSettings.site_name}
-                      </h1>
-                    )}
-                    {siteSettings.use_logo2 && siteSettings.site_logo2 && (
-                      <img 
-                        src={`http://localhost:5005${siteSettings.site_logo2}`} 
-                        alt="Second Logo" 
-                        style={{ 
-                          width: `${siteSettings.logo2_width}px`,
-                          height: `${siteSettings.logo2_height}px`,
-                          objectFit: 'contain' 
-                        }}
-                      />
-                    )}
+                  <hr />
+
+                  {/* Card Style Settings */}
+                  <h4>Card Style Settings</h4>
+                  
+                  <div className="form-group">
+                    <label>Card Style</label>
+                    <select
+                      value={siteSettings.homepage_products_card_style || 'modern'}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products_card_style: e.target.value
+                      }))}
+                    >
+                      <option value="modern">Modern</option>
+                      <option value="classic">Classic</option>
+                      <option value="minimal">Minimal</option>
+                    </select>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_card_shadow || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_card_shadow: e.target.checked
+                          }))}
+                        />
+                        Show card shadow
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_card_hover_effect || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_card_hover_effect: e.target.checked
+                          }))}
+                        />
+                        Show hover effects
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_badges || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_badges: e.target.checked
+                          }))}
+                        />
+                        Show badges (Featured, New, etc.)
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_rating || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_rating: e.target.checked
+                          }))}
+                        />
+                        Show ratings
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products_show_quick_view || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_show_quick_view: e.target.checked
+                          }))}
+                        />
+                        Show quick view button
+                      </label>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="welcome-preview" style={{
-                  background: siteSettings.welcome_background_image 
-                    ? `url(http://localhost:5005${siteSettings.welcome_background_image}) center/cover`
-                    : siteSettings.welcome_background_color,
-                  padding: '2rem',
-                  borderRadius: '8px',
-                  textAlign: 'center',
-                  color: siteSettings.welcome_text_color,
-                  marginTop: '1rem'
-                }}>
-                  <h2 style={{ 
-                    fontSize: '2rem', 
-                    margin: '0 0 0.5rem 0',
-                    color: siteSettings.welcome_text_color
-                  }}>
-                    {siteSettings.welcome_title}
-                  </h2>
-                  <p style={{ 
-                    fontSize: '1.1rem', 
-                    margin: '0 0 1rem 0',
-                    color: siteSettings.welcome_text_color
-                  }}>
-                    {siteSettings.welcome_subtitle}
-                  </p>
-                  <button style={{
-                    backgroundColor: siteSettings.welcome_button_color,
-                    color: '#fff',
-                    padding: '0.5rem 1rem',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                  }}>
-                    {siteSettings.welcome_button_text}
-                  </button>
-                </div>
-              </div>
+              )}
 
-              <button type="submit" className="btn btn-primary">
-                Ayarları Kaydet
-              </button>
+              <div className="form-actions">
+                <button type="submit" className="btn btn-primary">
+                  Save Settings
+                </button>
+              </div>
             </form>
           </div>
         )}

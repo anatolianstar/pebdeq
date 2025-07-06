@@ -171,6 +171,32 @@ def categories():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@main_bp.route('/api/products')
+def products():
+    try:
+        products = Product.query.filter_by(is_active=True).all()
+        
+        return jsonify({
+            'products': [{
+                'id': p.id,
+                'name': p.name,
+                'slug': p.slug,
+                'description': p.description,
+                'price': p.price,
+                'original_price': p.original_price,
+                'stock_quantity': p.stock_quantity,
+                'category_id': p.category_id,
+                'images': p.images,
+                'video_url': p.video_url,
+                'is_featured': p.is_featured,
+                'is_active': p.is_active,
+                'created_at': p.created_at.isoformat(),
+                'updated_at': p.updated_at.isoformat()
+            } for p in products]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @main_bp.route('/api/contact', methods=['POST'])
 def contact():
     try:
@@ -280,7 +306,75 @@ def get_site_settings():
                 'collections_show_categories': [],
                 'collections_categories_per_row': 4,
                 'collections_max_rows': 1,
-                'collections_show_section': True
+                'collections_show_section': True,
+                'homepage_products_show_section': True,
+                'homepage_products_title': 'Featured Products',
+                'homepage_products_subtitle': 'Discover our most popular items',
+                'homepage_products_max_rows': 2,
+                'homepage_products_per_row': 4,
+                'homepage_products_max_items': 8,
+                'homepage_products_show_images': True,
+                'homepage_products_image_height': 200,
+                'homepage_products_image_width': 300,
+                'homepage_products_show_favorite': True,
+                'homepage_products_show_buy_now': True,
+                'homepage_products_show_details': True,
+                'homepage_products_show_price': True,
+                'homepage_products_show_original_price': True,
+                'homepage_products_show_stock': True,
+                'homepage_products_show_category': True,
+                'homepage_products_sort_by': 'featured',
+                'homepage_products_filter_categories': [],
+                'homepage_products_show_view_all': True,
+                'homepage_products_view_all_text': 'View All Products',
+                'homepage_products_view_all_link': '/products',
+                'homepage_products_card_style': 'modern',
+                'homepage_products_card_shadow': True,
+                'homepage_products_card_hover_effect': True,
+                'homepage_products_show_badges': True,
+                'homepage_products_show_rating': False,
+                'homepage_products_show_quick_view': False,
+                'contact_social': {
+                    'contact_phone': '',
+                    'contact_email': '',
+                    'contact_address': '',
+                    'social_instagram': '',
+                    'social_facebook': '',
+                    'social_twitter': '',
+                    'social_youtube': '',
+                    'social_linkedin': ''
+                },
+                'footer_settings': {
+                    'footer_show_section': True,
+                    'footer_background_color': '#2c3e50',
+                    'footer_text_color': '#ffffff',
+                    'footer_company_name': 'PEBDEQ',
+                    'footer_company_description': 'Crafted with passion, delivered with precision.',
+                    'footer_copyright_text': '© 2024 PEBDEQ. All rights reserved.',
+                    'footer_support_title': 'Support',
+                    'footer_support_show_section': True,
+                    'footer_support_links': [
+                        {'title': 'Contact Us', 'url': '/contact', 'is_external': False},
+                        {'title': 'FAQ', 'url': '/faq', 'is_external': False},
+                        {'title': 'Shipping Info', 'url': '/shipping', 'is_external': False},
+                        {'title': 'Returns', 'url': '/returns', 'is_external': False}
+                    ],
+                    'footer_quick_links_title': 'Quick Links',
+                    'footer_quick_links_show_section': True,
+                    'footer_quick_links': [
+                        {'title': 'About Us', 'url': '/about', 'is_external': False},
+                        {'title': 'Products', 'url': '/products', 'is_external': False},
+                        {'title': 'Blog', 'url': '/blog', 'is_external': False},
+                        {'title': 'Privacy Policy', 'url': '/privacy', 'is_external': False}
+                    ],
+                    'footer_social_title': 'Follow Us',
+                    'footer_social_show_section': True,
+                    'footer_newsletter_title': 'Newsletter',
+                    'footer_newsletter_show_section': True,
+                    'footer_newsletter_description': 'Subscribe to get updates about new products and offers.',
+                    'footer_newsletter_placeholder': 'Enter your email address',
+                    'footer_newsletter_button_text': 'Subscribe'
+                }
             })
         
         return jsonify({
@@ -305,7 +399,65 @@ def get_site_settings():
             'collections_show_categories': settings.collections_show_categories,
             'collections_categories_per_row': settings.collections_categories_per_row,
             'collections_max_rows': settings.collections_max_rows,
-            'collections_show_section': settings.collections_show_section
+            'collections_show_section': settings.collections_show_section,
+            'homepage_products_show_section': settings.homepage_products_show_section,
+            'homepage_products_title': settings.homepage_products_title,
+            'homepage_products_subtitle': settings.homepage_products_subtitle,
+            'homepage_products_max_rows': settings.homepage_products_max_rows,
+            'homepage_products_per_row': settings.homepage_products_per_row,
+            'homepage_products_max_items': settings.homepage_products_max_items,
+            'homepage_products_show_images': settings.homepage_products_show_images,
+            'homepage_products_image_height': settings.homepage_products_image_height,
+            'homepage_products_image_width': settings.homepage_products_image_width,
+            'homepage_products_show_favorite': settings.homepage_products_show_favorite,
+            'homepage_products_show_buy_now': settings.homepage_products_show_buy_now,
+            'homepage_products_show_details': settings.homepage_products_show_details,
+            'homepage_products_show_price': settings.homepage_products_show_price,
+            'homepage_products_show_original_price': settings.homepage_products_show_original_price,
+            'homepage_products_show_stock': settings.homepage_products_show_stock,
+            'homepage_products_show_category': settings.homepage_products_show_category,
+            'homepage_products_sort_by': settings.homepage_products_sort_by,
+            'homepage_products_filter_categories': settings.homepage_products_filter_categories,
+            'homepage_products_show_view_all': settings.homepage_products_show_view_all,
+            'homepage_products_view_all_text': settings.homepage_products_view_all_text,
+            'homepage_products_view_all_link': settings.homepage_products_view_all_link,
+            'homepage_products_card_style': settings.homepage_products_card_style,
+            'homepage_products_card_shadow': settings.homepage_products_card_shadow,
+            'homepage_products_card_hover_effect': settings.homepage_products_card_hover_effect,
+            'homepage_products_show_badges': settings.homepage_products_show_badges,
+            'homepage_products_show_rating': settings.homepage_products_show_rating,
+            'homepage_products_show_quick_view': settings.homepage_products_show_quick_view,
+            'contact_social': {
+                'contact_phone': settings.contact_phone,
+                'contact_email': settings.contact_email,
+                'contact_address': settings.contact_address,
+                'social_instagram': settings.social_instagram,
+                'social_facebook': settings.social_facebook,
+                'social_twitter': settings.social_twitter,
+                'social_youtube': settings.social_youtube,
+                'social_linkedin': settings.social_linkedin
+            },
+            'footer_settings': {
+                'footer_show_section': settings.footer_show_section,
+                'footer_background_color': settings.footer_background_color,
+                'footer_text_color': settings.footer_text_color,
+                'footer_company_name': settings.footer_company_name,
+                'footer_company_description': settings.footer_company_description,
+                'footer_copyright_text': settings.footer_copyright_text,
+                'footer_support_title': settings.footer_support_title,
+                'footer_support_show_section': settings.footer_support_show_section,
+                'footer_support_links': settings.footer_support_links,
+                'footer_quick_links_title': settings.footer_quick_links_title,
+                'footer_quick_links_show_section': settings.footer_quick_links_show_section,
+                'footer_quick_links': settings.footer_quick_links,
+                'footer_social_title': settings.footer_social_title,
+                'footer_social_show_section': settings.footer_social_show_section,
+                'footer_newsletter_title': settings.footer_newsletter_title,
+                'footer_newsletter_show_section': settings.footer_newsletter_show_section,
+                'footer_newsletter_description': settings.footer_newsletter_description,
+                'footer_newsletter_placeholder': settings.footer_newsletter_placeholder,
+                'footer_newsletter_button_text': settings.footer_newsletter_button_text
+            }
         })
     
     except Exception as e:

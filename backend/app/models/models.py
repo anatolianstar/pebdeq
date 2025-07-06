@@ -155,6 +155,8 @@ class ContactMessage(db.Model):
 
 class SiteSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    
+    # Site Identity
     site_name = db.Column(db.String(100), default='pebdeq')
     site_logo = db.Column(db.String(255))  # Logo resmi URL'si
     use_logo = db.Column(db.Boolean, default=False)  # Logo kullanılsın mı yoksa yazı mı
@@ -181,6 +183,102 @@ class SiteSettings(db.Model):
     collections_categories_per_row = db.Column(db.Integer, default=4)  # Satırda kaç kategori
     collections_max_rows = db.Column(db.Integer, default=1)  # Maksimum satır sayısı
     collections_show_section = db.Column(db.Boolean, default=True)  # Bölüm gösterilsin mi
+    
+    # Contact & Social Settings
+    contact_phone = db.Column(db.String(20))
+    contact_email = db.Column(db.String(120))
+    contact_address = db.Column(db.Text)
+    social_instagram = db.Column(db.String(100))
+    social_facebook = db.Column(db.String(100))
+    social_twitter = db.Column(db.String(100))
+    social_youtube = db.Column(db.String(100))
+    social_linkedin = db.Column(db.String(100))
+    
+    # SEO Settings
+    meta_title = db.Column(db.String(200))
+    meta_description = db.Column(db.Text)
+    meta_keywords = db.Column(db.Text)
+    
+    # Business Settings
+    currency_symbol = db.Column(db.String(10), default='₺')
+    currency_code = db.Column(db.String(3), default='TRY')
+    shipping_cost = db.Column(db.Float, default=0.0)
+    free_shipping_threshold = db.Column(db.Float, default=0.0)
+    
+    # Feature Flags
+    enable_reviews = db.Column(db.Boolean, default=True)
+    enable_wishlist = db.Column(db.Boolean, default=True)
+    enable_compare = db.Column(db.Boolean, default=True)
+    enable_newsletter = db.Column(db.Boolean, default=True)
+    maintenance_mode = db.Column(db.Boolean, default=False)
+    
+    # Footer Settings
+    footer_show_section = db.Column(db.Boolean, default=True)
+    footer_background_color = db.Column(db.String(7), default='#2c3e50')
+    footer_text_color = db.Column(db.String(7), default='#ffffff')
+    footer_company_name = db.Column(db.String(100), default='PEBDEQ')
+    footer_company_description = db.Column(db.Text, default='Crafted with passion, delivered with precision.')
+    footer_copyright_text = db.Column(db.String(200), default='© 2024 PEBDEQ. All rights reserved.')
+    
+    # Footer Support Section
+    footer_support_title = db.Column(db.String(100), default='Support')
+    footer_support_show_section = db.Column(db.Boolean, default=True)
+    footer_support_links = db.Column(db.JSON, default=lambda: [
+        {'title': 'Contact Us', 'url': '/contact', 'is_external': False},
+        {'title': 'FAQ', 'url': '/faq', 'is_external': False},
+        {'title': 'Shipping Info', 'url': '/shipping', 'is_external': False},
+        {'title': 'Returns', 'url': '/returns', 'is_external': False}
+    ])
+    
+    # Footer Quick Links Section
+    footer_quick_links_title = db.Column(db.String(100), default='Quick Links')
+    footer_quick_links_show_section = db.Column(db.Boolean, default=True)
+    footer_quick_links = db.Column(db.JSON, default=lambda: [
+        {'title': 'About Us', 'url': '/about', 'is_external': False},
+        {'title': 'Products', 'url': '/products', 'is_external': False},
+        {'title': 'Blog', 'url': '/blog', 'is_external': False},
+        {'title': 'Privacy Policy', 'url': '/privacy', 'is_external': False}
+    ])
+    
+    # Footer Social Section
+    footer_social_title = db.Column(db.String(100), default='Follow Us')
+    footer_social_show_section = db.Column(db.Boolean, default=True)
+    
+    # Footer Newsletter Section
+    footer_newsletter_title = db.Column(db.String(100), default='Newsletter')
+    footer_newsletter_show_section = db.Column(db.Boolean, default=True)
+    footer_newsletter_description = db.Column(db.Text, default='Subscribe to get updates about new products and offers.')
+    footer_newsletter_placeholder = db.Column(db.String(100), default='Enter your email address')
+    footer_newsletter_button_text = db.Column(db.String(50), default='Subscribe')
+    
+    # Homepage Products Settings
+    homepage_products_show_section = db.Column(db.Boolean, default=True)
+    homepage_products_title = db.Column(db.String(200), default='Featured Products')
+    homepage_products_subtitle = db.Column(db.String(200), default='Discover our most popular items')
+    homepage_products_max_rows = db.Column(db.Integer, default=2)
+    homepage_products_per_row = db.Column(db.Integer, default=4)
+    homepage_products_max_items = db.Column(db.Integer, default=8)
+    homepage_products_show_images = db.Column(db.Boolean, default=True)
+    homepage_products_image_height = db.Column(db.Integer, default=200)
+    homepage_products_image_width = db.Column(db.Integer, default=300)
+    homepage_products_show_favorite = db.Column(db.Boolean, default=True)
+    homepage_products_show_buy_now = db.Column(db.Boolean, default=True)
+    homepage_products_show_details = db.Column(db.Boolean, default=True)
+    homepage_products_show_price = db.Column(db.Boolean, default=True)
+    homepage_products_show_original_price = db.Column(db.Boolean, default=True)
+    homepage_products_show_stock = db.Column(db.Boolean, default=True)
+    homepage_products_show_category = db.Column(db.Boolean, default=True)
+    homepage_products_sort_by = db.Column(db.String(50), default='featured')  # featured, newest, price_low, price_high, name
+    homepage_products_filter_categories = db.Column(db.JSON, default=lambda: [])
+    homepage_products_show_view_all = db.Column(db.Boolean, default=True)
+    homepage_products_view_all_text = db.Column(db.String(100), default='View All Products')
+    homepage_products_view_all_link = db.Column(db.String(255), default='/products')
+    homepage_products_card_style = db.Column(db.String(50), default='modern')  # modern, classic, minimal
+    homepage_products_card_shadow = db.Column(db.Boolean, default=True)
+    homepage_products_card_hover_effect = db.Column(db.Boolean, default=True)
+    homepage_products_show_badges = db.Column(db.Boolean, default=True)
+    homepage_products_show_rating = db.Column(db.Boolean, default=False)
+    homepage_products_show_quick_view = db.Column(db.Boolean, default=False)
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 
