@@ -13,7 +13,18 @@ const Header = () => {
     site_logo2: null,
     use_logo2: false,
     logo2_width: 120,
-    logo2_height: 40
+    logo2_height: 40,
+    // Marquee Settings
+    marquee_enabled: false,
+    marquee_text: 'Welcome to our store! Special offers available now.',
+    marquee_font_family: 'Arial, sans-serif',
+    marquee_font_size: '14px',
+    marquee_font_weight: 'normal',
+    marquee_color: '#ffffff',
+    marquee_background_color: '#ff6b6b',
+    marquee_speed: 30,
+    marquee_direction: 'left',
+    marquee_pause_on_hover: true
   });
 
   useEffect(() => {
@@ -38,6 +49,29 @@ const Header = () => {
 
   return (
     <header className="header">
+      {/* Marquee Banner */}
+      {siteSettings.marquee_enabled && (
+        <div 
+          className={`marquee-banner ${siteSettings.marquee_pause_on_hover ? 'pause-on-hover' : ''}`}
+          style={{
+            backgroundColor: siteSettings.marquee_background_color,
+            color: siteSettings.marquee_color,
+            fontFamily: siteSettings.marquee_font_family,
+            fontSize: siteSettings.marquee_font_size,
+            fontWeight: siteSettings.marquee_font_weight
+          }}
+        >
+          <div 
+            className={`marquee-content ${siteSettings.marquee_direction === 'right' ? 'marquee-right' : 'marquee-left'}`}
+            style={{
+              animationDuration: `${1000 / siteSettings.marquee_speed}s`
+            }}
+          >
+            <span style={{ whiteSpace: 'pre-wrap' }}>{siteSettings.marquee_text}</span>
+          </div>
+        </div>
+      )}
+      
       <div className="container">
         <div className="header-content">
           <Link to="/" className="logo">

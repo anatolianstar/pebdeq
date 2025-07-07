@@ -94,6 +94,18 @@ const AdminDashboard = () => {
     logo2_width: 120,
     logo2_height: 40,
     
+    // Marquee Settings
+    marquee_enabled: false,
+    marquee_text: 'Welcome to our store! Special offers available now.',
+    marquee_font_family: 'Arial, sans-serif',
+    marquee_font_size: '14px',
+    marquee_font_weight: 'normal',
+    marquee_color: '#ffffff',
+    marquee_background_color: '#ff6b6b',
+    marquee_speed: 30,
+    marquee_direction: 'left', // left, right
+    marquee_pause_on_hover: true,
+    
     // Welcome Section
     welcome_title: 'Welcome to Pebdeq',
     welcome_subtitle: 'Crafted. Vintage. Smart.',
@@ -205,11 +217,40 @@ const AdminDashboard = () => {
     homepage_products_card_hover_effect: true,
     homepage_products_show_badges: true,
     homepage_products_show_rating: false,
-    homepage_products_show_quick_view: false
+    homepage_products_show_quick_view: false,
+    // Homepage Products 2 Settings
+    homepage_products2_show_section: true,
+    homepage_products2_title: 'Latest Products',
+    homepage_products2_subtitle: 'Check out our newest arrivals',
+    homepage_products2_max_rows: 2,
+    homepage_products2_per_row: 4,
+    homepage_products2_max_items: 8,
+    homepage_products2_show_images: true,
+    homepage_products2_image_height: 200,
+    homepage_products2_image_width: 300,
+    homepage_products2_show_favorite: true,
+    homepage_products2_show_buy_now: true,
+    homepage_products2_show_details: true,
+    homepage_products2_show_price: true,
+    homepage_products2_show_original_price: true,
+    homepage_products2_show_stock: true,
+    homepage_products2_show_category: true,
+    homepage_products2_sort_by: 'newest',
+    homepage_products2_filter_categories: [],
+    homepage_products2_show_view_all: true,
+    homepage_products2_view_all_text: 'View All Products',
+    homepage_products2_view_all_link: '/products',
+    homepage_products2_card_style: 'modern',
+    homepage_products2_card_shadow: true,
+    homepage_products2_card_hover_effect: true,
+    homepage_products2_show_badges: true,
+    homepage_products2_show_rating: false,
+    homepage_products2_show_quick_view: false
   });
   const [uploadingSiteLogo, setUploadingSiteLogo] = useState(false);
   const [uploadingSiteLogo2, setUploadingSiteLogo2] = useState(false);
   const [uploadingWelcomeBackground, setUploadingWelcomeBackground] = useState(false);
+  const [uploadingFooterLogo, setUploadingFooterLogo] = useState(false);
 
   const getAuthHeaders = () => ({
     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -362,7 +403,9 @@ const AdminDashboard = () => {
           // Footer Settings
           ...data.footer_settings,
           // Homepage Products Settings
-          ...data.homepage_products_settings
+          ...data.homepage_products_settings,
+          // Homepage Products 2 Settings
+          ...data.homepage_products2_settings
         };
         setSiteSettings(flattenedData);
       } else {
@@ -502,6 +545,42 @@ const AdminDashboard = () => {
       toast.error('Error uploading welcome background');
     } finally {
       setUploadingWelcomeBackground(false);
+    }
+  };
+
+  const handleFooterLogoUpload = async (file) => {
+    if (!file) return;
+    
+    setUploadingFooterLogo(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await fetch('/api/admin/upload/footer-logo', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSiteSettings(prev => ({
+          ...prev,
+          footer_logo: data.logo_url
+        }));
+        toast.success('Footer logo uploaded successfully');
+      } else {
+        toast.error(data.error || 'Failed to upload footer logo');
+      }
+    } catch (error) {
+      console.error('Error uploading footer logo:', error);
+      toast.error('Error uploading footer logo');
+    } finally {
+      setUploadingFooterLogo(false);
     }
   };
 
@@ -922,6 +1001,127 @@ const AdminDashboard = () => {
     }
   };
 
+  // Excel Export/Import Functions
+  const handleExportProductsExcel = async () => {
+    try {
+      const response = await fetch('/api/admin/products/export-excel', {
+        method: 'GET',
+        headers: getAuthHeaders()
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `products_export_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        toast.success('Products exported successfully');
+      } else {
+        const data = await response.json();
+        toast.error(data.error || 'Failed to export products');
+      }
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      toast.error('Error exporting products');
+    }
+  };
+
+  const handleDownloadTemplate = async () => {
+    try {
+      const response = await fetch('/api/admin/products/export-template', {
+        method: 'GET',
+        headers: getAuthHeaders()
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `products_import_template_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        toast.success('Template downloaded successfully');
+      } else {
+        const data = await response.json();
+        toast.error(data.error || 'Failed to download template');
+      }
+    } catch (error) {
+      console.error('Error downloading template:', error);
+      toast.error('Error downloading template');
+    }
+  };
+
+  const handleImportProductsExcel = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Don't set Content-Type header for FormData - browser will set it automatically with boundary
+      const authHeaders = getAuthHeaders();
+      delete authHeaders['Content-Type']; // Remove if exists
+
+      const response = await fetch('/api/admin/products/import-excel', {
+        method: 'POST',
+        headers: authHeaders,
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Show main result message
+        toast.success(data.message);
+        
+        // Show detailed results if there are errors
+        if (data.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+          console.warn('Import errors:', data.errors);
+          data.errors.forEach(error => console.warn('Import error:', error));
+          // Show error details in a more user-friendly way
+          toast.error(`⚠️ ${data.error_count || 0} satır işlenemedi. Detaylar için konsolu kontrol edin.`);
+        }
+        
+        // Show update info separately if there are updates
+        if (data.updated_count && data.updated_count > 0) {
+          toast.info(`✅ ${data.updated_count} ürün güncellendi`);
+        }
+        
+        // Try to refresh products list
+        try {
+          await fetchProducts();
+        } catch (refreshError) {
+          console.error('Error refreshing products list:', refreshError);
+          toast.error('⚠️ Import başarılı ama ürün listesi yenilenemedi. Sayfayı yenileyin.');
+        }
+        
+      } else {
+        toast.error(data.error || 'Excel import işlemi başarısız');
+      }
+    } catch (error) {
+      console.error('Error importing products:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
+      // Only show error if it's a real import failure, not a UI update issue
+      if (error.message && (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed to fetch'))) {
+        toast.error(`Excel import hatası: ${error.message}`);
+      } else {
+        // For other errors (likely UI related), just log them
+        console.warn('Non-critical error during import process:', error.message);
+        toast.error('Import işlemi tamamlandı ancak sayfa yenilenemedi. Lütfen sayfayı manuel olarak yenileyin.');
+      }
+    }
+  };
+
   // Variation Type CRUD
   const createVariationType = async (e) => {
     e.preventDefault();
@@ -1265,12 +1465,52 @@ const AdminDashboard = () => {
           <div className="products-content">
             <div className="section-header">
               <h2>Products Management</h2>
-              <button 
-                className="btn btn-primary"
-                onClick={() => document.getElementById('add-product-form').scrollIntoView()}
-              >
-                Add Product
-              </button>
+              <div className="header-actions">
+                <div className="excel-actions">
+                  <button 
+                    className="btn btn-success"
+                    onClick={handleExportProductsExcel}
+                    title="Export all products to Excel (backup)"
+                  >
+                    📊 Backup Excel
+                  </button>
+                  <button 
+                    className="btn btn-info"
+                    onClick={handleDownloadTemplate}
+                    title="Download Excel template for import"
+                  >
+                    📋 Download Template
+                  </button>
+                  <div className="import-excel-wrapper">
+                    <input
+                      type="file"
+                      accept=".xlsx,.xls"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          handleImportProductsExcel(file);
+                          e.target.value = ''; // Reset input
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                      id="excel-import-input"
+                    />
+                    <button 
+                      className="btn btn-warning"
+                      onClick={() => document.getElementById('excel-import-input').click()}
+                      title="Import products from Excel (backup or template)"
+                    >
+                      📥 Restore Excel
+                    </button>
+                  </div>
+                </div>
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => document.getElementById('add-product-form').scrollIntoView()}
+                >
+                  Add Product
+                </button>
+              </div>
             </div>
 
             <div className="products-table">
@@ -2883,6 +3123,27 @@ const AdminDashboard = () => {
               </button>
               <button 
                 type="button"
+                className={`tab-btn ${settingsTab === 'footer' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('footer')}
+              >
+                Footer Settings
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'homepage-products' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('homepage-products')}
+              >
+                Homepage Products
+              </button>
+              <button 
+                type="button"
+                className={`tab-btn ${settingsTab === 'homepage-products2' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('homepage-products2')}
+              >
+                Homepage Products 2
+              </button>
+              <button 
+                type="button"
                 className={`tab-btn ${settingsTab === 'collections' ? 'active' : ''}`}
                 onClick={() => setSettingsTab('collections')}
               >
@@ -2897,13 +3158,6 @@ const AdminDashboard = () => {
               </button>
               <button 
                 type="button"
-                className={`tab-btn ${settingsTab === 'seo' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('seo')}
-              >
-                SEO Settings
-              </button>
-              <button 
-                type="button"
                 className={`tab-btn ${settingsTab === 'business' ? 'active' : ''}`}
                 onClick={() => setSettingsTab('business')}
               >
@@ -2911,24 +3165,17 @@ const AdminDashboard = () => {
               </button>
               <button 
                 type="button"
+                className={`tab-btn ${settingsTab === 'seo' ? 'active' : ''}`}
+                onClick={() => setSettingsTab('seo')}
+              >
+                SEO Settings
+              </button>
+              <button 
+                type="button"
                 className={`tab-btn ${settingsTab === 'features' ? 'active' : ''}`}
                 onClick={() => setSettingsTab('features')}
               >
                 Features
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'footer' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('footer')}
-              >
-                Footer
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'homepage-products' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('homepage-products')}
-              >
-                Homepage Products
               </button>
             </div>
 
@@ -3145,6 +3392,176 @@ const AdminDashboard = () => {
                             placeholder="40"
                           />
                           <small>Between 20-200 pixels</small>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Marquee Settings */}
+                  <div className="settings-divider">
+                    <h4>Header Marquee Settings</h4>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.marquee_enabled}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          marquee_enabled: e.target.checked
+                        }))}
+                      />
+                      Enable header marquee
+                    </label>
+                  </div>
+
+                  {siteSettings.marquee_enabled && (
+                    <>
+                      <div className="form-group">
+                        <label>Marquee Text</label>
+                        <textarea
+                          value={siteSettings.marquee_text}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            marquee_text: e.target.value
+                          }))}
+                          placeholder="Enter marquee text..."
+                          rows="3"
+                          required
+                        />
+                        <small>Text to display in the scrolling marquee</small>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Font Family</label>
+                          <select
+                            value={siteSettings.marquee_font_family}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_font_family: e.target.value
+                            }))}
+                          >
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="Helvetica, sans-serif">Helvetica</option>
+                            <option value="Times New Roman, serif">Times New Roman</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="Verdana, sans-serif">Verdana</option>
+                            <option value="Courier New, monospace">Courier New</option>
+                            <option value="Impact, sans-serif">Impact</option>
+                            <option value="Comic Sans MS, cursive">Comic Sans MS</option>
+                          </select>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Font Size</label>
+                          <input
+                            type="text"
+                            value={siteSettings.marquee_font_size}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_font_size: e.target.value
+                            }))}
+                            placeholder="14px"
+                          />
+                          <small>e.g., 14px, 1.2em, 16pt</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Font Weight</label>
+                          <select
+                            value={siteSettings.marquee_font_weight}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_font_weight: e.target.value
+                            }))}
+                          >
+                            <option value="normal">Normal</option>
+                            <option value="bold">Bold</option>
+                            <option value="lighter">Lighter</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                            <option value="300">300</option>
+                            <option value="400">400</option>
+                            <option value="500">500</option>
+                            <option value="600">600</option>
+                            <option value="700">700</option>
+                            <option value="800">800</option>
+                            <option value="900">900</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Text Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.marquee_color}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_color: e.target.value
+                            }))}
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Background Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.marquee_background_color}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_background_color: e.target.value
+                            }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Scroll Speed (pixels/second)</label>
+                          <input
+                            type="number"
+                            min="10"
+                            max="200"
+                            value={siteSettings.marquee_speed}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_speed: parseInt(e.target.value) || 30
+                            }))}
+                            placeholder="30"
+                          />
+                          <small>Between 10-200 pixels per second</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Scroll Direction</label>
+                          <select
+                            value={siteSettings.marquee_direction}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_direction: e.target.value
+                            }))}
+                          >
+                            <option value="left">Left to Right</option>
+                            <option value="right">Right to Left</option>
+                          </select>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.marquee_pause_on_hover}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                marquee_pause_on_hover: e.target.checked
+                              }))}
+                            />
+                            Pause on hover
+                          </label>
                         </div>
                       </div>
                     </>
@@ -3787,6 +4204,109 @@ const AdminDashboard = () => {
                       placeholder="© 2024 PEBDEQ. All rights reserved."
                     />
                   </div>
+
+                  {/* Footer Logo Settings */}
+                  <div className="settings-divider">
+                    <h4>Footer Logo Settings</h4>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.footer_use_logo || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          footer_use_logo: e.target.checked
+                        }))}
+                      />
+                      Use footer logo (if unchecked, company name will be shown)
+                    </label>
+                  </div>
+
+                  {siteSettings.footer_use_logo && (
+                    <>
+                      <div className="form-group">
+                        <label>Footer Logo</label>
+                        <div className="custom-file-input">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                handleFooterLogoUpload(file);
+                              }
+                            }}
+                            disabled={uploadingFooterLogo}
+                          />
+                          <div className={`custom-file-button ${siteSettings.footer_logo ? 'file-selected' : ''}`}>
+                            {uploadingFooterLogo ? 'Uploading...' : 
+                             siteSettings.footer_logo ? 'Footer logo uploaded' : 
+                             'Choose Footer Logo'}
+                          </div>
+                        </div>
+                        
+                        {siteSettings.footer_logo && (
+                          <div className="logo-preview">
+                            <img 
+                              src={`http://localhost:5005${siteSettings.footer_logo}`} 
+                              alt="Footer Logo" 
+                              style={{ 
+                                width: `${siteSettings.footer_logo_width || 120}px`,
+                                height: `${siteSettings.footer_logo_height || 40}px`,
+                                objectFit: 'contain' 
+                              }}
+                            />
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => setSiteSettings(prev => ({
+                                ...prev,
+                                footer_logo: null
+                              }))}
+                            >
+                              Remove Footer Logo
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Footer Logo Width (pixels)</label>
+                          <input
+                            type="number"
+                            min="20"
+                            max="500"
+                            value={siteSettings.footer_logo_width || 120}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_logo_width: parseInt(e.target.value) || 120
+                            }))}
+                            placeholder="120"
+                          />
+                          <small>Between 20-500 pixels</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Footer Logo Height (pixels)</label>
+                          <input
+                            type="number"
+                            min="20"
+                            max="200"
+                            value={siteSettings.footer_logo_height || 40}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_logo_height: parseInt(e.target.value) || 40
+                            }))}
+                            placeholder="40"
+                          />
+                          <small>Between 20-200 pixels</small>
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <hr />
 
@@ -4559,6 +5079,462 @@ const AdminDashboard = () => {
                           onChange={(e) => setSiteSettings(prev => ({
                             ...prev,
                             homepage_products_show_quick_view: e.target.checked
+                          }))}
+                        />
+                        Show quick view button
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Homepage Products 2 Settings */}
+              {activeTab === 'settings' && settingsTab === 'homepage-products2' && (
+                <div className="settings-section">
+                  <h3>Homepage Products 2 Settings</h3>
+                  <p>Configure the second products section on your homepage</p>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products2_show_section || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_show_section: e.target.checked
+                        }))}
+                      />
+                      Show homepage products 2 section
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Section Title</label>
+                    <input
+                      type="text"
+                      value={siteSettings.homepage_products2_title || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products2_title: e.target.value
+                      }))}
+                      placeholder="Latest Products"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Section Subtitle</label>
+                    <input
+                      type="text"
+                      value={siteSettings.homepage_products2_subtitle || ''}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products2_subtitle: e.target.value
+                      }))}
+                      placeholder="Check out our newest arrivals"
+                    />
+                  </div>
+
+                  <hr />
+
+                  {/* Layout Settings */}
+                  <h4>Layout Settings</h4>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Maximum Rows</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="5"
+                        value={siteSettings.homepage_products2_max_rows || 2}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_max_rows: parseInt(e.target.value) || 2
+                        }))}
+                      />
+                      <small>Number of rows to display (1-5)</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Products Per Row</label>
+                      <input
+                        type="number"
+                        min="2"
+                        max="6"
+                        value={siteSettings.homepage_products2_per_row || 4}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_per_row: parseInt(e.target.value) || 4
+                        }))}
+                      />
+                      <small>Number of products per row (2-6)</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Maximum Items</label>
+                      <input
+                        type="number"
+                        min="4"
+                        max="30"
+                        value={siteSettings.homepage_products2_max_items || 8}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_max_items: parseInt(e.target.value) || 8
+                        }))}
+                      />
+                      <small>Total number of products to show (4-30)</small>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Image Settings */}
+                  <h4>Image Settings</h4>
+                  
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products2_show_images || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_show_images: e.target.checked
+                        }))}
+                      />
+                      Show product images
+                    </label>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Image Width (px)</label>
+                      <input
+                        type="number"
+                        min="100"
+                        max="500"
+                        value={siteSettings.homepage_products2_image_width || 300}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_image_width: parseInt(e.target.value) || 300
+                        }))}
+                      />
+                      <small>Product image width (100-500px)</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Image Height (px)</label>
+                      <input
+                        type="number"
+                        min="100"
+                        max="400"
+                        value={siteSettings.homepage_products2_image_height || 200}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_image_height: parseInt(e.target.value) || 200
+                        }))}
+                      />
+                      <small>Product image height (100-400px)</small>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Button Settings */}
+                  <h4>Button Settings</h4>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_favorite || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_favorite: e.target.checked
+                          }))}
+                        />
+                        Show favorite button
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_buy_now || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_buy_now: e.target.checked
+                          }))}
+                        />
+                        Show buy now button
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_details || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_details: e.target.checked
+                          }))}
+                        />
+                        Show details button
+                      </label>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Information Display */}
+                  <h4>Information Display</h4>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_price || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_price: e.target.checked
+                          }))}
+                        />
+                        Show price
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_original_price || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_original_price: e.target.checked
+                          }))}
+                        />
+                        Show original price
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_stock || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_stock: e.target.checked
+                          }))}
+                        />
+                        Show stock status
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products2_show_category || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_show_category: e.target.checked
+                        }))}
+                      />
+                      Show category name
+                    </label>
+                  </div>
+
+                  <hr />
+
+                  {/* Sorting and Filtering */}
+                  <h4>Sorting and Filtering</h4>
+                  
+                  <div className="form-group">
+                    <label>Sort Products By</label>
+                    <select
+                      value={siteSettings.homepage_products2_sort_by || 'newest'}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products2_sort_by: e.target.value
+                      }))}
+                    >
+                      <option value="featured">Featured Products</option>
+                      <option value="newest">Newest First</option>
+                      <option value="price_low">Price: Low to High</option>
+                      <option value="price_high">Price: High to Low</option>
+                      <option value="name">Name: A to Z</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Filter by Categories</label>
+                    <div className="categories-selection">
+                      {categories.map(category => (
+                        <label key={category.id} className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={(siteSettings.homepage_products2_filter_categories || []).includes(category.id)}
+                            onChange={(e) => {
+                              const currentCategories = siteSettings.homepage_products2_filter_categories || [];
+                              if (e.target.checked) {
+                                setSiteSettings(prev => ({
+                                  ...prev,
+                                  homepage_products2_filter_categories: [...currentCategories, category.id]
+                                }));
+                              } else {
+                                setSiteSettings(prev => ({
+                                  ...prev,
+                                  homepage_products2_filter_categories: currentCategories.filter(id => id !== category.id)
+                                }));
+                              }
+                            }}
+                          />
+                          {category.name}
+                        </label>
+                      ))}
+                    </div>
+                    <small>Leave empty to show all categories</small>
+                  </div>
+
+                  <hr />
+
+                  {/* View All Button */}
+                  <h4>View All Button</h4>
+                  
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={siteSettings.homepage_products2_show_view_all || false}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_show_view_all: e.target.checked
+                        }))}
+                      />
+                      Show "View All Products" button
+                    </label>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Button Text</label>
+                      <input
+                        type="text"
+                        value={siteSettings.homepage_products2_view_all_text || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_view_all_text: e.target.value
+                        }))}
+                        placeholder="View All Products"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Button Link</label>
+                      <input
+                        type="text"
+                        value={siteSettings.homepage_products2_view_all_link || ''}
+                        onChange={(e) => setSiteSettings(prev => ({
+                          ...prev,
+                          homepage_products2_view_all_link: e.target.value
+                        }))}
+                        placeholder="/products"
+                      />
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  {/* Card Style Settings */}
+                  <h4>Card Style Settings</h4>
+                  
+                  <div className="form-group">
+                    <label>Card Style</label>
+                    <select
+                      value={siteSettings.homepage_products2_card_style || 'modern'}
+                      onChange={(e) => setSiteSettings(prev => ({
+                        ...prev,
+                        homepage_products2_card_style: e.target.value
+                      }))}
+                    >
+                      <option value="modern">Modern</option>
+                      <option value="classic">Classic</option>
+                      <option value="minimal">Minimal</option>
+                    </select>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_card_shadow || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_card_shadow: e.target.checked
+                          }))}
+                        />
+                        Show card shadow
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_card_hover_effect || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_card_hover_effect: e.target.checked
+                          }))}
+                        />
+                        Show hover effects
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_badges || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_badges: e.target.checked
+                          }))}
+                        />
+                        Show badges (Featured, New, etc.)
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_rating || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_rating: e.target.checked
+                          }))}
+                        />
+                        Show ratings
+                      </label>
+                    </div>
+
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.homepage_products2_show_quick_view || false}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_show_quick_view: e.target.checked
                           }))}
                         />
                         Show quick view button

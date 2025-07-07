@@ -43,7 +43,35 @@ const Home = () => {
     homepage_products_card_hover_effect: true,
     homepage_products_show_badges: true,
     homepage_products_show_rating: false,
-    homepage_products_show_quick_view: false
+    homepage_products_show_quick_view: false,
+    // Homepage Products 2 Settings
+    homepage_products2_show_section: true,
+    homepage_products2_title: 'Latest Products',
+    homepage_products2_subtitle: 'Check out our newest arrivals',
+    homepage_products2_max_rows: 2,
+    homepage_products2_per_row: 4,
+    homepage_products2_max_items: 8,
+    homepage_products2_show_images: true,
+    homepage_products2_image_height: 200,
+    homepage_products2_image_width: 300,
+    homepage_products2_show_favorite: true,
+    homepage_products2_show_buy_now: true,
+    homepage_products2_show_details: true,
+    homepage_products2_show_price: true,
+    homepage_products2_show_original_price: true,
+    homepage_products2_show_stock: true,
+    homepage_products2_show_category: true,
+    homepage_products2_sort_by: 'newest',
+    homepage_products2_filter_categories: [],
+    homepage_products2_show_view_all: true,
+    homepage_products2_view_all_text: 'View All Products',
+    homepage_products2_view_all_link: '/products',
+    homepage_products2_card_style: 'modern',
+    homepage_products2_card_shadow: true,
+    homepage_products2_card_hover_effect: true,
+    homepage_products2_show_badges: true,
+    homepage_products2_show_rating: false,
+    homepage_products2_show_quick_view: false
   });
 
   const [categories, setCategories] = useState([]);
@@ -148,11 +176,56 @@ const Home = () => {
         });
     }
     
-    // Limit by max items
-    return productsToShow.slice(0, siteSettings.homepage_products_max_items);
+    // Limit by max rows and per row
+    const maxItems = siteSettings.homepage_products_max_rows * siteSettings.homepage_products_per_row;
+    return productsToShow.slice(0, maxItems);
   };
 
   const displayProducts = getDisplayProducts();
+
+  // Get products for second section
+  const getDisplayProducts2 = () => {
+    if (!siteSettings.homepage_products2_show_section) {
+      return [];
+    }
+
+    let productsToShow = products.filter(product => product.is_active);
+    
+    // Filter by categories if specified
+    if (siteSettings.homepage_products2_filter_categories.length > 0) {
+      productsToShow = productsToShow.filter(product => 
+        siteSettings.homepage_products2_filter_categories.includes(product.category_id)
+      );
+    }
+    
+    // Sort products
+    switch (siteSettings.homepage_products2_sort_by) {
+      case 'featured':
+        productsToShow = productsToShow.filter(product => product.is_featured);
+        break;
+      case 'newest':
+        productsToShow.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        break;
+      case 'price_low':
+        productsToShow.sort((a, b) => a.price - b.price);
+        break;
+      case 'price_high':
+        productsToShow.sort((a, b) => b.price - a.price);
+        break;
+      case 'name':
+        productsToShow.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      default:
+        // Default: newest first
+        productsToShow.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+    
+    // Limit by max rows and per row
+    const maxItems = siteSettings.homepage_products2_max_rows * siteSettings.homepage_products2_per_row;
+    return productsToShow.slice(0, maxItems);
+  };
+
+  const displayProducts2 = getDisplayProducts2();
 
   // Get category name by ID
   const getCategoryName = (categoryId) => {
@@ -365,6 +438,129 @@ const Home = () => {
             <div className="view-all-container">
               <a href={siteSettings.homepage_products_view_all_link} className="btn btn-view-all">
                 {siteSettings.homepage_products_view_all_text}
+              </a>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* Homepage Products 2 */}
+      {siteSettings.homepage_products2_show_section && displayProducts2.length > 0 && (
+        <section className="homepage-products-section homepage-products2-section">
+          <div className="section-header">
+            <h2 className="section-title">{siteSettings.homepage_products2_title}</h2>
+            {siteSettings.homepage_products2_subtitle && siteSettings.homepage_products2_subtitle.trim() !== '' && (
+              <p className="section-subtitle">{siteSettings.homepage_products2_subtitle}</p>
+            )}
+          </div>
+          
+          <div 
+            className={`products-grid ${siteSettings.homepage_products2_card_style}`}
+            style={{
+              gridTemplateColumns: `repeat(${siteSettings.homepage_products2_per_row}, 1fr)`,
+              maxWidth: `${siteSettings.homepage_products2_per_row * 300}px`
+            }}
+          >
+            {displayProducts2.map((product) => (
+              <div 
+                key={`product2-${product.id}`} 
+                className={`product-card ${siteSettings.homepage_products2_card_shadow ? 'with-shadow' : ''} ${siteSettings.homepage_products2_card_hover_effect ? 'with-hover' : ''}`}
+              >
+                {/* Product Image */}
+                {siteSettings.homepage_products2_show_images && product.images && product.images.length > 0 && (
+                  <div className="product-image">
+                    <img 
+                      src={`http://localhost:5005${product.images[0]}`} 
+                      alt={product.name}
+                      style={{
+                        width: `${siteSettings.homepage_products2_image_width}px`,
+                        height: `${siteSettings.homepage_products2_image_height}px`,
+                        objectFit: 'cover'
+                      }}
+                    />
+                    
+                    {/* Badges */}
+                    {siteSettings.homepage_products2_show_badges && (
+                      <div className="product-badges">
+                        {product.is_featured && <span className="badge featured">Featured</span>}
+                        {product.original_price && product.original_price > product.price && (
+                          <span className="badge sale">Sale</span>
+                        )}
+                        {product.stock_quantity === 0 && <span className="badge out-of-stock">Out of Stock</span>}
+                      </div>
+                    )}
+                    
+                    {/* Favorite Button */}
+                    {siteSettings.homepage_products2_show_favorite && (
+                      <button 
+                        className="favorite-btn"
+                        onClick={() => handleFavoriteToggle(product.id)}
+                      >
+                        ❤️
+                      </button>
+                    )}
+                  </div>
+                )}
+                
+                {/* Product Info */}
+                <div className="product-info">
+                  {/* Category */}
+                  {siteSettings.homepage_products2_show_category && (
+                    <div className="product-category">
+                      {getCategoryName(product.category_id)}
+                    </div>
+                  )}
+                  
+                  {/* Product Name */}
+                  <h3 className="product-name">{product.name}</h3>
+                  
+                  {/* Price */}
+                  {siteSettings.homepage_products2_show_price && (
+                    <div className="product-price">
+                      <span className="current-price">₺{product.price}</span>
+                      {siteSettings.homepage_products2_show_original_price && product.original_price && product.original_price > product.price && (
+                        <span className="original-price">₺{product.original_price}</span>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Stock Status */}
+                  {siteSettings.homepage_products2_show_stock && (
+                    <div className="product-stock">
+                      {product.stock_quantity > 0 ? (
+                        <span className="in-stock">In Stock ({product.stock_quantity})</span>
+                      ) : (
+                        <span className="out-of-stock">Out of Stock</span>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Buttons */}
+                  <div className="product-buttons">
+                    {siteSettings.homepage_products2_show_details && (
+                      <a href={`/product/${product.slug}`} className="btn btn-details">
+                        Details
+                      </a>
+                    )}
+                    {siteSettings.homepage_products2_show_buy_now && product.stock_quantity > 0 && (
+                      <button 
+                        className="btn btn-buy-now"
+                        onClick={() => handleBuyNow(product)}
+                      >
+                        Buy Now
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* View All Button */}
+          {siteSettings.homepage_products2_show_view_all && (
+            <div className="view-all-container">
+              <a href={siteSettings.homepage_products2_view_all_link} className="btn btn-view-all">
+                {siteSettings.homepage_products2_view_all_text}
               </a>
             </div>
           )}

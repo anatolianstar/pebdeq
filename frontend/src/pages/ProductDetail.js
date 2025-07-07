@@ -57,9 +57,9 @@ const ProductDetail = () => {
       };
 
       await addToCart(cartItem);
-      alert('Ürün sepete eklendi!');
+              alert('Product added to cart!');
     } catch (err) {
-      alert('Sepete eklenirken hata: ' + err.message);
+      alert('Error adding to cart: ' + err.message);
     } finally {
       setAddingToCart(false);
     }

@@ -216,10 +216,10 @@ def init_database():
             # Create sample variation types if they don't exist
             if not VariationType.query.first():
                 variation_types = [
-                    VariationType(name='Renk', slug='renk', description='Ürün renk seçenekleri'),
-                    VariationType(name='Boyut', slug='boyut', description='Ürün boyut seçenekleri'),
-                    VariationType(name='Malzeme', slug='malzeme', description='Ürün malzeme seçenekleri'),
-                    VariationType(name='Stil', slug='stil', description='Ürün stil seçenekleri')
+                    VariationType(name='Color', slug='color', description='Product color options'),
+                    VariationType(name='Size', slug='size', description='Product size options'),
+                    VariationType(name='Material', slug='material', description='Product material options'),
+                    VariationType(name='Style', slug='style', description='Product style options')
                 ]
                 
                 for vtype in variation_types:
@@ -230,15 +230,15 @@ def init_database():
                 
                 # Create sample variation options
                 variation_options = [
-                    # Renk seçenekleri
-                    VariationOption(variation_type_id=1, name='Kırmızı', value='red', hex_color='#FF0000'),
-                    VariationOption(variation_type_id=1, name='Mavi', value='blue', hex_color='#0000FF'),
-                    VariationOption(variation_type_id=1, name='Yeşil', value='green', hex_color='#00FF00'),
-                    VariationOption(variation_type_id=1, name='Sarı', value='yellow', hex_color='#FFFF00'),
-                    VariationOption(variation_type_id=1, name='Siyah', value='black', hex_color='#000000'),
-                    VariationOption(variation_type_id=1, name='Beyaz', value='white', hex_color='#FFFFFF'),
+                    # Color options
+                    VariationOption(variation_type_id=1, name='Red', value='red', hex_color='#FF0000'),
+                    VariationOption(variation_type_id=1, name='Blue', value='blue', hex_color='#0000FF'),
+                    VariationOption(variation_type_id=1, name='Green', value='green', hex_color='#00FF00'),
+                    VariationOption(variation_type_id=1, name='Yellow', value='yellow', hex_color='#FFFF00'),
+                    VariationOption(variation_type_id=1, name='Black', value='black', hex_color='#000000'),
+                    VariationOption(variation_type_id=1, name='White', value='white', hex_color='#FFFFFF'),
                     
-                    # Boyut seçenekleri
+                    # Size options
                     VariationOption(variation_type_id=2, name='XS', value='xs'),
                     VariationOption(variation_type_id=2, name='S', value='small'),
                     VariationOption(variation_type_id=2, name='M', value='medium'),
@@ -246,15 +246,15 @@ def init_database():
                     VariationOption(variation_type_id=2, name='XL', value='xl'),
                     VariationOption(variation_type_id=2, name='XXL', value='xxl'),
                     
-                    # Malzeme seçenekleri
-                    VariationOption(variation_type_id=3, name='Plastik', value='plastic'),
+                    # Material options
+                    VariationOption(variation_type_id=3, name='Plastic', value='plastic'),
                     VariationOption(variation_type_id=3, name='Metal', value='metal'),
-                    VariationOption(variation_type_id=3, name='Ahşap', value='wood'),
-                    VariationOption(variation_type_id=3, name='Cam', value='glass'),
+                    VariationOption(variation_type_id=3, name='Wood', value='wood'),
+                    VariationOption(variation_type_id=3, name='Glass', value='glass'),
                     
-                    # Stil seçenekleri
+                    # Style options
                     VariationOption(variation_type_id=4, name='Modern', value='modern'),
-                    VariationOption(variation_type_id=4, name='Klasik', value='classic'),
+                    VariationOption(variation_type_id=4, name='Classic', value='classic'),
                     VariationOption(variation_type_id=4, name='Vintage', value='vintage'),
                     VariationOption(variation_type_id=4, name='Minimalist', value='minimalist')
                 ]
@@ -314,7 +314,7 @@ def create_default_site_settings():
 if __name__ == '__main__':
     import sys
 
-    # Komut satırı argümanları
+    # Command line arguments
     if len(sys.argv) > 1 and sys.argv[1] == "--reset-db":
         print("⚠️  WARNING: This will delete all data in the database! ⚠️")
         confirm = input("Are you sure you want to reset the database? (y/N): ")

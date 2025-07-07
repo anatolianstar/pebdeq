@@ -389,7 +389,36 @@ def init_database():
                     homepage_products_card_hover_effect=True,
                     homepage_products_show_badges=True,
                     homepage_products_show_rating=False,
-                    homepage_products_show_quick_view=False
+                    homepage_products_show_quick_view=False,
+                    
+                    # Homepage Products 2 Settings
+                    homepage_products2_show_section=True,
+                    homepage_products2_title='Latest Products',
+                    homepage_products2_subtitle='Check out our newest arrivals',
+                    homepage_products2_max_rows=2,
+                    homepage_products2_per_row=4,
+                    homepage_products2_max_items=8,
+                    homepage_products2_show_images=True,
+                    homepage_products2_image_height=200,
+                    homepage_products2_image_width=300,
+                    homepage_products2_show_favorite=True,
+                    homepage_products2_show_buy_now=True,
+                    homepage_products2_show_details=True,
+                    homepage_products2_show_price=True,
+                    homepage_products2_show_original_price=True,
+                    homepage_products2_show_stock=True,
+                    homepage_products2_show_category=True,
+                    homepage_products2_sort_by='newest',
+                    homepage_products2_filter_categories=[],
+                    homepage_products2_show_view_all=True,
+                    homepage_products2_view_all_text='View All Products',
+                    homepage_products2_view_all_link='/products',
+                    homepage_products2_card_style='modern',
+                    homepage_products2_card_shadow=True,
+                    homepage_products2_card_hover_effect=True,
+                    homepage_products2_show_badges=True,
+                    homepage_products2_show_rating=False,
+                    homepage_products2_show_quick_view=False
                 )
                 db.session.add(settings)
                 db.session.commit()

@@ -57,18 +57,18 @@ class Product(db.Model):
     variation_name = db.Column(db.String(100))  # Özel varyasyon adı
     variation_options = db.Column(db.JSON)  # [{name: 'Kırmızı', value: 'red', price_modifier: 0, stock: 10, images: []}]
     
-    # Ürün Özellikleri
-    weight = db.Column(db.String(50))  # Ağırlık bilgisi
-    dimensions = db.Column(db.String(100))  # Boyut bilgisi
-    material = db.Column(db.String(100))  # Malzeme bilgisi
+    # Product Properties
+    weight = db.Column(db.String(50))  # Weight information
+    dimensions = db.Column(db.String(100))  # Size information
+    material = db.Column(db.String(100))  # Material information
     
     # Relationships
     product_variations = db.relationship('ProductVariation', backref='product', lazy=True, cascade='all, delete-orphan')
 
 class VariationType(db.Model):
-    """Varyasyon türleri (örn: Renk, Boyut, Malzeme)"""
+    """Variation types (e.g: Color, Size, Material)"""
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False, unique=True)  # Renk, Boyut, Malzeme
+    name = db.Column(db.String(100), nullable=False, unique=True)  # Color, Size, Material
     slug = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.Text)
     is_active = db.Column(db.Boolean, default=True)
@@ -90,7 +90,7 @@ class VariationOption(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class ProductVariation(db.Model):
-    """Ürün-Varyasyon ilişkisi ve kombinasyonları"""
+    """Product-Variation relationships and combinations"""
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     variation_option1_id = db.Column(db.Integer, db.ForeignKey('variation_option.id'))  # İlk varyasyon
@@ -167,6 +167,18 @@ class SiteSettings(db.Model):
     logo2_width = db.Column(db.Integer, default=120)  # İkinci logo genişliği (piksel)
     logo2_height = db.Column(db.Integer, default=40)  # İkinci logo yüksekliği (piksel)
     
+    # Marquee Settings
+    marquee_enabled = db.Column(db.Boolean, default=False)
+    marquee_text = db.Column(db.Text, default='Welcome to our store! Special offers available now.')
+    marquee_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    marquee_font_size = db.Column(db.String(20), default='14px')
+    marquee_font_weight = db.Column(db.String(20), default='normal')
+    marquee_color = db.Column(db.String(7), default='#ffffff')
+    marquee_background_color = db.Column(db.String(7), default='#ff6b6b')
+    marquee_speed = db.Column(db.Integer, default=30)
+    marquee_direction = db.Column(db.String(10), default='left')  # left, right
+    marquee_pause_on_hover = db.Column(db.Boolean, default=True)
+    
     # Welcome Section Settings
     welcome_title = db.Column(db.String(200), default='Welcome to Pebdeq')
     welcome_subtitle = db.Column(db.String(200), default='Crafted. Vintage. Smart.')
@@ -219,6 +231,10 @@ class SiteSettings(db.Model):
     footer_company_name = db.Column(db.String(100), default='PEBDEQ')
     footer_company_description = db.Column(db.Text, default='Crafted with passion, delivered with precision.')
     footer_copyright_text = db.Column(db.String(200), default='© 2024 PEBDEQ. All rights reserved.')
+    footer_use_logo = db.Column(db.Boolean, default=False)
+    footer_logo = db.Column(db.String(255))  # Footer logo URL'si
+    footer_logo_width = db.Column(db.Integer, default=120)
+    footer_logo_height = db.Column(db.Integer, default=40)
     
     # Footer Support Section
     footer_support_title = db.Column(db.String(100), default='Support')
@@ -279,6 +295,35 @@ class SiteSettings(db.Model):
     homepage_products_show_badges = db.Column(db.Boolean, default=True)
     homepage_products_show_rating = db.Column(db.Boolean, default=False)
     homepage_products_show_quick_view = db.Column(db.Boolean, default=False)
+    
+    # Homepage Products 2 Settings
+    homepage_products2_show_section = db.Column(db.Boolean, default=True)
+    homepage_products2_title = db.Column(db.String(200), default='Latest Products')
+    homepage_products2_subtitle = db.Column(db.String(200), default='Check out our newest arrivals')
+    homepage_products2_max_rows = db.Column(db.Integer, default=2)
+    homepage_products2_per_row = db.Column(db.Integer, default=4)
+    homepage_products2_max_items = db.Column(db.Integer, default=8)
+    homepage_products2_show_images = db.Column(db.Boolean, default=True)
+    homepage_products2_image_height = db.Column(db.Integer, default=200)
+    homepage_products2_image_width = db.Column(db.Integer, default=300)
+    homepage_products2_show_favorite = db.Column(db.Boolean, default=True)
+    homepage_products2_show_buy_now = db.Column(db.Boolean, default=True)
+    homepage_products2_show_details = db.Column(db.Boolean, default=True)
+    homepage_products2_show_price = db.Column(db.Boolean, default=True)
+    homepage_products2_show_original_price = db.Column(db.Boolean, default=True)
+    homepage_products2_show_stock = db.Column(db.Boolean, default=True)
+    homepage_products2_show_category = db.Column(db.Boolean, default=True)
+    homepage_products2_sort_by = db.Column(db.String(50), default='newest')  # featured, newest, price_low, price_high, name
+    homepage_products2_filter_categories = db.Column(db.JSON, default=lambda: [])
+    homepage_products2_show_view_all = db.Column(db.Boolean, default=True)
+    homepage_products2_view_all_text = db.Column(db.String(100), default='View All Products')
+    homepage_products2_view_all_link = db.Column(db.String(255), default='/products')
+    homepage_products2_card_style = db.Column(db.String(50), default='modern')  # modern, classic, minimal
+    homepage_products2_card_shadow = db.Column(db.Boolean, default=True)
+    homepage_products2_card_hover_effect = db.Column(db.Boolean, default=True)
+    homepage_products2_show_badges = db.Column(db.Boolean, default=True)
+    homepage_products2_show_rating = db.Column(db.Boolean, default=False)
+    homepage_products2_show_quick_view = db.Column(db.Boolean, default=False)
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

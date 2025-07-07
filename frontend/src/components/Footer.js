@@ -191,7 +191,22 @@ const Footer = () => {
           {/* Follow Us Section - Top Center */}
           <div className="footer-social-section">
             <div className="footer-section">
-              <h3>{footerSettings.footer_company_name || 'PEBDEQ'}</h3>
+              {footerSettings.footer_use_logo && footerSettings.footer_logo ? (
+                <div className="footer-logo-container">
+                  <img 
+                    src={`http://localhost:5005${footerSettings.footer_logo}`} 
+                    alt={footerSettings.footer_company_name || 'Company Logo'} 
+                    style={{
+                      width: `${footerSettings.footer_logo_width || 120}px`,
+                      height: `${footerSettings.footer_logo_height || 40}px`,
+                      objectFit: 'contain',
+                      marginBottom: '1rem'
+                    }}
+                  />
+                </div>
+              ) : (
+                <h3>{footerSettings.footer_company_name || 'PEBDEQ'}</h3>
+              )}
               <p>{footerSettings.footer_company_description || 'Crafted with passion, delivered with precision.'}</p>
             </div>
             {renderSocialLinks()}

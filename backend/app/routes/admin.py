@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, send_from_directory
+from flask import Blueprint, request, jsonify, send_from_directory, send_file
 from app.models.models import Product, Category, Order, User, ContactMessage, BlogPost, VariationType, VariationOption, ProductVariation, SiteSettings
 from app import db
 import jwt
@@ -7,6 +7,9 @@ from functools import wraps
 from werkzeug.utils import secure_filename
 import uuid
 from datetime import datetime
+import pandas as pd
+from io import BytesIO
+import tempfile
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -838,7 +841,17 @@ def get_site_settings():
                 'site_logo2': settings.site_logo2,
                 'use_logo2': settings.use_logo2,
                 'logo2_width': settings.logo2_width,
-                'logo2_height': settings.logo2_height
+                'logo2_height': settings.logo2_height,
+                'marquee_enabled': settings.marquee_enabled,
+                'marquee_text': settings.marquee_text,
+                'marquee_font_family': settings.marquee_font_family,
+                'marquee_font_size': settings.marquee_font_size,
+                'marquee_font_weight': settings.marquee_font_weight,
+                'marquee_color': settings.marquee_color,
+                'marquee_background_color': settings.marquee_background_color,
+                'marquee_speed': settings.marquee_speed,
+                'marquee_direction': settings.marquee_direction,
+                'marquee_pause_on_hover': settings.marquee_pause_on_hover
             },
             # Welcome Section
             'welcome_section': {
@@ -899,6 +912,10 @@ def get_site_settings():
                 'footer_company_name': settings.footer_company_name,
                 'footer_company_description': settings.footer_company_description,
                 'footer_copyright_text': settings.footer_copyright_text,
+                'footer_use_logo': settings.footer_use_logo,
+                'footer_logo': settings.footer_logo,
+                'footer_logo_width': settings.footer_logo_width,
+                'footer_logo_height': settings.footer_logo_height,
                 'footer_support_title': settings.footer_support_title,
                 'footer_support_show_section': settings.footer_support_show_section,
                 'footer_support_links': settings.footer_support_links,
@@ -942,6 +959,36 @@ def get_site_settings():
                 'homepage_products_show_badges': settings.homepage_products_show_badges,
                 'homepage_products_show_rating': settings.homepage_products_show_rating,
                 'homepage_products_show_quick_view': settings.homepage_products_show_quick_view
+            },
+            # Homepage Products 2 Settings
+            'homepage_products2_settings': {
+                'homepage_products2_show_section': settings.homepage_products2_show_section,
+                'homepage_products2_title': settings.homepage_products2_title,
+                'homepage_products2_subtitle': settings.homepage_products2_subtitle,
+                'homepage_products2_max_rows': settings.homepage_products2_max_rows,
+                'homepage_products2_per_row': settings.homepage_products2_per_row,
+                'homepage_products2_max_items': settings.homepage_products2_max_items,
+                'homepage_products2_show_images': settings.homepage_products2_show_images,
+                'homepage_products2_image_height': settings.homepage_products2_image_height,
+                'homepage_products2_image_width': settings.homepage_products2_image_width,
+                'homepage_products2_show_favorite': settings.homepage_products2_show_favorite,
+                'homepage_products2_show_buy_now': settings.homepage_products2_show_buy_now,
+                'homepage_products2_show_details': settings.homepage_products2_show_details,
+                'homepage_products2_show_price': settings.homepage_products2_show_price,
+                'homepage_products2_show_original_price': settings.homepage_products2_show_original_price,
+                'homepage_products2_show_stock': settings.homepage_products2_show_stock,
+                'homepage_products2_show_category': settings.homepage_products2_show_category,
+                'homepage_products2_sort_by': settings.homepage_products2_sort_by,
+                'homepage_products2_filter_categories': settings.homepage_products2_filter_categories,
+                'homepage_products2_show_view_all': settings.homepage_products2_show_view_all,
+                'homepage_products2_view_all_text': settings.homepage_products2_view_all_text,
+                'homepage_products2_view_all_link': settings.homepage_products2_view_all_link,
+                'homepage_products2_card_style': settings.homepage_products2_card_style,
+                'homepage_products2_card_shadow': settings.homepage_products2_card_shadow,
+                'homepage_products2_card_hover_effect': settings.homepage_products2_card_hover_effect,
+                'homepage_products2_show_badges': settings.homepage_products2_show_badges,
+                'homepage_products2_show_rating': settings.homepage_products2_show_rating,
+                'homepage_products2_show_quick_view': settings.homepage_products2_show_quick_view
             }
         })
     
@@ -979,6 +1026,28 @@ def update_site_settings():
             settings.logo2_width = data['logo2_width']
         if 'logo2_height' in data:
             settings.logo2_height = data['logo2_height']
+        
+        # Marquee settings
+        if 'marquee_enabled' in data:
+            settings.marquee_enabled = data['marquee_enabled']
+        if 'marquee_text' in data:
+            settings.marquee_text = data['marquee_text']
+        if 'marquee_font_family' in data:
+            settings.marquee_font_family = data['marquee_font_family']
+        if 'marquee_font_size' in data:
+            settings.marquee_font_size = data['marquee_font_size']
+        if 'marquee_font_weight' in data:
+            settings.marquee_font_weight = data['marquee_font_weight']
+        if 'marquee_color' in data:
+            settings.marquee_color = data['marquee_color']
+        if 'marquee_background_color' in data:
+            settings.marquee_background_color = data['marquee_background_color']
+        if 'marquee_speed' in data:
+            settings.marquee_speed = data['marquee_speed']
+        if 'marquee_direction' in data:
+            settings.marquee_direction = data['marquee_direction']
+        if 'marquee_pause_on_hover' in data:
+            settings.marquee_pause_on_hover = data['marquee_pause_on_hover']
         
         # Welcome section settings
         if 'welcome_title' in data:
@@ -1071,6 +1140,14 @@ def update_site_settings():
             settings.footer_company_description = data['footer_company_description']
         if 'footer_copyright_text' in data:
             settings.footer_copyright_text = data['footer_copyright_text']
+        if 'footer_use_logo' in data:
+            settings.footer_use_logo = data['footer_use_logo']
+        if 'footer_logo' in data:
+            settings.footer_logo = data['footer_logo']
+        if 'footer_logo_width' in data:
+            settings.footer_logo_width = data['footer_logo_width']
+        if 'footer_logo_height' in data:
+            settings.footer_logo_height = data['footer_logo_height']
         
         # Footer Support Section
         if 'footer_support_title' in data:
@@ -1161,6 +1238,62 @@ def update_site_settings():
             settings.homepage_products_show_rating = data['homepage_products_show_rating']
         if 'homepage_products_show_quick_view' in data:
             settings.homepage_products_show_quick_view = data['homepage_products_show_quick_view']
+        
+        # Homepage Products 2 Settings
+        if 'homepage_products2_show_section' in data:
+            settings.homepage_products2_show_section = data['homepage_products2_show_section']
+        if 'homepage_products2_title' in data:
+            settings.homepage_products2_title = data['homepage_products2_title']
+        if 'homepage_products2_subtitle' in data:
+            settings.homepage_products2_subtitle = data['homepage_products2_subtitle']
+        if 'homepage_products2_max_rows' in data:
+            settings.homepage_products2_max_rows = data['homepage_products2_max_rows']
+        if 'homepage_products2_per_row' in data:
+            settings.homepage_products2_per_row = data['homepage_products2_per_row']
+        if 'homepage_products2_max_items' in data:
+            settings.homepage_products2_max_items = data['homepage_products2_max_items']
+        if 'homepage_products2_show_images' in data:
+            settings.homepage_products2_show_images = data['homepage_products2_show_images']
+        if 'homepage_products2_image_height' in data:
+            settings.homepage_products2_image_height = data['homepage_products2_image_height']
+        if 'homepage_products2_image_width' in data:
+            settings.homepage_products2_image_width = data['homepage_products2_image_width']
+        if 'homepage_products2_show_favorite' in data:
+            settings.homepage_products2_show_favorite = data['homepage_products2_show_favorite']
+        if 'homepage_products2_show_buy_now' in data:
+            settings.homepage_products2_show_buy_now = data['homepage_products2_show_buy_now']
+        if 'homepage_products2_show_details' in data:
+            settings.homepage_products2_show_details = data['homepage_products2_show_details']
+        if 'homepage_products2_show_price' in data:
+            settings.homepage_products2_show_price = data['homepage_products2_show_price']
+        if 'homepage_products2_show_original_price' in data:
+            settings.homepage_products2_show_original_price = data['homepage_products2_show_original_price']
+        if 'homepage_products2_show_stock' in data:
+            settings.homepage_products2_show_stock = data['homepage_products2_show_stock']
+        if 'homepage_products2_show_category' in data:
+            settings.homepage_products2_show_category = data['homepage_products2_show_category']
+        if 'homepage_products2_sort_by' in data:
+            settings.homepage_products2_sort_by = data['homepage_products2_sort_by']
+        if 'homepage_products2_filter_categories' in data:
+            settings.homepage_products2_filter_categories = data['homepage_products2_filter_categories']
+        if 'homepage_products2_show_view_all' in data:
+            settings.homepage_products2_show_view_all = data['homepage_products2_show_view_all']
+        if 'homepage_products2_view_all_text' in data:
+            settings.homepage_products2_view_all_text = data['homepage_products2_view_all_text']
+        if 'homepage_products2_view_all_link' in data:
+            settings.homepage_products2_view_all_link = data['homepage_products2_view_all_link']
+        if 'homepage_products2_card_style' in data:
+            settings.homepage_products2_card_style = data['homepage_products2_card_style']
+        if 'homepage_products2_card_shadow' in data:
+            settings.homepage_products2_card_shadow = data['homepage_products2_card_shadow']
+        if 'homepage_products2_card_hover_effect' in data:
+            settings.homepage_products2_card_hover_effect = data['homepage_products2_card_hover_effect']
+        if 'homepage_products2_show_badges' in data:
+            settings.homepage_products2_show_badges = data['homepage_products2_show_badges']
+        if 'homepage_products2_show_rating' in data:
+            settings.homepage_products2_show_rating = data['homepage_products2_show_rating']
+        if 'homepage_products2_show_quick_view' in data:
+            settings.homepage_products2_show_quick_view = data['homepage_products2_show_quick_view']
         
         db.session.commit()
         
@@ -1259,6 +1392,38 @@ def upload_welcome_background():
             return jsonify({
                 'message': 'Welcome background uploaded successfully',
                 'background_url': f'/uploads/site/{filename}'
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid file type'}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/upload/footer-logo', methods=['POST'])
+@admin_required
+def upload_footer_logo():
+    try:
+        create_upload_folders()
+        
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file selected'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if file and allowed_file(file.filename, 'image'):
+            filename = generate_unique_filename(file.filename)
+            file_path = os.path.join('uploads', 'site', filename)
+            
+            # Create site upload directory if it doesn't exist
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            file.save(file_path)
+            
+            return jsonify({
+                'message': 'Footer logo uploaded successfully',
+                'logo_url': f'/uploads/site/{filename}'
             }), 200
         else:
             return jsonify({'error': 'Invalid file type'}), 400
@@ -1644,4 +1809,353 @@ def update_feature_settings():
     
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500 
+        return jsonify({'error': str(e)}), 500
+
+# Excel Export/Import Endpoints
+
+@admin_bp.route('/products/export-excel', methods=['GET'])
+@admin_required
+def export_products_excel():
+    """Export all products to Excel file"""
+    try:
+        products = Product.query.all()
+        
+        # Prepare data for Excel - ordered for better readability
+        data = []
+        for product in products:
+            data.append({
+                'ID': product.id,
+                'Name': product.name,
+                'Slug': product.slug,
+                'Description': product.description,
+                'Price': product.price,
+                'Original Price': product.original_price,
+                'Stock Quantity': product.stock_quantity,
+                'Category ID': product.category_id,
+                'Category Name': product.category.name if product.category else '',
+                'Images': ','.join(product.images) if product.images else '',
+                'Video URL': product.video_url or '',
+                'Is Featured': 'TRUE' if product.is_featured else 'FALSE',
+                'Is Active': 'TRUE' if product.is_active else 'FALSE',
+                'Has Variations': 'TRUE' if product.has_variations else 'FALSE',
+                'Variation Type': product.variation_type or '',
+                'Variation Name': product.variation_name or '',
+                'Weight': product.weight or '',
+                'Dimensions': product.dimensions or '',
+                'Material': product.material or '',
+                'Created At': product.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'Updated At': product.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        
+        # Get categories for reference
+        categories = Category.query.filter_by(is_active=True).all()
+        categories_data = []
+        for cat in categories:
+            categories_data.append({
+                'ID': cat.id,
+                'Name': cat.name,
+                'Slug': cat.slug
+            })
+        
+        # Create Excel file in memory
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # Main products sheet
+            df = pd.DataFrame(data)
+            df.to_excel(writer, index=False, sheet_name='Products')
+            
+            # Categories reference sheet
+            df_categories = pd.DataFrame(categories_data)
+            df_categories.to_excel(writer, index=False, sheet_name='Categories Reference')
+            
+            # Instructions sheet
+            instructions = pd.DataFrame([
+                {'Instructions': 'This file contains exported product data'},
+                {'Instructions': 'You can edit and re-import this file'},
+                {'Instructions': '1. Edit data in Products sheet'},
+                {'Instructions': '2. If ID column exists = update, if not = create new product'},
+                {'Instructions': '3. Use Categories Reference sheet for Category ID values'},
+                {'Instructions': '4. For multiple images, separate with commas in Images column'},
+                {'Instructions': '5. Use TRUE/FALSE for boolean fields'},
+                {'Instructions': '6. Created At and Updated At columns are auto-updated'},
+                {'Instructions': '7. Category Name column is for reference only, not used in import'},
+                {'Instructions': '8. Save file and upload via admin panel'}
+            ])
+            instructions.to_excel(writer, index=False, sheet_name='Instructions')
+        
+        output.seek(0)
+        
+        # Generate filename with timestamp
+        filename = f"products_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/products/export-template', methods=['GET'])
+@admin_required
+def export_products_template():
+    """Export empty template for product import"""
+    try:
+        # Get categories for reference
+        categories = Category.query.filter_by(is_active=True).all()
+        
+        # Create empty template with headers and sample data
+        template_data = [{
+            'Name': 'Sample Product Name',
+            'Slug': 'sample-product-name',
+            'Description': 'Product description here',
+            'Price': 29.99,
+            'Original Price': 39.99,
+            'Stock Quantity': 10,
+            'Category ID': categories[0].id if categories else 1,
+            'Images': '/images/sample1.jpg,/images/sample2.jpg',
+            'Video URL': '',
+            'Is Featured': 'FALSE',
+            'Is Active': 'TRUE',
+            'Has Variations': 'FALSE',
+            'Variation Type': '',
+            'Variation Name': '',
+            'Weight': '',
+            'Dimensions': '',
+            'Material': ''
+        }]
+        
+        # Create categories sheet data
+        categories_data = []
+        for cat in categories:
+            categories_data.append({
+                'ID': cat.id,
+                'Name': cat.name,
+                'Slug': cat.slug
+            })
+        
+        # Create Excel file in memory
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # Products template sheet
+            df_template = pd.DataFrame(template_data)
+            df_template.to_excel(writer, index=False, sheet_name='Products Template')
+            
+            # Categories reference sheet
+            df_categories = pd.DataFrame(categories_data)
+            df_categories.to_excel(writer, index=False, sheet_name='Categories Reference')
+            
+            # Instructions sheet
+            instructions = pd.DataFrame([
+                {'Instructions': 'Use this file for bulk product upload'},
+                {'Instructions': '1. Delete sample row from Products Template sheet'},
+                {'Instructions': '2. Fill in product information'},
+                {'Instructions': '3. Use Categories Reference sheet for Category ID values'},
+                {'Instructions': '4. For multiple images, separate with commas in Images column'},
+                {'Instructions': '5. Use TRUE/FALSE for boolean fields'},
+                {'Instructions': '6. Save file and upload via admin panel'}
+            ])
+            instructions.to_excel(writer, index=False, sheet_name='Instructions')
+        
+        output.seek(0)
+        
+        filename = f"products_import_template_{datetime.now().strftime('%Y%m%d')}.xlsx"
+        
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/products/import-excel', methods=['POST'])
+@admin_required
+def import_products_excel():
+    """Import products from Excel file"""
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file uploaded'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if not file.filename.endswith(('.xlsx', '.xls')):
+            return jsonify({'error': 'File must be Excel format (.xlsx or .xls)'}), 400
+        
+        # Try to read Excel file - support both export and template formats
+        df = None
+        sheet_name = None
+        
+        try:
+            # First try to read as export format (Products sheet)
+            df = pd.read_excel(file, sheet_name='Products')
+            sheet_name = 'Products'
+        except:
+            try:
+                # Then try template format (Products Template sheet)
+                df = pd.read_excel(file, sheet_name='Products Template')
+                sheet_name = 'Products Template'
+            except:
+                # Finally try first sheet
+                df = pd.read_excel(file, sheet_name=0)
+                sheet_name = 'First Sheet'
+        
+        if df is None:
+            return jsonify({'error': 'Could not read Excel file'}), 400
+        
+        success_count = 0
+        error_count = 0
+        errors = []
+        updated_count = 0
+        
+        for index, row in df.iterrows():
+            try:
+                # Validate required fields
+                if pd.isna(row['Name']) or pd.isna(row['Price']):
+                    errors.append(f"Row {index + 2}: Name and Price are required")
+                    error_count += 1
+                    continue
+                
+                # Check if category exists
+                category = Category.query.get(row['Category ID'])
+                if not category:
+                    errors.append(f"Row {index + 2}: Category ID {row['Category ID']} not found")
+                    error_count += 1
+                    continue
+                
+                # Process images
+                images = []
+                if not pd.isna(row['Images']) and row['Images']:
+                    images = [img.strip() for img in str(row['Images']).split(',')]
+                
+                # Helper function to convert string boolean to actual boolean
+                def str_to_bool(value):
+                    if pd.isna(value):
+                        return False
+                    if isinstance(value, bool):
+                        return value
+                    if isinstance(value, str):
+                        return value.upper() in ['TRUE', '1', 'YES', 'Y']
+                    return bool(value)
+                
+                # Helper function to generate unique slug
+                def generate_unique_slug(base_slug, product_id=None):
+                    slug = base_slug
+                    counter = 1
+                    while True:
+                        # Check if slug exists (excluding current product if updating)
+                        query = Product.query.filter_by(slug=slug)
+                        if product_id:
+                            query = query.filter(Product.id != product_id)
+                        
+                        if not query.first():
+                            return slug
+                        
+                        slug = f"{base_slug}-{counter}"
+                        counter += 1
+                
+                # Check if this is an update (has ID) or new product
+                product_id = None
+                if 'ID' in row and not pd.isna(row['ID']):
+                    product_id = int(row['ID'])
+                    product = Product.query.get(product_id)
+                    if product:
+                        # Update existing product
+                        product.name = str(row['Name'])
+                        # Generate unique slug for update
+                        base_slug = str(row['Slug']) if not pd.isna(row['Slug']) else str(row['Name']).lower().replace(' ', '-')
+                        product.slug = generate_unique_slug(base_slug, product.id)
+                        product.description = str(row['Description']) if not pd.isna(row['Description']) else ''
+                        product.price = float(row['Price'])
+                        product.original_price = float(row['Original Price']) if not pd.isna(row['Original Price']) else None
+                        product.stock_quantity = int(row['Stock Quantity']) if not pd.isna(row['Stock Quantity']) else 0
+                        product.category_id = int(row['Category ID'])
+                        product.images = images
+                        product.video_url = str(row['Video URL']) if not pd.isna(row['Video URL']) else None
+                        product.is_featured = str_to_bool(row['Is Featured'])
+                        product.is_active = str_to_bool(row['Is Active']) if not pd.isna(row['Is Active']) else True
+                        product.has_variations = str_to_bool(row['Has Variations'])
+                        product.variation_type = str(row['Variation Type']) if not pd.isna(row['Variation Type']) else ''
+                        product.variation_name = str(row['Variation Name']) if not pd.isna(row['Variation Name']) else ''
+                        product.weight = str(row['Weight']) if not pd.isna(row['Weight']) else ''
+                        product.dimensions = str(row['Dimensions']) if not pd.isna(row['Dimensions']) else ''
+                        product.material = str(row['Material']) if not pd.isna(row['Material']) else ''
+                        
+                        updated_count += 1
+                        continue
+                
+                # Create new product
+                # Generate unique slug for new product
+                base_slug = str(row['Slug']) if not pd.isna(row['Slug']) else str(row['Name']).lower().replace(' ', '-')
+                unique_slug = generate_unique_slug(base_slug)
+                
+                product = Product(
+                    name=str(row['Name']),
+                    slug=unique_slug,
+                    description=str(row['Description']) if not pd.isna(row['Description']) else '',
+                    price=float(row['Price']),
+                    original_price=float(row['Original Price']) if not pd.isna(row['Original Price']) else None,
+                    stock_quantity=int(row['Stock Quantity']) if not pd.isna(row['Stock Quantity']) else 0,
+                    category_id=int(row['Category ID']),
+                    images=images,
+                    video_url=str(row['Video URL']) if not pd.isna(row['Video URL']) else None,
+                    is_featured=str_to_bool(row['Is Featured']),
+                    is_active=str_to_bool(row['Is Active']) if not pd.isna(row['Is Active']) else True,
+                    has_variations=str_to_bool(row['Has Variations']),
+                    variation_type=str(row['Variation Type']) if not pd.isna(row['Variation Type']) else '',
+                    variation_name=str(row['Variation Name']) if not pd.isna(row['Variation Name']) else '',
+                    weight=str(row['Weight']) if not pd.isna(row['Weight']) else '',
+                    dimensions=str(row['Dimensions']) if not pd.isna(row['Dimensions']) else '',
+                    material=str(row['Material']) if not pd.isna(row['Material']) else ''
+                )
+                
+                db.session.add(product)
+                success_count += 1
+                
+            except Exception as e:
+                errors.append(f"Row {index + 2}: {str(e)}")
+                error_count += 1
+                # Rollback session on error to prevent further issues
+                db.session.rollback()
+        
+        # Commit successful imports
+        try:
+            if success_count > 0 or updated_count > 0:
+                db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': f'Database commit failed: {str(e)}'}), 500
+        
+        # Create a more detailed message
+        if success_count > 0 and updated_count > 0:
+            message = f'✅ Excel import tamamlandı: {success_count} yeni ürün eklendi, {updated_count} ürün güncellendi'
+        elif success_count > 0:
+            message = f'✅ Excel import tamamlandı: {success_count} yeni ürün eklendi'
+        elif updated_count > 0:
+            message = f'✅ Excel import tamamlandı: {updated_count} ürün güncellendi'
+        else:
+            message = f'⚠️ Excel import tamamlandı ancak hiç ürün işlenemedi'
+        
+        if error_count > 0:
+            message += f' ({error_count} hata)'
+        
+        if sheet_name:
+            message += f' - Kaynak: {sheet_name}'
+        
+        return jsonify({
+            'message': message,
+            'success_count': success_count,
+            'updated_count': updated_count,
+            'error_count': error_count,
+            'errors': errors[:10]  # Limit to first 10 errors
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
