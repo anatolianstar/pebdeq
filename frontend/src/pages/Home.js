@@ -11,6 +11,7 @@ const Home = () => {
     welcome_button_text: 'Explore Products',
     welcome_button_link: '/products',
     welcome_button_color: '#00b894',
+    homepage_background_color: '#ffffff',
     collections_title: 'Our Collections',
     collections_show_categories: [],
     collections_categories_per_row: 4,
@@ -246,7 +247,12 @@ const Home = () => {
   };
 
   return (
-    <div className="home-container">
+    <div 
+      className="home-container"
+      style={{
+        backgroundColor: siteSettings.homepage_background_color || '#ffffff'
+      }}
+    >
 
       {/* Hero */}
       <section 
@@ -276,7 +282,12 @@ const Home = () => {
 
       {/* Categories */}
       {siteSettings.collections_show_section && displayCategories.length > 0 && (
-        <section className="category-section">
+        <section 
+          className="category-section"
+          style={{
+            backgroundColor: siteSettings.homepage_background_color || '#ffffff'
+          }}
+        >
           <h2 className="section-title">{siteSettings.collections_title}</h2>
           <div 
             className="category-grid"
@@ -323,7 +334,12 @@ const Home = () => {
 
       {/* Homepage Products */}
       {siteSettings.homepage_products_show_section && displayProducts.length > 0 && (
-        <section className="homepage-products-section">
+        <section 
+          className="homepage-products-section"
+          style={{
+            backgroundColor: siteSettings.homepage_background_color || '#f8f9fa'
+          }}
+        >
           <div className="section-header">
             <h2 className="section-title">{siteSettings.homepage_products_title}</h2>
             {siteSettings.homepage_products_subtitle && siteSettings.homepage_products_subtitle.trim() !== '' && (
@@ -446,7 +462,12 @@ const Home = () => {
 
       {/* Homepage Products 2 */}
       {siteSettings.homepage_products2_show_section && displayProducts2.length > 0 && (
-        <section className="homepage-products-section homepage-products2-section">
+        <section 
+          className="homepage-products-section homepage-products2-section"
+          style={{
+            backgroundColor: siteSettings.homepage_background_color || '#ffffff'
+          }}
+        >
           <div className="section-header">
             <h2 className="section-title">{siteSettings.homepage_products2_title}</h2>
             {siteSettings.homepage_products2_subtitle && siteSettings.homepage_products2_subtitle.trim() !== '' && (

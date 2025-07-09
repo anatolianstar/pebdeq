@@ -242,6 +242,9 @@ class SiteSettings(db.Model):
     welcome_button_link = db.Column(db.String(255), default='/products')
     welcome_button_color = db.Column(db.String(7), default='#00b894')  # Buton rengi (hex)
     
+    # Homepage General Settings
+    homepage_background_color = db.Column(db.String(7), default='#ffffff')  # Ana sayfa arka plan rengi
+    
     # Collections Section Settings
     collections_title = db.Column(db.String(200), default='Our Collections')
     collections_show_categories = db.Column(db.JSON, default=lambda: [])  # Gösterilecek kategori ID'leri
@@ -379,6 +382,7 @@ class SiteSettings(db.Model):
     homepage_products2_show_quick_view = db.Column(db.Boolean, default=False)
     
     # Products Page Settings
+    products_page_background_color = db.Column(db.String(7), default='#ffffff')  # Products sayfa arka plan rengi
     products_page_per_row = db.Column(db.Integer, default=4)
     products_page_max_items_per_page = db.Column(db.Integer, default=12)
     products_page_show_images = db.Column(db.Boolean, default=True)

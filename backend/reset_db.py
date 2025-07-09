@@ -1,520 +1,201 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
 """
 Database Reset Script
-
-Bu script veritabanını tamamen sıfırlar ve örnek verileri yeniden oluşturur.
-Dikkat: Tüm mevcut veriler silinecektir!
-
-Kullanım:
-    python reset_db.py
+Bu script veritabanını sıfırlar ve backup'tan ayarları geri yükler
 """
 
-from app import create_app, db
-from app.models.models import User, Category, Product, Order, OrderItem, BlogPost, ContactMessage, VariationType, VariationOption, ProductVariation, SiteSettings
 import os
-from dotenv import load_dotenv
+import sys
+from datetime import datetime
 
-load_dotenv()
+# Add the project root to the Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-app = create_app()
+from app import create_app, db
+from app.models.models import User, Product, Category, Order, OrderItem, SiteSettings
+from backup_current_settings import CURRENT_SETTINGS_BACKUP
 
 def reset_database():
-    """Reset the database by dropping all tables and recreating them"""
-    try:
-        with app.app_context():
-            print("Dropping all tables...")
-            db.drop_all()
-            print("All tables dropped successfully!")
-
-            print("Recreating all tables...")
-            db.create_all()
-            print("All tables recreated successfully!")
-    except Exception as e:
-        print(f"Error resetting database: {e}")
-
-def init_database():
-    """Initialize database with sample data"""
-    try:
-        with app.app_context():
-            # Create sample categories if they don't existh
-            if not Category.query.first():
-                categories = [
-                    Category(
-                        name='3D Print', 
-                        slug='3d-print', 
-                        description='Custom 3D printed items and prototypes',
-                        background_color='#667eea'
-                    ),
-                    Category(
-                        name='Tools', 
-                        slug='tools', 
-                        description='Second-hand tools and equipment',
-                        background_color='#f093fb'
-                    ),
-                    Category(
-                        name='Vintage Light Bulbs', 
-                        slug='vintage-bulbs', 
-                        description='Antique and vintage light bulbs',
-                        background_color='#ffecd2'
-                    ),
-                    Category(
-                        name='Laser Engraving', 
-                        slug='laser-engraving', 
-                        description='Custom laser engraving services',
-                        background_color='#a8edea'
-                    )
-                ]
-
-                for category in categories:
-                    db.session.add(category)
-
-                db.session.commit()
-                print("Sample categories created!")
-
-            # Create sample products if they don't exist
-            if not Product.query.first():
-                products = [
-                    # 3D Print products
-                    Product(
-                        name='Custom 3D Printed Miniature',
-                        slug='custom-3d-printed-miniature',
-                        description='High-quality custom 3D printed miniature figures for gaming, collectibles, or personal use.',
-                        price=25.99,
-                        original_price=35.99,
-                        stock_quantity=15,
-                        category_id=1,
-                        is_featured=True,
-                        images=['/images/3d-miniature.jpg']
-                    ),
-                    Product(
-                        name='3D Printed Phone Case',
-                        slug='3d-printed-phone-case',
-                        description='Durable and stylish 3D printed phone case with custom designs.',
-                        price=12.99,
-                        stock_quantity=25,
-                        category_id=1,
-                        images=['/images/phone-case.jpg']
-                    ),
-                    Product(
-                        name='Architectural Model Prototype',
-                        slug='architectural-model-prototype',
-                        description='Precision 3D printed architectural models for presentations and planning.',
-                        price=89.99,
-                        stock_quantity=8,
-                        category_id=1,
-                        images=['/images/arch-model.jpg']
-                    ),
-
-                    # Tools products
-                    Product(
-                        name='Vintage Hammer Set',
-                        slug='vintage-hammer-set',
-                        description='Well-maintained vintage hammer set with wooden handles. Perfect for collectors.',
-                        price=45.00,
-                        original_price=65.00,
-                        stock_quantity=5,
-                        category_id=2,
-                        is_featured=True,
-                        images=['/images/hammer-set.jpg']
-                    ),
-                    Product(
-                        name='Antique Drill Press',
-                        slug='antique-drill-press',
-                        description='Restored antique drill press from the 1950s. Fully functional and ready to use.',
-                        price=250.00,
-                        stock_quantity=2,
-                        category_id=2,
-                        images=['/images/drill-press.jpg']
-                    ),
-                    Product(
-                        name='Hand Plane Collection',
-                        slug='hand-plane-collection',
-                        description='Collection of vintage hand planes in excellent condition.',
-                        price=125.00,
-                        stock_quantity=3,
-                        category_id=2,
-                        images=['/images/hand-planes.jpg']
-                    ),
-
-                    # Vintage Light Bulbs products
-                    Product(
-                        name='Edison Bulb 40W',
-                        slug='edison-bulb-40w',
-                        description='Authentic vintage Edison bulb with warm amber glow. Perfect for decorative lighting.',
-                        price=15.99,
-                        stock_quantity=50,
-                        category_id=3,
-                        is_featured=True,
-                        images=['/images/edison-bulb.jpg']
-                    ),
-                    Product(
-                        name='Vintage Chandelier Bulbs',
-                        slug='vintage-chandelier-bulbs',
-                        description='Set of 6 vintage chandelier bulbs with decorative filaments.',
-                        price=32.99,
-                        original_price=45.99,
-                        stock_quantity=12,
-                        category_id=3,
-                        images=['/images/chandelier-bulbs.jpg']
-                    ),
-                    Product(
-                        name='Antique Street Lamp Bulb',
-                        slug='antique-street-lamp-bulb',
-                        description='Rare antique street lamp bulb from the early 1900s. Collector\'s item.',
-                        price=75.00,
-                        stock_quantity=3,
-                        category_id=3,
-                        images=['/images/street-lamp-bulb.jpg']
-                    ),
-
-                    # Laser Engraving products
-                    Product(
-                        name='Custom Wooden Plaque',
-                        slug='custom-wooden-plaque',
-                        description='Personalized wooden plaque with laser engraving. Perfect for awards or gifts.',
-                        price=29.99,
-                        stock_quantity=20,
-                        category_id=4,
-                        is_featured=True,
-                        images=['/images/wooden-plaque.jpg']
-                    ),
-                    Product(
-                        name='Engraved Metal Business Cards',
-                        slug='engraved-metal-business-cards',
-                        description='Premium metal business cards with precision laser engraving.',
-                        price=55.00,
-                        stock_quantity=15,
-                        category_id=4,
-                        images=['/images/metal-cards.jpg']
-                    ),
-                    Product(
-                        name='Personalized Acrylic Photo Frame',
-                        slug='personalized-acrylic-photo-frame',
-                        description='Custom acrylic photo frame with laser-engraved personal message.',
-                        price=18.99,
-                        stock_quantity=30,
-                        category_id=4,
-                        images=['/images/acrylic-frame.jpg']
-                    )
-                ]
-
-                for product in products:
-                    db.session.add(product)
-
-                db.session.commit()
-                print("Sample products created!")
-
-            # Create admin user if it doesn't exist
-            if not User.query.filter_by(is_admin=True).first():
-                admin_password = os.getenv('ADMIN_PASSWORD', 'adminx999')
-                admin = User(
-                    username='admin',
-                    email='admin@pebdeq.com',
-                    first_name='Admin',
-                    last_name='User',
-                    is_admin=True
-                )
-                admin.set_password(admin_password)
-                db.session.add(admin)
-                db.session.commit()
-                print(f"Admin user created! Email: admin@pebdeq.com, Password: {admin_password}")
-
-            # Create sample variation types if they don't exist
-            if not VariationType.query.first():
-                variation_types = [
-                    VariationType(name='Color', slug='color', description='Product color options'),
-                    VariationType(name='Size', slug='size', description='Product size options'),
-                    VariationType(name='Material', slug='material', description='Product material options'),
-                    VariationType(name='Style', slug='style', description='Product style options')
-                ]
-
-                for vtype in variation_types:
-                    db.session.add(vtype)
-
-                db.session.commit()
-                print("Sample variation types created!")
-
-                # Create sample variation options
-                variation_options = [
-                    # Color options
-                    VariationOption(variation_type_id=1, name='Red', value='red', hex_color='#FF0000'),
-                    VariationOption(variation_type_id=1, name='Blue', value='blue', hex_color='#0000FF'),
-                    VariationOption(variation_type_id=1, name='Green', value='green', hex_color='#00FF00'),
-                    VariationOption(variation_type_id=1, name='Yellow', value='yellow', hex_color='#FFFF00'),
-                    VariationOption(variation_type_id=1, name='Black', value='black', hex_color='#000000'),
-                    VariationOption(variation_type_id=1, name='White', value='white', hex_color='#FFFFFF'),
-
-                    # Size options
-                    VariationOption(variation_type_id=2, name='XS', value='xs'),
-                    VariationOption(variation_type_id=2, name='S', value='small'),
-                    VariationOption(variation_type_id=2, name='M', value='medium'),
-                    VariationOption(variation_type_id=2, name='L', value='large'),
-                    VariationOption(variation_type_id=2, name='XL', value='xl'),
-                    VariationOption(variation_type_id=2, name='XXL', value='xxl'),
-
-                    # Material options
-                    VariationOption(variation_type_id=3, name='Plastic', value='plastic'),
-                    VariationOption(variation_type_id=3, name='Metal', value='metal'),
-                    VariationOption(variation_type_id=3, name='Wood', value='wood'),
-                    VariationOption(variation_type_id=3, name='Glass', value='glass'),
-
-                    # Style options
-                    VariationOption(variation_type_id=4, name='Modern', value='modern'),
-                    VariationOption(variation_type_id=4, name='Classic', value='classic'),
-                    VariationOption(variation_type_id=4, name='Vintage', value='vintage'),
-                    VariationOption(variation_type_id=4, name='Minimalist', value='minimalist')
-                ]
-
-                for option in variation_options:
-                    db.session.add(option)
-
-                db.session.commit()
-                print("Sample variation options created!")
-
-            # Create comprehensive site settings if they don't exist
-            if not SiteSettings.query.first():
-                settings = SiteSettings(
-                    # Site Identity
-                    site_name='PEBDEQ',
-                    site_logo='/images/logo.png',
-                    use_logo=True,
-                    logo_width=120,
-                    logo_height=40,
-                    
-                    # Header Settings
-                    header_background_color='#ffffff',
-                    header_text_color='#2c3e50',
-                    header_height=60,
-                    header_padding=15,
-                    header_sticky=False,
-                    header_shadow=True,
-                    header_border_bottom=True,
-                    header_border_color='#e9ecef',
-                    header_logo_position='left',
-                    header_nav_position='right',
-                    header_nav_spacing=20,
-                    
-                    # Navigation Links Settings (Dynamic)
-                    navigation_links=[
-                        {'id': 1, 'title': 'Home', 'url': '/', 'enabled': True, 'order': 1, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                        {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': True, 'order': 2, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                        {'id': 3, 'title': 'About', 'url': '/about', 'enabled': True, 'order': 3, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                        {'id': 4, 'title': 'Blog', 'url': '/blog', 'enabled': True, 'order': 4, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                        {'id': 5, 'title': 'Contact', 'url': '/contact', 'enabled': True, 'order': 5, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                        {'id': 6, 'title': 'Login', 'url': '/login', 'enabled': True, 'order': 6, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
-                        {'id': 7, 'title': 'Register', 'url': '/register', 'enabled': True, 'order': 7, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
-                        {'id': 8, 'title': 'Profile', 'url': '/profile', 'enabled': True, 'order': 8, 'is_internal': True, 'show_for': 'user', 'type': 'auth'},
-                        {'id': 9, 'title': 'Admin', 'url': '/admin', 'enabled': True, 'order': 9, 'is_internal': True, 'show_for': 'admin', 'type': 'auth'},
-                        {'id': 10, 'title': 'Logout', 'url': 'logout', 'enabled': True, 'order': 10, 'is_internal': True, 'show_for': 'user', 'type': 'auth'}
-                    ],
-                    
-                    # Navigation Styling
-                    nav_link_color='#2c3e50',
-                    nav_link_hover_color='#007bff',
-                    nav_link_active_color='#007bff',
-                    nav_link_font_size=16,
-                    nav_link_font_weight='500',
-                    nav_link_text_transform='none',
-                    nav_link_underline=False,
-                    nav_link_hover_effect='color',
-                    
-                    # Mobile Navigation Settings
-                    mobile_nav_enabled=True,
-                    mobile_nav_hamburger_color='#2c3e50',
-                    mobile_nav_background_color='#ffffff',
-                    mobile_nav_overlay=True,
-                    mobile_nav_slide_direction='left',
-                    
-                    # Header Actions
-                    header_show_search=False,
-                    header_show_cart=False,
-                    header_show_account=True,
-                    header_show_language=False,
-                    header_show_currency=False,
-                    
-                    # Welcome Section
-                    welcome_title='Craft, Vintage, Innovation',
-                    welcome_subtitle='Discover unique products and custom designs',
-                    welcome_background_color='#667eea',
-                    welcome_text_color='#ffffff',
-                    welcome_button_text='Shop Now',
-                    welcome_button_link='/products',
-                    welcome_button_color='#00b894',
-                    
-                    # Collections Section
-                    collections_title='Our Collections',
-                    collections_show_section=True,
-                    collections_categories_per_row=4,
-                    collections_max_rows=1,
-                    
-                    # Contact & Social
-                    contact_phone='+90 555 123 4567',
-                    contact_email='info@pebdeq.com',
-                    contact_address='Istanbul, Turkey',
-                    social_instagram='@pebdeq',
-                    social_facebook='pebdeq',
-                    social_twitter='@pebdeq',
-                    
-                    # SEO Settings
-                    meta_title='PEBDEQ - Craft, Vintage, Innovation',
-                    meta_description='Discover unique 3D printed items, vintage tools, antique light bulbs, and custom laser engraving services.',
-                    meta_keywords='3D printing, vintage tools, antique bulbs, laser engraving, custom products',
-                    
-                    # Business Settings
-                    currency_symbol='₺',
-                    currency_code='TRY',
-                    shipping_cost=15.00,
-                    free_shipping_threshold=200.00,
-                    
-                    # Feature Flags
-                    enable_reviews=True,
-                    enable_wishlist=True,
-                    enable_compare=True,
-                    enable_newsletter=True,
-                    maintenance_mode=False,
-                    
-                    # Footer Settings
-                    footer_show_section=True,
-                    footer_background_color='#2c3e50',
-                    footer_text_color='#ffffff',
-                    footer_company_name='PEBDEQ',
-                    footer_company_description='Crafted with passion, delivered with precision.',
-                    footer_copyright_text='© 2024 PEBDEQ. All rights reserved.',
-                    
-                    # Footer Support Section
-                    footer_support_title='Support',
-                    footer_support_show_section=True,
-                    footer_support_links=[
-                        {'title': 'Contact Us', 'url': '/contact', 'is_external': False},
-                        {'title': 'FAQ', 'url': '/faq', 'is_external': False},
-                        {'title': 'Shipping Info', 'url': '/shipping', 'is_external': False},
-                        {'title': 'Returns', 'url': '/returns', 'is_external': False}
-                    ],
-                    
-                    # Footer Quick Links Section
-                    footer_quick_links_title='Quick Links',
-                    footer_quick_links_show_section=True,
-                    footer_quick_links=[
-                        {'title': 'About Us', 'url': '/about', 'is_external': False},
-                        {'title': 'Products', 'url': '/products', 'is_external': False},
-                        {'title': 'Blog', 'url': '/blog', 'is_external': False},
-                        {'title': 'Privacy Policy', 'url': '/privacy', 'is_external': False}
-                    ],
-                    
-                    # Footer Social Section
-                    footer_social_title='Follow Us',
-                    footer_social_show_section=True,
-                    
-                    # Footer Newsletter Section
-                    footer_newsletter_title='Newsletter',
-                    footer_newsletter_show_section=True,
-                    footer_newsletter_description='Subscribe to get updates about new products and offers.',
-                    footer_newsletter_placeholder='Enter your email address',
-                    footer_newsletter_button_text='Subscribe',
-                    
-                    # Homepage Products Settings
-                    homepage_products_show_section=True,
-                    homepage_products_title='Featured Products',
-                    homepage_products_subtitle='Discover our most popular items',
-                    homepage_products_max_rows=2,
-                    homepage_products_per_row=4,
-                    homepage_products_max_items=8,
-                    homepage_products_show_images=True,
-                    homepage_products_image_height=200,
-                    homepage_products_image_width=300,
-                    homepage_products_show_favorite=True,
-                    homepage_products_show_buy_now=True,
-                    homepage_products_show_details=True,
-                    homepage_products_show_price=True,
-                    homepage_products_show_original_price=True,
-                    homepage_products_show_stock=True,
-                    homepage_products_show_category=True,
-                    homepage_products_sort_by='featured',
-                    homepage_products_filter_categories=[],
-                    homepage_products_show_view_all=True,
-                    homepage_products_view_all_text='View All Products',
-                    homepage_products_view_all_link='/products',
-                    homepage_products_card_style='modern',
-                    homepage_products_card_shadow=True,
-                    homepage_products_card_hover_effect=True,
-                    homepage_products_show_badges=True,
-                    homepage_products_show_rating=False,
-                    homepage_products_show_quick_view=False,
-                    
-                    # Homepage Products 2 Settings
-                    homepage_products2_show_section=True,
-                    homepage_products2_title='Latest Products',
-                    homepage_products2_subtitle='Check out our newest arrivals',
-                    homepage_products2_max_rows=2,
-                    homepage_products2_per_row=4,
-                    homepage_products2_max_items=8,
-                    homepage_products2_show_images=True,
-                    homepage_products2_image_height=200,
-                    homepage_products2_image_width=300,
-                    homepage_products2_show_favorite=True,
-                    homepage_products2_show_buy_now=True,
-                    homepage_products2_show_details=True,
-                    homepage_products2_show_price=True,
-                    homepage_products2_show_original_price=True,
-                    homepage_products2_show_stock=True,
-                    homepage_products2_show_category=True,
-                    homepage_products2_sort_by='newest',
-                    homepage_products2_filter_categories=[],
-                    homepage_products2_show_view_all=True,
-                    homepage_products2_view_all_text='View All Products',
-                    homepage_products2_view_all_link='/products',
-                    homepage_products2_card_style='modern',
-                    homepage_products2_card_shadow=True,
-                    homepage_products2_card_hover_effect=True,
-                    homepage_products2_show_badges=True,
-                    homepage_products2_show_rating=False,
-                    homepage_products2_show_quick_view=False,
-                    
-                    # Products Page Settings
-                    products_page_per_row=4,
-                    products_page_max_items_per_page=12,
-                    products_page_show_images=True,
-                    products_page_image_height=200,
-                    products_page_image_width=300,
-                    products_page_show_favorite=True,
-                    products_page_show_buy_now=True,
-                    products_page_show_details=True,
-                    products_page_show_price=True,
-                    products_page_show_original_price=True,
-                    products_page_show_stock=True,
-                    products_page_show_category=True,
-                    products_page_default_sort_by='newest',
-                    products_page_card_style='modern',
-                    products_page_card_shadow=True,
-                    products_page_card_hover_effect=True,
-                    products_page_show_badges=True,
-                    products_page_show_rating=False,
-                    products_page_show_quick_view=False,
-                    products_page_enable_pagination=True,
-                    products_page_enable_filters=True,
-                    products_page_enable_search=True
-                )
-                db.session.add(settings)
-                db.session.commit()
-                print("Comprehensive site settings created!")
-
-    except Exception as e:
-        print(f"Error initializing database: {e}")
-
-if __name__ == '__main__':
-    print("⚠️  WARNING: This operation will delete all data in the database! ⚠️")
+    """Veritabanını sıfırlar ve yeniden oluşturur"""
+    print("🔄 Veritabanı sıfırlanıyor...")
     
-    # Auto confirmation
-    import sys
-    if len(sys.argv) > 1 and sys.argv[1] == '--auto':
-        confirm = 'y'
-    else:
-        confirm = input("Are you sure you want to reset the database? (y/N): ")
+    # Drop all tables
+    db.drop_all()
+    print("✅ Tüm tablolar silindi")
+    
+    # Create all tables
+    db.create_all()
+    print("✅ Tüm tablolar yeniden oluşturuldu")
 
-    if confirm.lower() in ['e', 'evet', 'y', 'yes']:
-        reset_database()
-        init_database()
-        print("\n✅ Database has been reset and reinitialized successfully!")
-    else:
-        print("\n❌ Database reset operation cancelled.")
+def create_admin_user():
+    """Admin kullanıcısı oluşturur"""
+    print("👤 Admin kullanıcısı oluşturuluyor...")
+    
+    admin = User(
+        username='admin',
+        email='admin@pebdeq.com',
+        first_name='Admin',
+        last_name='User',
+        is_admin=True
+    )
+    admin.set_password('admin123')
+    
+    db.session.add(admin)
+    db.session.commit()
+    print("✅ Admin kullanıcısı oluşturuldu (admin/admin123)")
+
+def restore_settings_from_backup():
+    """Backup'tan ayarları geri yükler"""
+    print("⚙️ Backup'tan ayarlar geri yükleniyor...")
+    
+    # Create new settings instance
+    settings = SiteSettings()
+    
+    # Apply backup settings
+    for key, value in CURRENT_SETTINGS_BACKUP.items():
+        if hasattr(settings, key):
+            setattr(settings, key, value)
+    
+    # Set timestamps
+    settings.created_at = datetime.now()
+    settings.updated_at = datetime.now()
+    
+    db.session.add(settings)
+    db.session.commit()
+    print("✅ Backup'tan ayarlar geri yüklendi")
+
+def create_sample_categories():
+    """Örnek kategoriler oluşturur"""
+    print("📁 Örnek kategoriler oluşturuluyor...")
+    
+    categories = [
+        {
+            'name': '3D Printing',
+            'description': 'Custom 3D printed items and prototypes',
+            'slug': '3d-printing'
+        },
+        {
+            'name': 'Vintage Tools',
+            'description': 'Authentic vintage and antique tools',
+            'slug': 'vintage-tools'
+        },
+        {
+            'name': 'Antique Bulbs',
+            'description': 'Rare and vintage light bulbs',
+            'slug': 'antique-bulbs'
+        },
+        {
+            'name': 'Laser Engraving',
+            'description': 'Custom laser engraved products',
+            'slug': 'laser-engraving'
+        }
+    ]
+    
+    for cat_data in categories:
+        category = Category(
+            name=cat_data['name'],
+            description=cat_data['description'],
+            slug=cat_data['slug']
+        )
+        db.session.add(category)
+    
+    db.session.commit()
+    print("✅ Örnek kategoriler oluşturuldu")
+
+def create_sample_products():
+    """Örnek ürünler oluşturur"""
+    print("🛍️ Örnek ürünler oluşturuluyor...")
+    
+    # Get categories
+    categories = Category.query.all()
+    cat_dict = {cat.slug: cat for cat in categories}
+    
+    products = [
+        {
+            'name': 'Custom 3D Printed Miniature',
+            'description': 'High-quality 3D printed miniature figures',
+            'price': 25.99,
+            'category': cat_dict.get('3d-printing'),
+            'stock_quantity': 50
+        },
+        {
+            'name': 'Vintage Hammer Set',
+            'description': 'Authentic vintage hammer collection',
+            'price': 89.99,
+            'category': cat_dict.get('vintage-tools'),
+            'stock_quantity': 5
+        },
+        {
+            'name': 'Edison Bulb Collection',
+            'description': 'Rare Edison-style light bulbs',
+            'price': 45.99,
+            'category': cat_dict.get('antique-bulbs'),
+            'stock_quantity': 12
+        },
+        {
+            'name': 'Personalized Wooden Sign',
+            'description': 'Custom laser engraved wooden signs',
+            'price': 35.99,
+            'category': cat_dict.get('laser-engraving'),
+            'stock_quantity': 25
+        }
+    ]
+    
+    for prod_data in products:
+        # Generate slug from name
+        slug = prod_data['name'].lower().replace(' ', '-').replace(',', '').replace('.', '')
+        
+        product = Product(
+            name=prod_data['name'],
+            slug=slug,
+            description=prod_data['description'],
+            price=prod_data['price'],
+            category=prod_data['category'],
+            stock_quantity=prod_data['stock_quantity']
+        )
+        db.session.add(product)
+    
+    db.session.commit()
+    print("✅ Örnek ürünler oluşturuldu")
+
+def main():
+    """Ana fonksiyon"""
+    print("🚀 PEBDEQ Veritabanı Reset Script")
+    print("=" * 50)
+    
+    # Create app context
+    app = create_app()
+    
+    with app.app_context():
+        try:
+            # Reset database
+            reset_database()
+            
+            # Create admin user
+            create_admin_user()
+            
+            # Restore settings from backup
+            restore_settings_from_backup()
+            
+            # Create sample data
+            create_sample_categories()
+            create_sample_products()
+            
+            print("\n🎉 Veritabanı başarıyla sıfırlandı ve backup'tan geri yüklendi!")
+            print("\n📋 Özet:")
+            print("• Admin kullanıcısı: admin/admin123")
+            print("• Site ayarları: Backup'tan geri yüklendi")
+            print("• Örnek kategoriler: 4 adet")
+            print("• Örnek ürünler: 4 adet")
+            print("\n✅ Sistem kullanıma hazır!")
+            
+        except Exception as e:
+            print(f"\n❌ Hata oluştu: {str(e)}")
+            db.session.rollback()
+            return False
+    
+    return True
+
+if __name__ == "__main__":
+    success = main()
+    sys.exit(0 if success else 1)

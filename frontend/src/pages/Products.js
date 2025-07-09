@@ -307,7 +307,12 @@ const Products = () => {
   }
 
   return (
-    <div className="products">
+    <div 
+      className="products"
+      style={{
+        backgroundColor: siteSettings.products_page_background_color || '#ffffff'
+      }}
+    >
       <div className="container">
         <div className="products-header">
           <h1>Products</h1>

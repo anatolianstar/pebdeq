@@ -367,6 +367,7 @@ def get_site_settings():
                 'welcome_button_text': 'Explore Products',
                 'welcome_button_link': '/products',
                 'welcome_button_color': '#00b894',
+                'homepage_background_color': '#ffffff',
                 'collections_title': 'Our Collections',
                 'collections_show_categories': [],
                 'collections_categories_per_row': 4,
@@ -529,6 +530,7 @@ def get_site_settings():
             'welcome_button_text': settings.welcome_button_text,
             'welcome_button_link': settings.welcome_button_link,
             'welcome_button_color': settings.welcome_button_color,
+            'homepage_background_color': settings.homepage_background_color,
             'collections_title': settings.collections_title,
             'collections_show_categories': settings.collections_show_categories,
             'collections_categories_per_row': settings.collections_categories_per_row,
@@ -590,6 +592,7 @@ def get_site_settings():
             'homepage_products2_show_rating': settings.homepage_products2_show_rating,
             'homepage_products2_show_quick_view': settings.homepage_products2_show_quick_view,
             # Products Page Settings
+            'products_page_background_color': settings.products_page_background_color,
             'products_page_per_row': settings.products_page_per_row,
             'products_page_max_items_per_page': settings.products_page_max_items_per_page,
             'products_page_show_images': settings.products_page_show_images,

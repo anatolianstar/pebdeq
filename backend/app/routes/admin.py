@@ -864,6 +864,10 @@ def get_site_settings():
                 'welcome_button_link': settings.welcome_button_link,
                 'welcome_button_color': settings.welcome_button_color
             },
+            # Homepage General Settings
+            'homepage_general': {
+                'homepage_background_color': settings.homepage_background_color
+            },
             # Collections Section
             'collections_section': {
                 'collections_title': settings.collections_title,
@@ -992,6 +996,7 @@ def get_site_settings():
             },
             # Products Page Settings
             'products_page_settings': {
+                'products_page_background_color': settings.products_page_background_color,
                 'products_page_per_row': settings.products_page_per_row,
                 'products_page_max_items_per_page': settings.products_page_max_items_per_page,
                 'products_page_show_images': settings.products_page_show_images,
@@ -1121,6 +1126,10 @@ def update_site_settings():
             settings.welcome_button_link = data['welcome_button_link']
         if 'welcome_button_color' in data:
             settings.welcome_button_color = data['welcome_button_color']
+        
+        # Homepage General Settings
+        if 'homepage_background_color' in data:
+            settings.homepage_background_color = data['homepage_background_color']
         
         # Collections settings
         if 'collections_title' in data:
@@ -1397,6 +1406,8 @@ def update_site_settings():
             settings.header_shadow = data['header_shadow']
         
         # Products Page Settings
+        if 'products_page_background_color' in data:
+            settings.products_page_background_color = data['products_page_background_color']
         if 'products_page_per_row' in data:
             settings.products_page_per_row = data['products_page_per_row']
         if 'products_page_max_items_per_page' in data:
