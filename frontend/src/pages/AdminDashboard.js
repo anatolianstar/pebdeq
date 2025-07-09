@@ -245,7 +245,76 @@ const AdminDashboard = () => {
     homepage_products2_card_hover_effect: true,
     homepage_products2_show_badges: true,
     homepage_products2_show_rating: false,
-    homepage_products2_show_quick_view: false
+    homepage_products2_show_quick_view: false,
+    
+    // Products Page Settings
+    products_page_per_row: 4,
+    products_page_max_items_per_page: 12,
+    products_page_show_images: true,
+    products_page_image_height: 200,
+    products_page_image_width: 300,
+    products_page_show_favorite: true,
+    products_page_show_buy_now: true,
+    products_page_show_details: true,
+    products_page_show_price: true,
+    products_page_show_original_price: true,
+    products_page_show_stock: true,
+    products_page_show_category: true,
+    products_page_default_sort_by: 'newest',
+    products_page_card_style: 'modern',
+    products_page_card_shadow: true,
+    products_page_card_hover_effect: true,
+    products_page_show_badges: true,
+    products_page_show_rating: false,
+    products_page_show_quick_view: false,
+    products_page_enable_pagination: true,
+    products_page_enable_filters: true,
+    products_page_enable_search: true,
+    
+    // Navigation Links Settings
+    navigation_links: [
+      {'id': 1, 'title': 'Home', 'url': '/', 'enabled': true, 'order': 1, 'is_internal': true, 'show_for': 'all', 'type': 'page'},
+      {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': true, 'order': 2, 'is_internal': true, 'show_for': 'all', 'type': 'page'},
+      {'id': 3, 'title': 'About', 'url': '/about', 'enabled': true, 'order': 3, 'is_internal': true, 'show_for': 'all', 'type': 'page'},
+      {'id': 4, 'title': 'Blog', 'url': '/blog', 'enabled': true, 'order': 4, 'is_internal': true, 'show_for': 'all', 'type': 'page'},
+      {'id': 5, 'title': 'Contact', 'url': '/contact', 'enabled': true, 'order': 5, 'is_internal': true, 'show_for': 'all', 'type': 'page'},
+      {'id': 6, 'title': 'Login', 'url': '/login', 'enabled': true, 'order': 6, 'is_internal': true, 'show_for': 'guest', 'type': 'auth'},
+      {'id': 7, 'title': 'Register', 'url': '/register', 'enabled': true, 'order': 7, 'is_internal': true, 'show_for': 'guest', 'type': 'auth'},
+      {'id': 8, 'title': 'Profile', 'url': '/profile', 'enabled': true, 'order': 8, 'is_internal': true, 'show_for': 'user', 'type': 'auth'},
+      {'id': 9, 'title': 'Admin', 'url': '/admin', 'enabled': true, 'order': 9, 'is_internal': true, 'show_for': 'admin', 'type': 'auth'},
+      {'id': 10, 'title': 'Logout', 'url': 'logout', 'enabled': true, 'order': 10, 'is_internal': true, 'show_for': 'user', 'type': 'auth'}
+    ],
+    
+    // Header Settings
+    header_background_color: '#ffffff',
+    header_text_color: '#2c3e50',
+    header_height: 60,
+    header_padding: 15,
+    header_sticky: false,
+    header_shadow: true,
+    header_border_bottom: true,
+    header_border_color: '#e9ecef',
+    header_logo_position: 'left',
+    header_nav_position: 'right',
+    header_nav_spacing: 20,
+    nav_link_color: '#2c3e50',
+    nav_link_hover_color: '#007bff',
+    nav_link_active_color: '#007bff',
+    nav_link_font_size: 16,
+    nav_link_font_weight: '500',
+    nav_link_text_transform: 'none',
+    nav_link_underline: false,
+    nav_link_hover_effect: 'color',
+    mobile_nav_enabled: true,
+    mobile_nav_hamburger_color: '#2c3e50',
+    mobile_nav_background_color: '#ffffff',
+    mobile_nav_overlay: true,
+    mobile_nav_slide_direction: 'left',
+    header_show_search: false,
+    header_show_cart: false,
+    header_show_account: true,
+    header_show_language: false,
+    header_show_currency: false
   });
   const [uploadingSiteLogo, setUploadingSiteLogo] = useState(false);
   const [uploadingSiteLogo2, setUploadingSiteLogo2] = useState(false);
@@ -405,7 +474,31 @@ const AdminDashboard = () => {
           // Homepage Products Settings
           ...data.homepage_products_settings,
           // Homepage Products 2 Settings
-          ...data.homepage_products2_settings
+          ...data.homepage_products2_settings,
+          // Products Page Settings
+          ...data.products_page_settings,
+          // Navigation Links
+          navigation_links: data.navigation_links,
+          nav_link_color: data.nav_link_color,
+          nav_link_hover_color: data.nav_link_hover_color,
+          nav_link_font_size: data.nav_link_font_size,
+          nav_link_font_weight: data.nav_link_font_weight,
+          nav_link_text_transform: data.nav_link_text_transform,
+          nav_link_underline: data.nav_link_underline,
+          nav_link_font_family: data.nav_link_font_family,
+          nav_link_text_shadow: data.nav_link_text_shadow,
+          // Header Settings
+          header_background_color: data.header_background_color,
+          header_text_color: data.header_text_color,
+          header_height: data.header_height,
+          header_padding: data.header_padding,
+          header_nav_spacing: data.header_nav_spacing,
+          header_logo_position: data.header_logo_position,
+          header_nav_position: data.header_nav_position,
+          header_sticky: data.header_sticky,
+          header_border_bottom: data.header_border_bottom,
+          header_border_color: data.header_border_color,
+          header_shadow: data.header_shadow
         };
         setSiteSettings(flattenedData);
       } else {
@@ -591,6 +684,71 @@ const AdminDashboard = () => {
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .replace(/-+/g, '-') // Replace multiple hyphens with single
       .trim();
+  };
+
+  // Navigation Links Management Functions
+  const updateNavLink = (linkId, field, value) => {
+    setSiteSettings(prev => ({
+      ...prev,
+      navigation_links: (prev.navigation_links && Array.isArray(prev.navigation_links) ? prev.navigation_links : []).map(link => 
+        link.id === linkId ? { ...link, [field]: value } : link
+      )
+    }));
+  };
+
+  const moveNavLink = (linkId, direction) => {
+    setSiteSettings(prev => {
+      const links = [...(prev.navigation_links && Array.isArray(prev.navigation_links) ? prev.navigation_links : [])];
+      const currentIndex = links.findIndex(link => link.id === linkId);
+      
+      if (direction === 'up' && currentIndex > 0) {
+        // Swap with previous item
+        const temp = links[currentIndex - 1].order;
+        links[currentIndex - 1].order = links[currentIndex].order;
+        links[currentIndex].order = temp;
+      } else if (direction === 'down' && currentIndex < links.length - 1) {
+        // Swap with next item
+        const temp = links[currentIndex + 1].order;
+        links[currentIndex + 1].order = links[currentIndex].order;
+        links[currentIndex].order = temp;
+      }
+      
+      return {
+        ...prev,
+        navigation_links: links
+      };
+    });
+  };
+
+  const addNewNavLink = () => {
+    setSiteSettings(prev => {
+      const links = prev.navigation_links && Array.isArray(prev.navigation_links) ? prev.navigation_links : [];
+      const maxOrder = Math.max(...links.map(link => link.order), 0);
+      const newId = Math.max(...links.map(link => link.id), 0) + 1;
+      
+      const newLink = {
+        id: newId,
+        title: 'New Link',
+        url: '/new-page',
+        enabled: true,
+        order: maxOrder + 1,
+        is_internal: true,
+        show_for: 'all',
+        type: 'custom'
+      };
+      
+      return {
+        ...prev,
+        navigation_links: [...links, newLink]
+      };
+    });
+  };
+
+  const removeNavLink = (linkId) => {
+    setSiteSettings(prev => ({
+      ...prev,
+      navigation_links: (prev.navigation_links && Array.isArray(prev.navigation_links) ? prev.navigation_links : []).filter(link => link.id !== linkId)
+    }));
   };
 
   const filterEmptyVariations = (variationOptions) => {
@@ -3101,2455 +3259,3451 @@ const AdminDashboard = () => {
 
         {activeTab === 'settings' && (
           <div className="settings-content">
-            <div className="section-header">
+            {/* Settings header with save button */}
+            <div className="settings-header">
               <h2>Site Settings</h2>
-            </div>
-
-            {/* Settings Sub Tabs */}
-            <div className="settings-tabs">
               <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'identity' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('identity')}
+                type="button" 
+                className="btn btn-primary settings-save-btn"
+                onClick={handleUpdateSiteSettings}
               >
-                Site Identity
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'welcome' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('welcome')}
-              >
-                Welcome Section
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'footer' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('footer')}
-              >
-                Footer Settings
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'homepage-products' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('homepage-products')}
-              >
-                Homepage Products
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'homepage-products2' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('homepage-products2')}
-              >
-                Homepage Products 2
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'collections' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('collections')}
-              >
-                Collections
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'contact' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('contact')}
-              >
-                Contact & Social
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'business' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('business')}
-              >
-                Business Settings
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'seo' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('seo')}
-              >
-                SEO Settings
-              </button>
-              <button 
-                type="button"
-                className={`tab-btn ${settingsTab === 'features' ? 'active' : ''}`}
-                onClick={() => setSettingsTab('features')}
-              >
-                Features
+                💾 Save Settings
               </button>
             </div>
 
-            <form onSubmit={handleUpdateSiteSettings} className="site-settings-form">
-              
-              {/* Site Identity Tab */}
-              {settingsTab === 'identity' && (
-                <div className="settings-section">
-                  <h3>Site Identity</h3>
-                  
-                  <div className="form-group">
-                    <label>Site Name</label>
-                    <input
-                      type="text"
-                      value={siteSettings.site_name}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        site_name: e.target.value
-                      }))}
-                      placeholder="pebdeq"
-                      required
-                    />
-                    <small>Site name to be displayed in header (lowercase)</small>
-                  </div>
+            <div className="settings-layout">
+              {/* Sol tarafta settings navigation */}
+              <nav className="settings-navigation">
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'navigation' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('navigation')}
+                >
+                  Navigation
+                </button>
 
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.use_logo}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          use_logo: e.target.checked
-                        }))}
-                      />
-                      Use logo (if unchecked, text will be shown)
-                    </label>
-                  </div>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'identity' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('identity')}
+                >
+                  Site Identity
+                </button>
 
-                  {siteSettings.use_logo && (
-                    <>
-                      <div className="form-group">
-                        <label>Site Logo</label>
-                        <div className="custom-file-input">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files[0];
-                              if (file) {
-                                handleSiteLogoUpload(file);
-                              }
-                            }}
-                            disabled={uploadingSiteLogo}
-                          />
-                          <div className={`custom-file-button ${siteSettings.site_logo ? 'file-selected' : ''}`}>
-                            {uploadingSiteLogo ? 'Uploading...' : 
-                             siteSettings.site_logo ? 'Logo uploaded' : 
-                             'Choose Logo'}
-                          </div>
-                        </div>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'products-page' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('products-page')}
+                >
+                  Products Page
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'homepage-products' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('homepage-products')}
+                >
+                  Homepage Products
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'homepage-products2' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('homepage-products2')}
+                >
+                  Homepage Products 2
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'collections' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('collections')}
+                >
+                  Collections
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'welcome' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('welcome')}
+                >
+                  Welcome Section
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'footer' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('footer')}
+                >
+                  Footer Settings
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'contact' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('contact')}
+                >
+                  Contact & Social
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'business' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('business')}
+                >
+                  Business Settings
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'seo' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('seo')}
+                >
+                  SEO Settings
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'features' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('features')}
+                >
+                  Features
+                </button>
+              </nav>
+
+              {/* Sağ tarafta settings content */}
+              <div className="settings-main">
+                <form onSubmit={handleUpdateSiteSettings} className="site-settings-form">
+                  {/* Site Identity Tab */}
+                  {settingsTab === 'identity' && (
+                    <div className="settings-section">
+                      <h3>Site Identity</h3>
+                      
+                      {/* Header Appearance - Moved to top */}
+                      <div style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🎨 Header Appearance</h4>
+                        <p>Header height is automatically calculated based on logo height + padding</p>
                         
-                        {siteSettings.site_logo && (
-                          <div className="logo-preview">
-                            <img 
-                              src={`http://localhost:5005${siteSettings.site_logo}`} 
-                              alt="Site Logo" 
-                              style={{ 
-                                width: `${siteSettings.logo_width}px`,
-                                height: `${siteSettings.logo_height}px`,
-                                objectFit: 'contain' 
-                              }}
-                            />
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
-                              onClick={() => setSiteSettings(prev => ({
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Header Background Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.header_background_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
                                 ...prev,
-                                site_logo: null
+                                header_background_color: e.target.value
                               }))}
-                            >
-                              Remove Logo
-                            </button>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label>Logo Width (pixels)</label>
-                          <input
-                            type="number"
-                            min="20"
-                            max="500"
-                            value={siteSettings.logo_width}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              logo_width: parseInt(e.target.value) || 120
-                            }))}
-                            placeholder="120"
-                          />
-                          <small>Between 20-500 pixels</small>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Logo Height (pixels)</label>
-                          <input
-                            type="number"
-                            min="20"
-                            max="200"
-                            value={siteSettings.logo_height}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              logo_height: parseInt(e.target.value) || 40
-                            }))}
-                            placeholder="40"
-                          />
-                          <small>Between 20-200 pixels</small>
-                        </div>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.use_logo2}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          use_logo2: e.target.checked
-                        }))}
-                      />
-                      Use second logo
-                    </label>
-                  </div>
-
-                  {siteSettings.use_logo2 && (
-                    <>
-                      <div className="form-group">
-                        <label>Second Logo</label>
-                        <div className="custom-file-input">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files[0];
-                              if (file) {
-                                handleSiteLogo2Upload(file);
-                              }
-                            }}
-                            disabled={uploadingSiteLogo2}
-                          />
-                          <div className={`custom-file-button ${siteSettings.site_logo2 ? 'file-selected' : ''}`}>
-                            {uploadingSiteLogo2 ? 'Uploading...' : 
-                             siteSettings.site_logo2 ? 'Second logo uploaded' : 
-                             'Choose Second Logo'}
-                          </div>
-                        </div>
-                        
-                        {siteSettings.site_logo2 && (
-                          <div className="logo-preview">
-                            <img 
-                              src={`http://localhost:5005${siteSettings.site_logo2}`} 
-                              alt="Second Site Logo" 
-                              style={{ 
-                                width: `${siteSettings.logo2_width}px`,
-                                height: `${siteSettings.logo2_height}px`,
-                                objectFit: 'contain' 
-                              }}
                             />
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
-                              onClick={() => setSiteSettings(prev => ({
-                                ...prev,
-                                site_logo2: null
-                              }))}
-                            >
-                              Remove Second Logo
-                            </button>
                           </div>
-                        )}
-                      </div>
 
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label>Second Logo Width (pixels)</label>
-                          <input
-                            type="number"
-                            min="20"
-                            max="500"
-                            value={siteSettings.logo2_width}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              logo2_width: parseInt(e.target.value) || 120
-                            }))}
-                            placeholder="120"
-                          />
-                          <small>Between 20-500 pixels</small>
+                          <div className="form-group">
+                            <label>Header Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.header_text_color || '#2c3e50'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Header Padding (pixels)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.header_padding || 15}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_padding: parseInt(e.target.value) || 15
+                              }))}
+                              min="0"
+                              max="50"
+                            />
+                            <small>Top and bottom padding around logo</small>
+                          </div>
                         </div>
 
-                        <div className="form-group">
-                          <label>Second Logo Height (pixels)</label>
-                          <input
-                            type="number"
-                            min="20"
-                            max="200"
-                            value={siteSettings.logo2_height}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              logo2_height: parseInt(e.target.value) || 40
-                            }))}
-                            placeholder="40"
-                          />
-                          <small>Between 20-200 pixels</small>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.header_sticky || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  header_sticky: e.target.checked
+                                }))}
+                              />
+                              Sticky Header
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.header_shadow || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  header_shadow: e.target.checked
+                                }))}
+                              />
+                              Header Shadow
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.header_border_bottom || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  header_border_bottom: e.target.checked
+                                }))}
+                              />
+                              Bottom Border
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Border Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.header_border_color || '#e9ecef'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_border_color: e.target.value
+                              }))}
+                              disabled={!siteSettings.header_border_bottom}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </>
-                  )}
 
-                  {/* Marquee Settings */}
-                  <div className="settings-divider">
-                    <h4>Header Marquee Settings</h4>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.marquee_enabled}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          marquee_enabled: e.target.checked
-                        }))}
-                      />
-                      Enable header marquee
-                    </label>
-                  </div>
-
-                  {siteSettings.marquee_enabled && (
-                    <>
                       <div className="form-group">
-                        <label>Marquee Text</label>
-                        <textarea
-                          value={siteSettings.marquee_text}
+                        <label>Site Name</label>
+                        <input
+                          type="text"
+                          value={siteSettings.site_name}
                           onChange={(e) => setSiteSettings(prev => ({
                             ...prev,
-                            marquee_text: e.target.value
+                            site_name: e.target.value
                           }))}
-                          placeholder="Enter marquee text..."
-                          rows="3"
+                          placeholder="pebdeq"
                           required
                         />
-                        <small>Text to display in the scrolling marquee</small>
+                        <small>Site name to be displayed in header (lowercase)</small>
                       </div>
 
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label>Font Family</label>
-                          <select
-                            value={siteSettings.marquee_font_family}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              marquee_font_family: e.target.value
-                            }))}
-                          >
-                            <option value="Arial, sans-serif">Arial</option>
-                            <option value="Helvetica, sans-serif">Helvetica</option>
-                            <option value="Times New Roman, serif">Times New Roman</option>
-                            <option value="Georgia, serif">Georgia</option>
-                            <option value="Verdana, sans-serif">Verdana</option>
-                            <option value="Courier New, monospace">Courier New</option>
-                            <option value="Impact, sans-serif">Impact</option>
-                            <option value="Comic Sans MS, cursive">Comic Sans MS</option>
-                          </select>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Font Size</label>
+                      <div className="form-group">
+                        <label>
                           <input
-                            type="text"
-                            value={siteSettings.marquee_font_size}
+                            type="checkbox"
+                            checked={siteSettings.use_logo}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              marquee_font_size: e.target.value
+                              use_logo: e.target.checked
                             }))}
-                            placeholder="14px"
                           />
-                          <small>e.g., 14px, 1.2em, 16pt</small>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Font Weight</label>
-                          <select
-                            value={siteSettings.marquee_font_weight}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              marquee_font_weight: e.target.value
-                            }))}
-                          >
-                            <option value="normal">Normal</option>
-                            <option value="bold">Bold</option>
-                            <option value="lighter">Lighter</option>
-                            <option value="100">100</option>
-                            <option value="200">200</option>
-                            <option value="300">300</option>
-                            <option value="400">400</option>
-                            <option value="500">500</option>
-                            <option value="600">600</option>
-                            <option value="700">700</option>
-                            <option value="800">800</option>
-                            <option value="900">900</option>
-                          </select>
-                        </div>
+                          Use logo (if unchecked, text will be shown)
+                        </label>
                       </div>
 
+                      {siteSettings.use_logo && (
+                        <>
+                          <div className="form-group">
+                            <label>Site Logo</label>
+                            <div className="custom-file-input">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (file) {
+                                    handleSiteLogoUpload(file);
+                                  }
+                                }}
+                                disabled={uploadingSiteLogo}
+                              />
+                              <div className={`custom-file-button ${siteSettings.site_logo ? 'file-selected' : ''}`}>
+                                {uploadingSiteLogo ? 'Uploading...' : 
+                                 siteSettings.site_logo ? 'Logo uploaded' : 
+                                 'Choose Logo'}
+                              </div>
+                            </div>
+                            
+                            {siteSettings.site_logo && (
+                              <div className="logo-preview">
+                                <img 
+                                  src={`http://localhost:5005${siteSettings.site_logo}`} 
+                                  alt="Site Logo" 
+                                  style={{ 
+                                    width: `${siteSettings.logo_width}px`,
+                                    height: `${siteSettings.logo_height}px`,
+                                    objectFit: 'contain' 
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-danger"
+                                  onClick={() => setSiteSettings(prev => ({
+                                    ...prev,
+                                    site_logo: null
+                                  }))}
+                                >
+                                  Remove Logo
+                                </button>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Logo Width (pixels)</label>
+                              <input
+                                type="number"
+                                min="20"
+                                max="500"
+                                value={siteSettings.logo_width}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  logo_width: parseInt(e.target.value) || 120
+                                }))}
+                                placeholder="120"
+                              />
+                              <small>Between 20-500 pixels</small>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Logo Height (pixels)</label>
+                              <input
+                                type="number"
+                                min="20"
+                                max="200"
+                                value={siteSettings.logo_height}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  logo_height: parseInt(e.target.value) || 40
+                                }))}
+                                placeholder="40"
+                              />
+                              <small>Between 20-200 pixels</small>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.use_logo2}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              use_logo2: e.target.checked
+                            }))}
+                          />
+                          Use second logo
+                        </label>
+                      </div>
+
+                      {siteSettings.use_logo2 && (
+                        <>
+                          <div className="form-group">
+                            <label>Second Logo</label>
+                            <div className="custom-file-input">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (file) {
+                                    handleSiteLogo2Upload(file);
+                                  }
+                                }}
+                                disabled={uploadingSiteLogo2}
+                              />
+                              <div className={`custom-file-button ${siteSettings.site_logo2 ? 'file-selected' : ''}`}>
+                                {uploadingSiteLogo2 ? 'Uploading...' : 
+                                 siteSettings.site_logo2 ? 'Second logo uploaded' : 
+                                 'Choose Second Logo'}
+                              </div>
+                            </div>
+                            
+                            {siteSettings.site_logo2 && (
+                              <div className="logo-preview">
+                                <img 
+                                  src={`http://localhost:5005${siteSettings.site_logo2}`} 
+                                  alt="Second Site Logo" 
+                                  style={{ 
+                                    width: `${siteSettings.logo2_width}px`,
+                                    height: `${siteSettings.logo2_height}px`,
+                                    objectFit: 'contain' 
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-danger"
+                                  onClick={() => setSiteSettings(prev => ({
+                                    ...prev,
+                                    site_logo2: null
+                                  }))}
+                                >
+                                  Remove Second Logo
+                                </button>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Second Logo Width (pixels)</label>
+                              <input
+                                type="number"
+                                min="20"
+                                max="500"
+                                value={siteSettings.logo2_width}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  logo2_width: parseInt(e.target.value) || 120
+                                }))}
+                                placeholder="120"
+                              />
+                              <small>Between 20-500 pixels</small>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Second Logo Height (pixels)</label>
+                              <input
+                                type="number"
+                                min="20"
+                                max="200"
+                                value={siteSettings.logo2_height}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  logo2_height: parseInt(e.target.value) || 40
+                                }))}
+                                placeholder="40"
+                              />
+                              <small>Between 20-200 pixels</small>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {/* Marquee Settings */}
+                      <div className="settings-divider">
+                        <h4>Header Marquee Settings</h4>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.marquee_enabled}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              marquee_enabled: e.target.checked
+                            }))}
+                          />
+                          Enable header marquee
+                        </label>
+                      </div>
+
+                      {siteSettings.marquee_enabled && (
+                        <>
+                          <div className="form-group">
+                            <label>Marquee Text</label>
+                            <textarea
+                              value={siteSettings.marquee_text}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                marquee_text: e.target.value
+                              }))}
+                              placeholder="Enter marquee text..."
+                              rows="3"
+                              required
+                            />
+                            <small>Text to display in the scrolling marquee</small>
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Font Family</label>
+                              <select
+                                value={siteSettings.marquee_font_family}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_font_family: e.target.value
+                                }))}
+                              >
+                                <option value="Arial, sans-serif">Arial</option>
+                                <option value="Helvetica, sans-serif">Helvetica</option>
+                                <option value="Times New Roman, serif">Times New Roman</option>
+                                <option value="Georgia, serif">Georgia</option>
+                                <option value="Verdana, sans-serif">Verdana</option>
+                                <option value="Courier New, monospace">Courier New</option>
+                                <option value="Impact, sans-serif">Impact</option>
+                                <option value="Comic Sans MS, cursive">Comic Sans MS</option>
+                              </select>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Font Size</label>
+                              <input
+                                type="text"
+                                value={siteSettings.marquee_font_size}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_font_size: e.target.value
+                                }))}
+                                placeholder="14px"
+                              />
+                              <small>e.g., 14px, 1.2em, 16pt</small>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Font Weight</label>
+                              <select
+                                value={siteSettings.marquee_font_weight}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_font_weight: e.target.value
+                                }))}
+                              >
+                                <option value="normal">Normal</option>
+                                <option value="bold">Bold</option>
+                                <option value="lighter">Lighter</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="600">600</option>
+                                <option value="700">700</option>
+                                <option value="800">800</option>
+                                <option value="900">900</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Text Color</label>
+                              <input
+                                type="color"
+                                value={siteSettings.marquee_color}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_color: e.target.value
+                                }))}
+                              />
+                            </div>
+
+                            <div className="form-group">
+                              <label>Background Color</label>
+                              <input
+                                type="color"
+                                value={siteSettings.marquee_background_color}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_background_color: e.target.value
+                                }))}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Scroll Speed (pixels/second)</label>
+                              <input
+                                type="number"
+                                min="10"
+                                max="200"
+                                value={siteSettings.marquee_speed}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_speed: parseInt(e.target.value) || 30
+                                }))}
+                                placeholder="30"
+                              />
+                              <small>Between 10-200 pixels per second</small>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Scroll Direction</label>
+                              <select
+                                value={siteSettings.marquee_direction}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  marquee_direction: e.target.value
+                                }))}
+                              >
+                                <option value="left">Left to Right</option>
+                                <option value="right">Right to Left</option>
+                              </select>
+                            </div>
+
+                            <div className="form-group">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={siteSettings.marquee_pause_on_hover}
+                                  onChange={(e) => setSiteSettings(prev => ({
+                                    ...prev,
+                                    marquee_pause_on_hover: e.target.checked
+                                  }))}
+                                />
+                                Pause on hover
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      <hr />
+
+                      {/* Header Appearance */}
+                      <h4>Header Appearance</h4>
+                      <p>Header height is automatically calculated based on logo height + padding</p>
+                      
                       <div className="form-row">
                         <div className="form-group">
-                          <label>Text Color</label>
+                          <label>Header Background Color</label>
                           <input
                             type="color"
-                            value={siteSettings.marquee_color}
+                            value={siteSettings.header_background_color || '#ffffff'}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              marquee_color: e.target.value
+                              header_background_color: e.target.value
                             }))}
                           />
                         </div>
 
                         <div className="form-group">
-                          <label>Background Color</label>
+                          <label>Header Text Color</label>
                           <input
                             type="color"
-                            value={siteSettings.marquee_background_color}
+                            value={siteSettings.header_text_color || '#2c3e50'}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              marquee_background_color: e.target.value
+                              header_text_color: e.target.value
                             }))}
                           />
                         </div>
-                      </div>
 
-                      <div className="form-row">
                         <div className="form-group">
-                          <label>Scroll Speed (pixels/second)</label>
+                          <label>Header Padding (pixels)</label>
                           <input
                             type="number"
-                            min="10"
-                            max="200"
-                            value={siteSettings.marquee_speed}
+                            value={siteSettings.header_padding || 15}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              marquee_speed: parseInt(e.target.value) || 30
+                              header_padding: parseInt(e.target.value) || 15
                             }))}
-                            placeholder="30"
+                            min="0"
+                            max="50"
                           />
-                          <small>Between 10-200 pixels per second</small>
+                          <small>Top and bottom padding around logo</small>
                         </div>
+                      </div>
 
+                      <div className="form-row">
                         <div className="form-group">
-                          <label>Scroll Direction</label>
-                          <select
-                            value={siteSettings.marquee_direction}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              marquee_direction: e.target.value
-                            }))}
-                          >
-                            <option value="left">Left to Right</option>
-                            <option value="right">Right to Left</option>
-                          </select>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.header_sticky || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_sticky: e.target.checked
+                              }))}
+                            />
+                            Sticky Header
+                          </label>
                         </div>
 
                         <div className="form-group">
                           <label>
                             <input
                               type="checkbox"
-                              checked={siteSettings.marquee_pause_on_hover}
+                              checked={siteSettings.header_shadow || false}
                               onChange={(e) => setSiteSettings(prev => ({
                                 ...prev,
-                                marquee_pause_on_hover: e.target.checked
+                                header_shadow: e.target.checked
                               }))}
                             />
-                            Pause on hover
+                            Header Shadow
                           </label>
                         </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.header_border_bottom || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_border_bottom: e.target.checked
+                              }))}
+                            />
+                            Bottom Border
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Border Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.header_border_color || '#e9ecef'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              header_border_color: e.target.value
+                            }))}
+                            disabled={!siteSettings.header_border_bottom}
+                          />
+                        </div>
                       </div>
-                    </>
+
+
+                    </div>
                   )}
-                </div>
-              )}
 
-              {/* Welcome Section Tab */}
-              {settingsTab === 'welcome' && (
-                <div className="settings-section">
-                  <h3>Welcome Section</h3>
-                  <p>Customize the appearance of the welcome section on the home page</p>
+                  {/* Header Settings Tab */}
+                  {settingsTab === 'header' && (
+                    <div className="settings-section">
+                      <h3>Header Settings</h3>
+                      
+                      {/* Header Appearance */}
+                      <h4>Header Appearance</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Header Background Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.header_background_color || '#ffffff'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              header_background_color: e.target.value
+                            }))}
+                          />
+                        </div>
 
-                  <div className="form-group">
-                    <label>Welcome Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.welcome_title}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        welcome_title: e.target.value
-                      }))}
-                      placeholder="Welcome to Pebdeq"
-                    />
-                  </div>
+                        <div className="form-group">
+                          <label>Header Text Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.header_text_color || '#2c3e50'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              header_text_color: e.target.value
+                            }))}
+                          />
+                        </div>
 
-                  <div className="form-group">
-                    <label>Welcome Subtitle</label>
-                    <input
-                      type="text"
-                      value={siteSettings.welcome_subtitle}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        welcome_subtitle: e.target.value
-                      }))}
-                      placeholder="Crafted. Vintage. Smart."
-                    />
-                  </div>
+                        <div className="form-group">
+                          <label>Header Height (pixels)</label>
+                          <input
+                            type="number"
+                            value={siteSettings.header_height || 60}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              header_height: parseInt(e.target.value) || 60
+                            }))}
+                            min="40"
+                            max="120"
+                          />
+                        </div>
 
-                  <div className="form-group">
-                    <label>Welcome Background Image</label>
-                    <div className="custom-file-input">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            handleWelcomeBackgroundUpload(file);
-                          }
-                        }}
-                        disabled={uploadingWelcomeBackground}
-                      />
-                      <div className={`custom-file-button ${siteSettings.welcome_background_image ? 'file-selected' : ''}`}>
-                        {uploadingWelcomeBackground ? 'Uploading...' : 
-                         siteSettings.welcome_background_image ? 'Background image uploaded' : 
-                         'Choose Background Image'}
+                        <div className="form-group">
+                          <label>Header Padding (pixels)</label>
+                          <input
+                            type="number"
+                            value={siteSettings.header_padding || 15}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              header_padding: parseInt(e.target.value) || 15
+                            }))}
+                            min="0"
+                            max="50"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    
-                    {siteSettings.welcome_background_image && (
-                      <div className="background-preview">
-                        <img 
-                          src={`http://localhost:5005${siteSettings.welcome_background_image}`} 
-                          alt="Welcome Background" 
-                          style={{ 
-                            width: '200px',
-                            height: '120px',
-                            objectFit: 'cover',
-                            borderRadius: '4px'
-                          }}
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-danger"
-                          onClick={() => setSiteSettings(prev => ({
-                            ...prev,
-                            welcome_background_image: null
-                          }))}
-                        >
-                          Remove Background Image
-                        </button>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.header_sticky || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_sticky: e.target.checked
+                              }))}
+                            />
+                            Sticky Header
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.header_shadow || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_shadow: e.target.checked
+                              }))}
+                            />
+                            Header Shadow
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.header_border_bottom || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                header_border_bottom: e.target.checked
+                              }))}
+                            />
+                            Bottom Border
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Border Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.header_border_color || '#e9ecef'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              header_border_color: e.target.value
+                            }))}
+                            disabled={!siteSettings.header_border_bottom}
+                          />
+                        </div>
                       </div>
-                    )}
-                  </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Background Color</label>
-                      <input
-                        type="color"
-                        value={siteSettings.welcome_background_color}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          welcome_background_color: e.target.value
-                        }))}
-                      />
-                      <small>Color to use if no background image</small>
+
+
+
                     </div>
+                  )}
 
-                    <div className="form-group">
-                      <label>Text Color</label>
-                      <input
-                        type="color"
-                        value={siteSettings.welcome_text_color}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          welcome_text_color: e.target.value
-                        }))}
-                      />
-                    </div>
-                  </div>
+                  {/* Welcome Section Tab */}
+                  {settingsTab === 'welcome' && (
+                    <div className="settings-section">
+                      <h3>Welcome Section</h3>
+                      <p>Customize the appearance of the welcome section on the home page</p>
 
-                  <div className="form-group">
-                    <label>Button Text</label>
-                    <input
-                      type="text"
-                      value={siteSettings.welcome_button_text}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        welcome_button_text: e.target.value
-                      }))}
-                      placeholder="Explore Products"
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Button Link</label>
-                      <input
-                        type="text"
-                        value={siteSettings.welcome_button_link}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          welcome_button_link: e.target.value
-                        }))}
-                        placeholder="/products"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Button Color</label>
-                      <input
-                        type="color"
-                        value={siteSettings.welcome_button_color}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          welcome_button_color: e.target.value
-                        }))}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Collections Section Tab */}
-              {settingsTab === 'collections' && (
-                <div className="settings-section">
-                  <h3>Collections Section</h3>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.collections_show_section}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          collections_show_section: e.target.checked
-                        }))}
-                      />
-                      Show collections section
-                    </label>
-                  </div>
-
-                  {siteSettings.collections_show_section && (
-                    <>
                       <div className="form-group">
-                        <label>Collections Title</label>
+                        <label>Welcome Title</label>
                         <input
                           type="text"
-                          value={siteSettings.collections_title}
+                          value={siteSettings.welcome_title}
                           onChange={(e) => setSiteSettings(prev => ({
                             ...prev,
-                            collections_title: e.target.value
+                            welcome_title: e.target.value
                           }))}
-                          placeholder="Our Collections"
+                          placeholder="Welcome to Pebdeq"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Welcome Subtitle</label>
+                        <input
+                          type="text"
+                          value={siteSettings.welcome_subtitle}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            welcome_subtitle: e.target.value
+                          }))}
+                          placeholder="Crafted. Vintage. Smart."
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Welcome Background Image</label>
+                        <div className="custom-file-input">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                handleWelcomeBackgroundUpload(file);
+                              }
+                            }}
+                            disabled={uploadingWelcomeBackground}
+                          />
+                          <div className={`custom-file-button ${siteSettings.welcome_background_image ? 'file-selected' : ''}`}>
+                            {uploadingWelcomeBackground ? 'Uploading...' : 
+                             siteSettings.welcome_background_image ? 'Background image uploaded' : 
+                             'Choose Background Image'}
+                          </div>
+                        </div>
+                        
+                        {siteSettings.welcome_background_image && (
+                          <div className="background-preview">
+                            <img 
+                              src={`http://localhost:5005${siteSettings.welcome_background_image}`} 
+                              alt="Welcome Background" 
+                              style={{ 
+                                width: '200px',
+                                height: '120px',
+                                objectFit: 'cover',
+                                borderRadius: '4px'
+                              }}
+                            />
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => setSiteSettings(prev => ({
+                                ...prev,
+                                welcome_background_image: null
+                              }))}
+                            >
+                              Remove Background Image
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Background Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.welcome_background_color}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              welcome_background_color: e.target.value
+                            }))}
+                          />
+                          <small>Color to use if no background image</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Text Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.welcome_text_color}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              welcome_text_color: e.target.value
+                            }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Button Text</label>
+                        <input
+                          type="text"
+                          value={siteSettings.welcome_button_text}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            welcome_button_text: e.target.value
+                          }))}
+                          placeholder="Explore Products"
                         />
                       </div>
 
                       <div className="form-row">
                         <div className="form-group">
-                          <label>Categories Per Row</label>
+                          <label>Button Link</label>
                           <input
-                            type="number"
-                            min="1"
-                            max="6"
-                            value={siteSettings.collections_categories_per_row}
+                            type="text"
+                            value={siteSettings.welcome_button_link}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              collections_categories_per_row: parseInt(e.target.value) || 4
+                              welcome_button_link: e.target.value
                             }))}
-                            placeholder="4"
+                            placeholder="/products"
                           />
-                          <small>Between 1-6</small>
                         </div>
 
+                        <div className="form-group">
+                          <label>Button Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.welcome_button_color}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              welcome_button_color: e.target.value
+                            }))}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Collections Section Tab */}
+                  {settingsTab === 'collections' && (
+                    <div className="settings-section">
+                      <h3>Collections Section</h3>
+                      
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.collections_show_section}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              collections_show_section: e.target.checked
+                            }))}
+                          />
+                          Show collections section
+                        </label>
+                      </div>
+
+                      {siteSettings.collections_show_section && (
+                        <>
+                          <div className="form-group">
+                            <label>Collections Title</label>
+                            <input
+                              type="text"
+                              value={siteSettings.collections_title}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                collections_title: e.target.value
+                              }))}
+                              placeholder="Our Collections"
+                            />
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Categories Per Row</label>
+                              <input
+                                type="number"
+                                min="1"
+                                max="6"
+                                value={siteSettings.collections_categories_per_row}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  collections_categories_per_row: parseInt(e.target.value) || 4
+                                }))}
+                                placeholder="4"
+                              />
+                              <small>Between 1-6</small>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Maximum Rows</label>
+                              <input
+                                type="number"
+                                min="1"
+                                max="5"
+                                value={siteSettings.collections_max_rows}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  collections_max_rows: parseInt(e.target.value) || 1
+                                }))}
+                                placeholder="1"
+                              />
+                              <small>Between 1-5</small>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Contact & Social Tab */}
+                  {settingsTab === 'contact' && (
+                    <div className="settings-section">
+                      <h3>Contact & Social Media</h3>
+                      
+                      <div className="form-group">
+                        <h4>Contact Information</h4>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Phone</label>
+                        <input
+                          type="text"
+                          value={siteSettings.contact_phone || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            contact_phone: e.target.value
+                          }))}
+                          placeholder="+90 555 123 4567"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Email</label>
+                        <input
+                          type="email"
+                          value={siteSettings.contact_email || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            contact_email: e.target.value
+                          }))}
+                          placeholder="info@pebdeq.com"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Address</label>
+                        <textarea
+                          value={siteSettings.contact_address || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            contact_address: e.target.value
+                          }))}
+                          placeholder="Istanbul, Turkey"
+                          rows="3"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <h4>Social Media Accounts</h4>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Instagram</label>
+                          <input
+                            type="text"
+                            value={siteSettings.social_instagram || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              social_instagram: e.target.value
+                            }))}
+                            placeholder="@pebdeq"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Facebook</label>
+                          <input
+                            type="text"
+                            value={siteSettings.social_facebook || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              social_facebook: e.target.value
+                            }))}
+                            placeholder="pebdeq"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Twitter</label>
+                          <input
+                            type="text"
+                            value={siteSettings.social_twitter || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              social_twitter: e.target.value
+                            }))}
+                            placeholder="@pebdeq"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>YouTube</label>
+                          <input
+                            type="text"
+                            value={siteSettings.social_youtube || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              social_youtube: e.target.value
+                            }))}
+                            placeholder="pebdeq"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>LinkedIn</label>
+                        <input
+                          type="text"
+                          value={siteSettings.social_linkedin || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            social_linkedin: e.target.value
+                          }))}
+                          placeholder="pebdeq"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SEO Settings Tab */}
+                  {settingsTab === 'seo' && (
+                    <div className="settings-section">
+                      <h3>SEO Settings</h3>
+                      
+                      <div className="form-group">
+                        <label>Meta Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.meta_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            meta_title: e.target.value
+                          }))}
+                          placeholder="PEBDEQ - Craft, Vintage, Innovation"
+                          maxLength="60"
+                        />
+                        <small>Maximum 60 characters recommended</small>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Meta Description</label>
+                        <textarea
+                          value={siteSettings.meta_description || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            meta_description: e.target.value
+                          }))}
+                          placeholder="Discover unique 3D printed items, vintage tools, antique light bulbs, and custom laser engraving services."
+                          maxLength="160"
+                          rows="3"
+                        />
+                        <small>Maximum 160 characters recommended</small>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Meta Keywords</label>
+                        <textarea
+                          value={siteSettings.meta_keywords || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            meta_keywords: e.target.value
+                          }))}
+                          placeholder="3D printing, vintage tools, antique bulbs, laser engraving, custom products"
+                          rows="2"
+                        />
+                        <small>Separate with commas</small>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Business Settings Tab */}
+                  {settingsTab === 'business' && (
+                    <div className="settings-section">
+                      <h3>Business Settings</h3>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Currency Symbol</label>
+                          <input
+                            type="text"
+                            value={siteSettings.currency_symbol || '₺'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              currency_symbol: e.target.value
+                            }))}
+                            placeholder="₺"
+                            maxLength="3"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Currency Code</label>
+                          <input
+                            type="text"
+                            value={siteSettings.currency_code || 'TRY'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              currency_code: e.target.value.toUpperCase()
+                            }))}
+                            placeholder="TRY"
+                            maxLength="3"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Shipping Cost</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={siteSettings.shipping_cost || 0}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              shipping_cost: parseFloat(e.target.value) || 0
+                            }))}
+                            placeholder="15.00"
+                          />
+                          <small>Default shipping cost</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Free Shipping Threshold</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={siteSettings.free_shipping_threshold || 0}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              free_shipping_threshold: parseFloat(e.target.value) || 0
+                            }))}
+                            placeholder="200.00"
+                          />
+                          <small>Free shipping above this amount</small>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Features Tab */}
+                  {settingsTab === 'features' && (
+                    <div className="settings-section">
+                      <h3>Feature Settings</h3>
+                      
+                      <div className="form-group">
+                        <h4>Site Features</h4>
+                        <p>Choose which features to enable</p>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.enable_reviews || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              enable_reviews: e.target.checked
+                            }))}
+                          />
+                          Enable product reviews
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.enable_wishlist || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              enable_wishlist: e.target.checked
+                            }))}
+                          />
+                          Enable wishlist feature
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.enable_compare || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              enable_compare: e.target.checked
+                            }))}
+                          />
+                          Enable product comparison feature
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.enable_newsletter || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              enable_newsletter: e.target.checked
+                            }))}
+                          />
+                          Enable newsletter subscription
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <h4>System Settings</h4>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.maintenance_mode || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              maintenance_mode: e.target.checked
+                            }))}
+                          />
+                          Maintenance mode (Site will be closed for visitors)
+                        </label>
+                        <small style={{color: 'red'}}>⚠️ If you enable this option, the site will be inaccessible to visitors!</small>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Footer Tab */}
+                  {settingsTab === 'footer' && (
+                    <div className="settings-section">
+                      <h3>Footer Settings</h3>
+                      
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.footer_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_show_section: e.target.checked
+                            }))}
+                          />
+                          Show footer section
+                        </label>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Footer Background Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.footer_background_color || '#2c3e50'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_background_color: e.target.value
+                            }))}
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Footer Text Color</label>
+                          <input
+                            type="color"
+                            value={siteSettings.footer_text_color || '#ffffff'}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_text_color: e.target.value
+                            }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Company Name</label>
+                        <input
+                          type="text"
+                          value={siteSettings.footer_company_name || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_company_name: e.target.value
+                          }))}
+                          placeholder="PEBDEQ"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Company Description</label>
+                        <textarea
+                          value={siteSettings.footer_company_description || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_company_description: e.target.value
+                          }))}
+                          placeholder="Crafted with passion, delivered with precision."
+                          rows="3"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Copyright Text</label>
+                        <input
+                          type="text"
+                          value={siteSettings.footer_copyright_text || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_copyright_text: e.target.value
+                          }))}
+                          placeholder="© 2024 PEBDEQ. All rights reserved."
+                        />
+                      </div>
+
+                      {/* Footer Logo Settings */}
+                      <div className="settings-divider">
+                        <h4>Footer Logo Settings</h4>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.footer_use_logo || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_use_logo: e.target.checked
+                            }))}
+                          />
+                          Use footer logo (if unchecked, company name will be shown)
+                        </label>
+                      </div>
+
+                      {siteSettings.footer_use_logo && (
+                        <>
+                          <div className="form-group">
+                            <label>Footer Logo</label>
+                            <div className="custom-file-input">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (file) {
+                                    handleFooterLogoUpload(file);
+                                  }
+                                }}
+                                disabled={uploadingFooterLogo}
+                              />
+                              <div className={`custom-file-button ${siteSettings.footer_logo ? 'file-selected' : ''}`}>
+                                {uploadingFooterLogo ? 'Uploading...' : 
+                                 siteSettings.footer_logo ? 'Footer logo uploaded' : 
+                                 'Choose Footer Logo'}
+                              </div>
+                            </div>
+                            
+                            {siteSettings.footer_logo && (
+                              <div className="logo-preview">
+                                <img 
+                                  src={`http://localhost:5005${siteSettings.footer_logo}`} 
+                                  alt="Footer Logo" 
+                                  style={{ 
+                                    width: `${siteSettings.footer_logo_width || 120}px`,
+                                    height: `${siteSettings.footer_logo_height || 40}px`,
+                                    objectFit: 'contain' 
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-danger"
+                                  onClick={() => setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_logo: null
+                                  }))}
+                                >
+                                  Remove Footer Logo
+                                </button>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label>Footer Logo Width (pixels)</label>
+                              <input
+                                type="number"
+                                min="20"
+                                max="500"
+                                value={siteSettings.footer_logo_width || 120}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  footer_logo_width: parseInt(e.target.value) || 120
+                                }))}
+                                placeholder="120"
+                              />
+                              <small>Between 20-500 pixels</small>
+                            </div>
+
+                            <div className="form-group">
+                              <label>Footer Logo Height (pixels)</label>
+                              <input
+                                type="number"
+                                min="20"
+                                max="200"
+                                value={siteSettings.footer_logo_height || 40}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  footer_logo_height: parseInt(e.target.value) || 40
+                                }))}
+                                placeholder="40"
+                              />
+                              <small>Between 20-200 pixels</small>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      <hr />
+
+                      {/* Support Section */}
+                      <div className="form-group">
+                        <h4>Support Section</h4>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.footer_support_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_support_show_section: e.target.checked
+                            }))}
+                          />
+                          Show support section
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Support Section Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.footer_support_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_support_title: e.target.value
+                          }))}
+                          placeholder="Support"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Support Links</label>
+                        <div className="links-manager">
+                          {(siteSettings.footer_support_links || []).map((link, index) => (
+                            <div key={index} className="link-item">
+                              <input
+                                type="text"
+                                placeholder="Link Title"
+                                value={link.title || ''}
+                                onChange={(e) => {
+                                  const newLinks = [...(siteSettings.footer_support_links || [])];
+                                  newLinks[index] = { ...newLinks[index], title: e.target.value };
+                                  setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_support_links: newLinks
+                                  }));
+                                }}
+                              />
+                              <input
+                                type="text"
+                                placeholder="Link URL"
+                                value={link.url || ''}
+                                onChange={(e) => {
+                                  const newLinks = [...(siteSettings.footer_support_links || [])];
+                                  newLinks[index] = { ...newLinks[index], url: e.target.value };
+                                  setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_support_links: newLinks
+                                  }));
+                                }}
+                              />
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={link.is_external || false}
+                                  onChange={(e) => {
+                                    const newLinks = [...(siteSettings.footer_support_links || [])];
+                                    newLinks[index] = { ...newLinks[index], is_external: e.target.checked };
+                                    setSiteSettings(prev => ({
+                                      ...prev,
+                                      footer_support_links: newLinks
+                                    }));
+                                  }}
+                                />
+                                External Link
+                              </label>
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-danger"
+                                onClick={() => {
+                                  const newLinks = [...(siteSettings.footer_support_links || [])];
+                                  newLinks.splice(index, 1);
+                                  setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_support_links: newLinks
+                                  }));
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-secondary"
+                            onClick={() => {
+                              const newLinks = [...(siteSettings.footer_support_links || [])];
+                              newLinks.push({ title: '', url: '', is_external: false });
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_support_links: newLinks
+                              }));
+                            }}
+                          >
+                            Add Support Link
+                          </button>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Quick Links Section */}
+                      <div className="form-group">
+                        <h4>Quick Links Section</h4>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.footer_quick_links_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_quick_links_show_section: e.target.checked
+                            }))}
+                          />
+                          Show quick links section
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Quick Links Section Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.footer_quick_links_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_quick_links_title: e.target.value
+                          }))}
+                          placeholder="Quick Links"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Quick Links</label>
+                        <div className="links-manager">
+                          {(siteSettings.footer_quick_links || []).map((link, index) => (
+                            <div key={index} className="link-item">
+                              <input
+                                type="text"
+                                placeholder="Link Title"
+                                value={link.title || ''}
+                                onChange={(e) => {
+                                  const newLinks = [...(siteSettings.footer_quick_links || [])];
+                                  newLinks[index] = { ...newLinks[index], title: e.target.value };
+                                  setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_quick_links: newLinks
+                                  }));
+                                }}
+                              />
+                              <input
+                                type="text"
+                                placeholder="Link URL"
+                                value={link.url || ''}
+                                onChange={(e) => {
+                                  const newLinks = [...(siteSettings.footer_quick_links || [])];
+                                  newLinks[index] = { ...newLinks[index], url: e.target.value };
+                                  setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_quick_links: newLinks
+                                  }));
+                                }}
+                              />
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={link.is_external || false}
+                                  onChange={(e) => {
+                                    const newLinks = [...(siteSettings.footer_quick_links || [])];
+                                    newLinks[index] = { ...newLinks[index], is_external: e.target.checked };
+                                    setSiteSettings(prev => ({
+                                      ...prev,
+                                      footer_quick_links: newLinks
+                                    }));
+                                  }}
+                                />
+                                External Link
+                              </label>
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-danger"
+                                onClick={() => {
+                                  const newLinks = [...(siteSettings.footer_quick_links || [])];
+                                  newLinks.splice(index, 1);
+                                  setSiteSettings(prev => ({
+                                    ...prev,
+                                    footer_quick_links: newLinks
+                                  }));
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-secondary"
+                            onClick={() => {
+                              const newLinks = [...(siteSettings.footer_quick_links || [])];
+                              newLinks.push({ title: '', url: '', is_external: false });
+                              setSiteSettings(prev => ({
+                                ...prev,
+                                footer_quick_links: newLinks
+                              }));
+                            }}
+                          >
+                            Add Quick Link
+                          </button>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Social Section */}
+                      <div className="form-group">
+                        <h4>Social Section</h4>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.footer_social_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_social_show_section: e.target.checked
+                            }))}
+                          />
+                          Show social section
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Social Section Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.footer_social_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_social_title: e.target.value
+                          }))}
+                          placeholder="Follow Us"
+                        />
+                      </div>
+
+                      <hr />
+
+                      {/* Newsletter Section */}
+                      <div className="form-group">
+                        <h4>Newsletter Section</h4>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.footer_newsletter_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_newsletter_show_section: e.target.checked
+                            }))}
+                          />
+                          Show newsletter section
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Newsletter Section Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.footer_newsletter_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_newsletter_title: e.target.value
+                          }))}
+                          placeholder="Newsletter"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Newsletter Description</label>
+                        <textarea
+                          value={siteSettings.footer_newsletter_description || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            footer_newsletter_description: e.target.value
+                          }))}
+                          placeholder="Subscribe to get updates about new products and offers."
+                          rows="3"
+                        />
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Newsletter Placeholder Text</label>
+                          <input
+                            type="text"
+                            value={siteSettings.footer_newsletter_placeholder || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_newsletter_placeholder: e.target.value
+                            }))}
+                            placeholder="Enter your email address"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Newsletter Button Text</label>
+                          <input
+                            type="text"
+                            value={siteSettings.footer_newsletter_button_text || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              footer_newsletter_button_text: e.target.value
+                            }))}
+                            placeholder="Subscribe"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Homepage Products Tab */}
+                  {settingsTab === 'homepage-products' && (
+                    <div className="settings-section">
+                      <h3>Homepage Products Settings</h3>
+                      
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.homepage_products_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_show_section: e.target.checked
+                            }))}
+                          />
+                          Show homepage products section
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Section Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.homepage_products_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_title: e.target.value
+                          }))}
+                          placeholder="Featured Products"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Section Subtitle</label>
+                        <input
+                          type="text"
+                          value={siteSettings.homepage_products_subtitle || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_subtitle: e.target.value
+                          }))}
+                          placeholder="Discover our most popular items"
+                        />
+                      </div>
+
+                      <hr />
+
+                      {/* Layout Settings */}
+                      <h4>Layout Settings</h4>
+                      
+                      <div className="form-row">
                         <div className="form-group">
                           <label>Maximum Rows</label>
                           <input
                             type="number"
                             min="1"
                             max="5"
-                            value={siteSettings.collections_max_rows}
+                            value={siteSettings.homepage_products_max_rows || 2}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              collections_max_rows: parseInt(e.target.value) || 1
+                              homepage_products_max_rows: parseInt(e.target.value) || 2
                             }))}
-                            placeholder="1"
                           />
-                          <small>Between 1-5</small>
+                          <small>Number of rows to display (1-5)</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Products Per Row</label>
+                          <input
+                            type="number"
+                            min="2"
+                            max="6"
+                            value={siteSettings.homepage_products_per_row || 4}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_per_row: parseInt(e.target.value) || 4
+                            }))}
+                          />
+                          <small>Number of products per row (2-6)</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Maximum Items</label>
+                          <input
+                            type="number"
+                            min="4"
+                            max="30"
+                            value={siteSettings.homepage_products_max_items || 8}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_max_items: parseInt(e.target.value) || 8
+                            }))}
+                          />
+                          <small>Total number of products to show (4-30)</small>
                         </div>
                       </div>
-                    </>
-                  )}
-                </div>
-              )}
 
-              {/* Contact & Social Tab */}
-              {settingsTab === 'contact' && (
-                <div className="settings-section">
-                  <h3>Contact & Social Media</h3>
-                  
-                  <div className="form-group">
-                    <h4>Contact Information</h4>
-                  </div>
+                      <hr />
 
-                  <div className="form-group">
-                    <label>Phone</label>
-                    <input
-                      type="text"
-                      value={siteSettings.contact_phone || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        contact_phone: e.target.value
-                      }))}
-                      placeholder="+90 555 123 4567"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      value={siteSettings.contact_email || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        contact_email: e.target.value
-                      }))}
-                      placeholder="info@pebdeq.com"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Address</label>
-                    <textarea
-                      value={siteSettings.contact_address || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        contact_address: e.target.value
-                      }))}
-                      placeholder="Istanbul, Turkey"
-                      rows="3"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <h4>Social Media Accounts</h4>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Instagram</label>
-                      <input
-                        type="text"
-                        value={siteSettings.social_instagram || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          social_instagram: e.target.value
-                        }))}
-                        placeholder="@pebdeq"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Facebook</label>
-                      <input
-                        type="text"
-                        value={siteSettings.social_facebook || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          social_facebook: e.target.value
-                        }))}
-                        placeholder="pebdeq"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Twitter</label>
-                      <input
-                        type="text"
-                        value={siteSettings.social_twitter || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          social_twitter: e.target.value
-                        }))}
-                        placeholder="@pebdeq"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>YouTube</label>
-                      <input
-                        type="text"
-                        value={siteSettings.social_youtube || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          social_youtube: e.target.value
-                        }))}
-                        placeholder="pebdeq"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>LinkedIn</label>
-                    <input
-                      type="text"
-                      value={siteSettings.social_linkedin || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        social_linkedin: e.target.value
-                      }))}
-                      placeholder="pebdeq"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* SEO Settings Tab */}
-              {settingsTab === 'seo' && (
-                <div className="settings-section">
-                  <h3>SEO Settings</h3>
-                  
-                  <div className="form-group">
-                    <label>Meta Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.meta_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        meta_title: e.target.value
-                      }))}
-                      placeholder="PEBDEQ - Craft, Vintage, Innovation"
-                      maxLength="60"
-                    />
-                    <small>Maximum 60 characters recommended</small>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Meta Description</label>
-                    <textarea
-                      value={siteSettings.meta_description || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        meta_description: e.target.value
-                      }))}
-                      placeholder="Discover unique 3D printed items, vintage tools, antique light bulbs, and custom laser engraving services."
-                      maxLength="160"
-                      rows="3"
-                    />
-                    <small>Maximum 160 characters recommended</small>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Meta Keywords</label>
-                    <textarea
-                      value={siteSettings.meta_keywords || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        meta_keywords: e.target.value
-                      }))}
-                      placeholder="3D printing, vintage tools, antique bulbs, laser engraving, custom products"
-                      rows="2"
-                    />
-                    <small>Separate with commas</small>
-                  </div>
-                </div>
-              )}
-
-              {/* Business Settings Tab */}
-              {settingsTab === 'business' && (
-                <div className="settings-section">
-                  <h3>Business Settings</h3>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Currency Symbol</label>
-                      <input
-                        type="text"
-                        value={siteSettings.currency_symbol || '₺'}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          currency_symbol: e.target.value
-                        }))}
-                        placeholder="₺"
-                        maxLength="3"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Currency Code</label>
-                      <input
-                        type="text"
-                        value={siteSettings.currency_code || 'TRY'}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          currency_code: e.target.value.toUpperCase()
-                        }))}
-                        placeholder="TRY"
-                        maxLength="3"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Shipping Cost</label>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={siteSettings.shipping_cost || 0}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          shipping_cost: parseFloat(e.target.value) || 0
-                        }))}
-                        placeholder="15.00"
-                      />
-                      <small>Default shipping cost</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Free Shipping Threshold</label>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={siteSettings.free_shipping_threshold || 0}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          free_shipping_threshold: parseFloat(e.target.value) || 0
-                        }))}
-                        placeholder="200.00"
-                      />
-                      <small>Free shipping above this amount</small>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Features Tab */}
-              {settingsTab === 'features' && (
-                <div className="settings-section">
-                  <h3>Feature Settings</h3>
-                  
-                  <div className="form-group">
-                    <h4>Site Features</h4>
-                    <p>Choose which features to enable</p>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.enable_reviews || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          enable_reviews: e.target.checked
-                        }))}
-                      />
-                      Enable product reviews
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.enable_wishlist || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          enable_wishlist: e.target.checked
-                        }))}
-                      />
-                      Enable wishlist feature
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.enable_compare || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          enable_compare: e.target.checked
-                        }))}
-                      />
-                      Enable product comparison feature
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.enable_newsletter || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          enable_newsletter: e.target.checked
-                        }))}
-                      />
-                      Enable newsletter subscription
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <h4>System Settings</h4>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.maintenance_mode || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          maintenance_mode: e.target.checked
-                        }))}
-                      />
-                      Maintenance mode (Site will be closed for visitors)
-                    </label>
-                    <small style={{color: 'red'}}>⚠️ If you enable this option, the site will be inaccessible to visitors!</small>
-                  </div>
-                </div>
-              )}
-
-              {/* Footer Tab */}
-              {settingsTab === 'footer' && (
-                <div className="settings-section">
-                  <h3>Footer Settings</h3>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.footer_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_show_section: e.target.checked
-                        }))}
-                      />
-                      Show footer section
-                    </label>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Footer Background Color</label>
-                      <input
-                        type="color"
-                        value={siteSettings.footer_background_color || '#2c3e50'}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_background_color: e.target.value
-                        }))}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Footer Text Color</label>
-                      <input
-                        type="color"
-                        value={siteSettings.footer_text_color || '#ffffff'}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_text_color: e.target.value
-                        }))}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Company Name</label>
-                    <input
-                      type="text"
-                      value={siteSettings.footer_company_name || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_company_name: e.target.value
-                      }))}
-                      placeholder="PEBDEQ"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Company Description</label>
-                    <textarea
-                      value={siteSettings.footer_company_description || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_company_description: e.target.value
-                      }))}
-                      placeholder="Crafted with passion, delivered with precision."
-                      rows="3"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Copyright Text</label>
-                    <input
-                      type="text"
-                      value={siteSettings.footer_copyright_text || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_copyright_text: e.target.value
-                      }))}
-                      placeholder="© 2024 PEBDEQ. All rights reserved."
-                    />
-                  </div>
-
-                  {/* Footer Logo Settings */}
-                  <div className="settings-divider">
-                    <h4>Footer Logo Settings</h4>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.footer_use_logo || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_use_logo: e.target.checked
-                        }))}
-                      />
-                      Use footer logo (if unchecked, company name will be shown)
-                    </label>
-                  </div>
-
-                  {siteSettings.footer_use_logo && (
-                    <>
+                      {/* Image Settings */}
+                      <h4>Image Settings</h4>
+                      
                       <div className="form-group">
-                        <label>Footer Logo</label>
-                        <div className="custom-file-input">
+                        <label>
                           <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files[0];
-                              if (file) {
-                                handleFooterLogoUpload(file);
-                              }
-                            }}
-                            disabled={uploadingFooterLogo}
+                            type="checkbox"
+                            checked={siteSettings.homepage_products_show_images || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_show_images: e.target.checked
+                            }))}
                           />
-                          <div className={`custom-file-button ${siteSettings.footer_logo ? 'file-selected' : ''}`}>
-                            {uploadingFooterLogo ? 'Uploading...' : 
-                             siteSettings.footer_logo ? 'Footer logo uploaded' : 
-                             'Choose Footer Logo'}
-                          </div>
-                        </div>
-                        
-                        {siteSettings.footer_logo && (
-                          <div className="logo-preview">
-                            <img 
-                              src={`http://localhost:5005${siteSettings.footer_logo}`} 
-                              alt="Footer Logo" 
-                              style={{ 
-                                width: `${siteSettings.footer_logo_width || 120}px`,
-                                height: `${siteSettings.footer_logo_height || 40}px`,
-                                objectFit: 'contain' 
-                              }}
-                            />
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
-                              onClick={() => setSiteSettings(prev => ({
-                                ...prev,
-                                footer_logo: null
-                              }))}
-                            >
-                              Remove Footer Logo
-                            </button>
-                          </div>
-                        )}
+                          Show product images
+                        </label>
                       </div>
 
                       <div className="form-row">
                         <div className="form-group">
-                          <label>Footer Logo Width (pixels)</label>
+                          <label>Image Width (px)</label>
                           <input
                             type="number"
-                            min="20"
+                            min="100"
                             max="500"
-                            value={siteSettings.footer_logo_width || 120}
+                            value={siteSettings.homepage_products_image_width || 300}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              footer_logo_width: parseInt(e.target.value) || 120
+                              homepage_products_image_width: parseInt(e.target.value) || 300
                             }))}
-                            placeholder="120"
                           />
-                          <small>Between 20-500 pixels</small>
+                          <small>Product image width (100-500px)</small>
                         </div>
 
                         <div className="form-group">
-                          <label>Footer Logo Height (pixels)</label>
+                          <label>Image Height (px)</label>
                           <input
                             type="number"
-                            min="20"
-                            max="200"
-                            value={siteSettings.footer_logo_height || 40}
+                            min="100"
+                            max="400"
+                            value={siteSettings.homepage_products_image_height || 200}
                             onChange={(e) => setSiteSettings(prev => ({
                               ...prev,
-                              footer_logo_height: parseInt(e.target.value) || 40
+                              homepage_products_image_height: parseInt(e.target.value) || 200
                             }))}
-                            placeholder="40"
                           />
-                          <small>Between 20-200 pixels</small>
+                          <small>Product image height (100-400px)</small>
                         </div>
                       </div>
-                    </>
+
+                      <hr />
+
+                      {/* Button Settings */}
+                      <h4>Button Settings</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_favorite || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_favorite: e.target.checked
+                              }))}
+                            />
+                            Show favorite button
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_buy_now || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_buy_now: e.target.checked
+                              }))}
+                            />
+                            Show buy now button
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_details || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_details: e.target.checked
+                              }))}
+                            />
+                            Show details button
+                          </label>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Information Display */}
+                      <h4>Information Display</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_price || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_price: e.target.checked
+                              }))}
+                            />
+                            Show price
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_original_price || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_original_price: e.target.checked
+                              }))}
+                            />
+                            Show original price (if discounted)
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_stock || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_stock: e.target.checked
+                              }))}
+                            />
+                            Show stock status
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_category || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_category: e.target.checked
+                              }))}
+                            />
+                            Show category
+                          </label>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Sorting and Filtering */}
+                      <h4>Sorting and Filtering</h4>
+                      
+                      <div className="form-group">
+                        <label>Sort Products By</label>
+                        <select
+                          value={siteSettings.homepage_products_sort_by || 'featured'}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_sort_by: e.target.value
+                          }))}
+                        >
+                          <option value="featured">Featured Products</option>
+                          <option value="newest">Newest First</option>
+                          <option value="price_low">Price: Low to High</option>
+                          <option value="price_high">Price: High to Low</option>
+                          <option value="name">Name: A to Z</option>
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Filter by Categories</label>
+                        <div className="categories-selection">
+                          {categories.map(category => (
+                            <label key={category.id} className="checkbox-label">
+                              <input
+                                type="checkbox"
+                                checked={(siteSettings.homepage_products_filter_categories || []).includes(category.id)}
+                                onChange={(e) => {
+                                  const currentCategories = siteSettings.homepage_products_filter_categories || [];
+                                  if (e.target.checked) {
+                                    setSiteSettings(prev => ({
+                                      ...prev,
+                                      homepage_products_filter_categories: [...currentCategories, category.id]
+                                    }));
+                                  } else {
+                                    setSiteSettings(prev => ({
+                                      ...prev,
+                                      homepage_products_filter_categories: currentCategories.filter(id => id !== category.id)
+                                    }));
+                                  }
+                                }}
+                              />
+                              {category.name}
+                            </label>
+                          ))}
+                        </div>
+                        <small>Leave empty to show all categories</small>
+                      </div>
+
+                      <hr />
+
+                      {/* View All Button */}
+                      <h4>View All Button</h4>
+                      
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.homepage_products_show_view_all || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_show_view_all: e.target.checked
+                            }))}
+                          />
+                          Show "View All Products" button
+                        </label>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Button Text</label>
+                          <input
+                            type="text"
+                            value={siteSettings.homepage_products_view_all_text || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_view_all_text: e.target.value
+                            }))}
+                            placeholder="View All Products"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Button Link</label>
+                          <input
+                            type="text"
+                            value={siteSettings.homepage_products_view_all_link || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products_view_all_link: e.target.value
+                            }))}
+                            placeholder="/products"
+                          />
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Card Style Settings */}
+                      <h4>Card Style Settings</h4>
+                      
+                      <div className="form-group">
+                        <label>Card Style</label>
+                        <select
+                          value={siteSettings.homepage_products_card_style || 'modern'}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products_card_style: e.target.value
+                          }))}
+                        >
+                          <option value="modern">Modern</option>
+                          <option value="classic">Classic</option>
+                          <option value="minimal">Minimal</option>
+                        </select>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_card_shadow || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_card_shadow: e.target.checked
+                              }))}
+                            />
+                            Show card shadow
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_card_hover_effect || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_card_hover_effect: e.target.checked
+                              }))}
+                            />
+                            Show hover effects
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_badges || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_badges: e.target.checked
+                              }))}
+                            />
+                            Show badges (Featured, New, etc.)
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_rating || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_rating: e.target.checked
+                              }))}
+                            />
+                            Show ratings
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_show_quick_view || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_show_quick_view: e.target.checked
+                              }))}
+                            />
+                            Show quick view button
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   )}
 
-                  <hr />
+                  {/* Homepage Products 2 Settings */}
+                  {activeTab === 'settings' && settingsTab === 'homepage-products2' && (
+                    <div className="settings-section">
+                      <h3>Homepage Products 2 Settings</h3>
+                      <p>Configure the second products section on your homepage</p>
 
-                  {/* Support Section */}
-                  <div className="form-group">
-                    <h4>Support Section</h4>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.footer_support_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_support_show_section: e.target.checked
-                        }))}
-                      />
-                      Show support section
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Support Section Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.footer_support_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_support_title: e.target.value
-                      }))}
-                      placeholder="Support"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Support Links</label>
-                    <div className="links-manager">
-                      {(siteSettings.footer_support_links || []).map((link, index) => (
-                        <div key={index} className="link-item">
+                      <div className="form-group">
+                        <label>
                           <input
-                            type="text"
-                            placeholder="Link Title"
-                            value={link.title || ''}
-                            onChange={(e) => {
-                              const newLinks = [...(siteSettings.footer_support_links || [])];
-                              newLinks[index] = { ...newLinks[index], title: e.target.value };
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                footer_support_links: newLinks
-                              }));
-                            }}
+                            type="checkbox"
+                            checked={siteSettings.homepage_products2_show_section || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_show_section: e.target.checked
+                            }))}
                           />
+                          Show homepage products 2 section
+                        </label>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Section Title</label>
+                        <input
+                          type="text"
+                          value={siteSettings.homepage_products2_title || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_title: e.target.value
+                          }))}
+                          placeholder="Latest Products"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Section Subtitle</label>
+                        <input
+                          type="text"
+                          value={siteSettings.homepage_products2_subtitle || ''}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_subtitle: e.target.value
+                          }))}
+                          placeholder="Check out our newest arrivals"
+                        />
+                      </div>
+
+                      <hr />
+
+                      {/* Layout Settings */}
+                      <h4>Layout Settings</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Maximum Rows</label>
                           <input
-                            type="text"
-                            placeholder="Link URL"
-                            value={link.url || ''}
-                            onChange={(e) => {
-                              const newLinks = [...(siteSettings.footer_support_links || [])];
-                              newLinks[index] = { ...newLinks[index], url: e.target.value };
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                footer_support_links: newLinks
-                              }));
-                            }}
+                            type="number"
+                            min="1"
+                            max="5"
+                            value={siteSettings.homepage_products2_max_rows || 2}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_max_rows: parseInt(e.target.value) || 2
+                            }))}
                           />
+                          <small>Number of rows to display (1-5)</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Products Per Row</label>
+                          <input
+                            type="number"
+                            min="2"
+                            max="6"
+                            value={siteSettings.homepage_products2_per_row || 4}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_per_row: parseInt(e.target.value) || 4
+                            }))}
+                          />
+                          <small>Number of products per row (2-6)</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Maximum Items</label>
+                          <input
+                            type="number"
+                            min="4"
+                            max="30"
+                            value={siteSettings.homepage_products2_max_items || 8}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_max_items: parseInt(e.target.value) || 8
+                            }))}
+                          />
+                          <small>Total number of products to show (4-30)</small>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Image Settings */}
+                      <h4>Image Settings</h4>
+                      
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.homepage_products2_show_images || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_show_images: e.target.checked
+                            }))}
+                          />
+                          Show product images
+                        </label>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Image Width (px)</label>
+                          <input
+                            type="number"
+                            min="100"
+                            max="500"
+                            value={siteSettings.homepage_products2_image_width || 300}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_image_width: parseInt(e.target.value) || 300
+                            }))}
+                          />
+                          <small>Product image width (100-500px)</small>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Image Height (px)</label>
+                          <input
+                            type="number"
+                            min="100"
+                            max="400"
+                            value={siteSettings.homepage_products2_image_height || 200}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_image_height: parseInt(e.target.value) || 200
+                            }))}
+                          />
+                          <small>Product image height (100-400px)</small>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Button Settings */}
+                      <h4>Button Settings</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
                           <label>
                             <input
                               type="checkbox"
-                              checked={link.is_external || false}
-                              onChange={(e) => {
-                                const newLinks = [...(siteSettings.footer_support_links || [])];
-                                newLinks[index] = { ...newLinks[index], is_external: e.target.checked };
-                                setSiteSettings(prev => ({
-                                  ...prev,
-                                  footer_support_links: newLinks
-                                }));
-                              }}
+                              checked={siteSettings.homepage_products2_show_favorite || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_favorite: e.target.checked
+                              }))}
                             />
-                            External Link
+                            Show favorite button
                           </label>
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-danger"
-                            onClick={() => {
-                              const newLinks = [...(siteSettings.footer_support_links || [])];
-                              newLinks.splice(index, 1);
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                footer_support_links: newLinks
-                              }));
-                            }}
-                          >
-                            Remove
-                          </button>
                         </div>
-                      ))}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-secondary"
-                        onClick={() => {
-                          const newLinks = [...(siteSettings.footer_support_links || [])];
-                          newLinks.push({ title: '', url: '', is_external: false });
-                          setSiteSettings(prev => ({
-                            ...prev,
-                            footer_support_links: newLinks
-                          }));
-                        }}
-                      >
-                        Add Support Link
-                      </button>
-                    </div>
-                  </div>
 
-                  <hr />
-
-                  {/* Quick Links Section */}
-                  <div className="form-group">
-                    <h4>Quick Links Section</h4>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.footer_quick_links_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_quick_links_show_section: e.target.checked
-                        }))}
-                      />
-                      Show quick links section
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Quick Links Section Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.footer_quick_links_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_quick_links_title: e.target.value
-                      }))}
-                      placeholder="Quick Links"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Quick Links</label>
-                    <div className="links-manager">
-                      {(siteSettings.footer_quick_links || []).map((link, index) => (
-                        <div key={index} className="link-item">
-                          <input
-                            type="text"
-                            placeholder="Link Title"
-                            value={link.title || ''}
-                            onChange={(e) => {
-                              const newLinks = [...(siteSettings.footer_quick_links || [])];
-                              newLinks[index] = { ...newLinks[index], title: e.target.value };
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                footer_quick_links: newLinks
-                              }));
-                            }}
-                          />
-                          <input
-                            type="text"
-                            placeholder="Link URL"
-                            value={link.url || ''}
-                            onChange={(e) => {
-                              const newLinks = [...(siteSettings.footer_quick_links || [])];
-                              newLinks[index] = { ...newLinks[index], url: e.target.value };
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                footer_quick_links: newLinks
-                              }));
-                            }}
-                          />
+                        <div className="form-group">
                           <label>
                             <input
                               type="checkbox"
-                              checked={link.is_external || false}
-                              onChange={(e) => {
-                                const newLinks = [...(siteSettings.footer_quick_links || [])];
-                                newLinks[index] = { ...newLinks[index], is_external: e.target.checked };
-                                setSiteSettings(prev => ({
-                                  ...prev,
-                                  footer_quick_links: newLinks
-                                }));
-                              }}
+                              checked={siteSettings.homepage_products2_show_buy_now || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_buy_now: e.target.checked
+                              }))}
                             />
-                            External Link
+                            Show buy now button
                           </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_details || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_details: e.target.checked
+                              }))}
+                            />
+                            Show details button
+                          </label>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Information Display */}
+                      <h4>Information Display</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_price || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_price: e.target.checked
+                              }))}
+                            />
+                            Show price
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_original_price || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_original_price: e.target.checked
+                              }))}
+                            />
+                            Show original price
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_stock || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_stock: e.target.checked
+                              }))}
+                            />
+                            Show stock status
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.homepage_products2_show_category || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_show_category: e.target.checked
+                            }))}
+                          />
+                          Show category name
+                        </label>
+                      </div>
+
+                      <hr />
+
+                      {/* Sorting and Filtering */}
+                      <h4>Sorting and Filtering</h4>
+                      
+                      <div className="form-group">
+                        <label>Sort Products By</label>
+                        <select
+                          value={siteSettings.homepage_products2_sort_by || 'newest'}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_sort_by: e.target.value
+                          }))}
+                        >
+                          <option value="featured">Featured Products</option>
+                          <option value="newest">Newest First</option>
+                          <option value="price_low">Price: Low to High</option>
+                          <option value="price_high">Price: High to Low</option>
+                          <option value="name">Name: A to Z</option>
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Filter by Categories</label>
+                        <div className="categories-selection">
+                          {categories.map(category => (
+                            <label key={category.id} className="checkbox-label">
+                              <input
+                                type="checkbox"
+                                checked={(siteSettings.homepage_products2_filter_categories || []).includes(category.id)}
+                                onChange={(e) => {
+                                  const currentCategories = siteSettings.homepage_products2_filter_categories || [];
+                                  if (e.target.checked) {
+                                    setSiteSettings(prev => ({
+                                      ...prev,
+                                      homepage_products2_filter_categories: [...currentCategories, category.id]
+                                    }));
+                                  } else {
+                                    setSiteSettings(prev => ({
+                                      ...prev,
+                                      homepage_products2_filter_categories: currentCategories.filter(id => id !== category.id)
+                                    }));
+                                  }
+                                }}
+                              />
+                              {category.name}
+                            </label>
+                          ))}
+                        </div>
+                        <small>Leave empty to show all categories</small>
+                      </div>
+
+                      <hr />
+
+                      {/* View All Button */}
+                      <h4>View All Button</h4>
+                      
+                      <div className="form-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.homepage_products2_show_view_all || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_show_view_all: e.target.checked
+                            }))}
+                          />
+                          Show "View All Products" button
+                        </label>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Button Text</label>
+                          <input
+                            type="text"
+                            value={siteSettings.homepage_products2_view_all_text || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_view_all_text: e.target.value
+                            }))}
+                            placeholder="View All Products"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Button Link</label>
+                          <input
+                            type="text"
+                            value={siteSettings.homepage_products2_view_all_link || ''}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              homepage_products2_view_all_link: e.target.value
+                            }))}
+                            placeholder="/products"
+                          />
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Card Style Settings */}
+                      <h4>Card Style Settings</h4>
+                      
+                      <div className="form-group">
+                        <label>Card Style</label>
+                        <select
+                          value={siteSettings.homepage_products2_card_style || 'modern'}
+                          onChange={(e) => setSiteSettings(prev => ({
+                            ...prev,
+                            homepage_products2_card_style: e.target.value
+                          }))}
+                        >
+                          <option value="modern">Modern</option>
+                          <option value="classic">Classic</option>
+                          <option value="minimal">Minimal</option>
+                        </select>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_card_shadow || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_card_shadow: e.target.checked
+                              }))}
+                            />
+                            Show card shadow
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_card_hover_effect || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_card_hover_effect: e.target.checked
+                              }))}
+                            />
+                            Show hover effects
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_badges || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_badges: e.target.checked
+                              }))}
+                            />
+                            Show badges (Featured, New, etc.)
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_rating || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_rating: e.target.checked
+                              }))}
+                            />
+                            Show ratings
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_show_quick_view || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_show_quick_view: e.target.checked
+                              }))}
+                            />
+                            Show quick view button
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Navigation Tab */}
+                  {settingsTab === 'navigation' && (
+                    <div className="settings-section">
+                      <h3>Navigation Settings</h3>
+                      <p>Manage navigation menu appearance and links</p>
+
+                      {/* Navigation Styling */}
+                      <div style={{ backgroundColor: '#e8f5e8', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🎨 Navigation Styling</h4>
+                        <p>Customize the appearance of navigation menu links</p>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Link Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.nav_link_color || '#2c3e50'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                nav_link_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Link Hover Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.nav_link_hover_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                nav_link_hover_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (pixels)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.nav_link_font_size || 16}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                nav_link_font_size: parseInt(e.target.value) || 16
+                              }))}
+                              min="12"
+                              max="30"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.nav_link_font_weight || '500'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                nav_link_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="500">Medium</option>
+                              <option value="600">Semi Bold</option>
+                              <option value="700">Bold</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Text Transform</label>
+                            <select
+                              value={siteSettings.nav_link_text_transform || 'none'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                nav_link_text_transform: e.target.value
+                              }))}
+                            >
+                              <option value="none">None</option>
+                              <option value="uppercase">Uppercase</option>
+                              <option value="lowercase">Lowercase</option>
+                              <option value="capitalize">Capitalize</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.nav_link_font_family || 'inherit'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                nav_link_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="inherit">Default</option>
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                              <option value="'Impact', fantasy">Impact</option>
+                              <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                              <option value="'Palatino', serif">Palatino</option>
+                              <option value="'Lucida Sans', sans-serif">Lucida Sans</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.nav_link_underline || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  nav_link_underline: e.target.checked
+                                }))}
+                              />
+                              Default Underline
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.nav_link_text_shadow || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  nav_link_text_shadow: e.target.checked
+                                }))}
+                              />
+                              Text Shadow
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Navigation Links Manager */}
+                      <h4>📋 Navigation Links Manager</h4>
+                      <p>Manage menu items and their order. Use the "Order" field to set the position (1=first, 2=second, etc.)</p>
+                      
+                      <div className="navigation-links-manager">
+                        <div className="nav-links-list">
+                          {(siteSettings.navigation_links && Array.isArray(siteSettings.navigation_links) ? siteSettings.navigation_links : [])
+                            .sort((a, b) => a.order - b.order)
+                            .map((link, index) => (
+                            <div key={link.id} className="nav-link-item">
+                              <div className="nav-link-order">
+                                <div className="form-group">
+                                  <label>Order</label>
+                                  <input
+                                    type="number"
+                                    value={link.order || 1}
+                                    onChange={(e) => updateNavLink(link.id, 'order', parseInt(e.target.value) || 1)}
+                                    min="1"
+                                    max="50"
+                                    className="order-input"
+                                  />
+                                </div>
+                              </div>
+                              
+                              <div className="nav-link-content">
+                                <div className="nav-link-header">
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={link.enabled}
+                                      onChange={(e) => updateNavLink(link.id, 'enabled', e.target.checked)}
+                                    />
+                                    <span className={`nav-link-title ${link.type}`}>
+                                      {link.title}
+                                      <small>({link.type === 'auth' ? 'Auth' : 'Page'} • {link.show_for})</small>
+                                    </span>
+                                  </label>
+                                </div>
+                                
+                                {link.enabled && (
+                                  <div className="nav-link-details">
+                                    <div className="form-row">
+                                      <div className="form-group">
+                                        <label>Title</label>
+                                        <input
+                                          type="text"
+                                          value={link.title}
+                                          onChange={(e) => updateNavLink(link.id, 'title', e.target.value)}
+                                          placeholder="Link title"
+                                        />
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="form-row">
+                                      <div className="form-group">
+                                        <label>URL</label>
+                                        <input
+                                          type="text"
+                                          value={link.url}
+                                          onChange={(e) => updateNavLink(link.id, 'url', e.target.value)}
+                                          placeholder="/page or https://example.com"
+                                          disabled={link.type === 'auth' && link.url === 'logout'}
+                                        />
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="form-row">
+                                      <div className="form-group">
+                                        <label>Show For</label>
+                                        <select
+                                          value={link.show_for}
+                                          onChange={(e) => updateNavLink(link.id, 'show_for', e.target.value)}
+                                          disabled={link.type === 'auth'}
+                                        >
+                                          <option value="all">Everyone</option>
+                                          <option value="guest">Guests Only</option>
+                                          <option value="user">Logged In Users</option>
+                                          <option value="admin">Admin Only</option>
+                                        </select>
+                                      </div>
+                                      
+                                      <div className="form-group">
+                                        <label>
+                                          <input
+                                            type="checkbox"
+                                            checked={link.is_internal}
+                                            onChange={(e) => updateNavLink(link.id, 'is_internal', e.target.checked)}
+                                          />
+                                          Internal Link
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="nav-link-actions">
+                                {link.type === 'custom' && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-danger"
+                                    onClick={() => removeNavLink(link.id)}
+                                  >
+                                    Delete
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="nav-link-add">
                           <button
                             type="button"
-                            className="btn btn-sm btn-danger"
-                            onClick={() => {
-                              const newLinks = [...(siteSettings.footer_quick_links || [])];
-                              newLinks.splice(index, 1);
-                              setSiteSettings(prev => ({
-                                ...prev,
-                                footer_quick_links: newLinks
-                              }));
-                            }}
+                            className="btn btn-primary"
+                            onClick={addNewNavLink}
                           >
-                            Remove
+                            + Add New Link
                           </button>
                         </div>
-                      ))}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-secondary"
-                        onClick={() => {
-                          const newLinks = [...(siteSettings.footer_quick_links || [])];
-                          newLinks.push({ title: '', url: '', is_external: false });
-                          setSiteSettings(prev => ({
-                            ...prev,
-                            footer_quick_links: newLinks
-                          }));
-                        }}
-                      >
-                        Add Quick Link
-                      </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  <hr />
+                  {/* Products Page Settings */}
+                  {settingsTab === 'products-page' && (
+                    <div className="settings-section">
+                      <h3>Products Page Settings</h3>
+                      <p>Configure the layout and display options for the products page</p>
 
-                  {/* Social Section */}
-                  <div className="form-group">
-                    <h4>Social Section</h4>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.footer_social_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_social_show_section: e.target.checked
-                        }))}
-                      />
-                      Show social section
-                    </label>
-                  </div>
+                      <hr />
 
-                  <div className="form-group">
-                    <label>Social Section Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.footer_social_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_social_title: e.target.value
-                      }))}
-                      placeholder="Follow Us"
-                    />
-                  </div>
+                      {/* Layout Settings */}
+                      <h4>Layout Settings</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Products Per Row</label>
+                          <input
+                            type="number"
+                            min="2"
+                            max="6"
+                            value={siteSettings.products_page_per_row || 4}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              products_page_per_row: parseInt(e.target.value) || 4
+                            }))}
+                          />
+                          <small>Number of products per row (2-6)</small>
+                        </div>
 
-                  <hr />
+                        <div className="form-group">
+                          <label>Items Per Page</label>
+                          <input
+                            type="number"
+                            min="8"
+                            max="48"
+                            value={siteSettings.products_page_max_items_per_page || 12}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              products_page_max_items_per_page: parseInt(e.target.value) || 12
+                            }))}
+                          />
+                          <small>Number of products per page (8-48)</small>
+                        </div>
+                      </div>
 
-                  {/* Newsletter Section */}
-                  <div className="form-group">
-                    <h4>Newsletter Section</h4>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.footer_newsletter_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_newsletter_show_section: e.target.checked
-                        }))}
-                      />
-                      Show newsletter section
-                    </label>
-                  </div>
+                      <hr />
 
-                  <div className="form-group">
-                    <label>Newsletter Section Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.footer_newsletter_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_newsletter_title: e.target.value
-                      }))}
-                      placeholder="Newsletter"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Newsletter Description</label>
-                    <textarea
-                      value={siteSettings.footer_newsletter_description || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        footer_newsletter_description: e.target.value
-                      }))}
-                      placeholder="Subscribe to get updates about new products and offers."
-                      rows="3"
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Newsletter Placeholder Text</label>
-                      <input
-                        type="text"
-                        value={siteSettings.footer_newsletter_placeholder || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_newsletter_placeholder: e.target.value
-                        }))}
-                        placeholder="Enter your email address"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Newsletter Button Text</label>
-                      <input
-                        type="text"
-                        value={siteSettings.footer_newsletter_button_text || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          footer_newsletter_button_text: e.target.value
-                        }))}
-                        placeholder="Subscribe"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Homepage Products Tab */}
-              {settingsTab === 'homepage-products' && (
-                <div className="settings-section">
-                  <h3>Homepage Products Settings</h3>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_show_section: e.target.checked
-                        }))}
-                      />
-                      Show homepage products section
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Section Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.homepage_products_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products_title: e.target.value
-                      }))}
-                      placeholder="Featured Products"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Section Subtitle</label>
-                    <input
-                      type="text"
-                      value={siteSettings.homepage_products_subtitle || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products_subtitle: e.target.value
-                      }))}
-                      placeholder="Discover our most popular items"
-                    />
-                  </div>
-
-                  <hr />
-
-                  {/* Layout Settings */}
-                  <h4>Layout Settings</h4>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Maximum Rows</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        value={siteSettings.homepage_products_max_rows || 2}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_max_rows: parseInt(e.target.value) || 2
-                        }))}
-                      />
-                      <small>Number of rows to display (1-5)</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Products Per Row</label>
-                      <input
-                        type="number"
-                        min="2"
-                        max="6"
-                        value={siteSettings.homepage_products_per_row || 4}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_per_row: parseInt(e.target.value) || 4
-                        }))}
-                      />
-                      <small>Number of products per row (2-6)</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Maximum Items</label>
-                      <input
-                        type="number"
-                        min="4"
-                        max="30"
-                        value={siteSettings.homepage_products_max_items || 8}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_max_items: parseInt(e.target.value) || 8
-                        }))}
-                      />
-                      <small>Total number of products to show (4-30)</small>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Image Settings */}
-                  <h4>Image Settings</h4>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products_show_images || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_show_images: e.target.checked
-                        }))}
-                      />
-                      Show product images
-                    </label>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Image Width (px)</label>
-                      <input
-                        type="number"
-                        min="100"
-                        max="500"
-                        value={siteSettings.homepage_products_image_width || 300}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_image_width: parseInt(e.target.value) || 300
-                        }))}
-                      />
-                      <small>Product image width (100-500px)</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Image Height (px)</label>
-                      <input
-                        type="number"
-                        min="100"
-                        max="400"
-                        value={siteSettings.homepage_products_image_height || 200}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_image_height: parseInt(e.target.value) || 200
-                        }))}
-                      />
-                      <small>Product image height (100-400px)</small>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Button Settings */}
-                  <h4>Button Settings</h4>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_favorite || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_favorite: e.target.checked
-                          }))}
-                        />
-                        Show favorite button
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_buy_now || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_buy_now: e.target.checked
-                          }))}
-                        />
-                        Show buy now button
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_details || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_details: e.target.checked
-                          }))}
-                        />
-                        Show details button
-                      </label>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Information Display */}
-                  <h4>Information Display</h4>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_price || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_price: e.target.checked
-                          }))}
-                        />
-                        Show price
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_original_price || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_original_price: e.target.checked
-                          }))}
-                        />
-                        Show original price (if discounted)
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_stock || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_stock: e.target.checked
-                          }))}
-                        />
-                        Show stock status
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_category || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_category: e.target.checked
-                          }))}
-                        />
-                        Show category
-                      </label>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Sorting and Filtering */}
-                  <h4>Sorting and Filtering</h4>
-                  
-                  <div className="form-group">
-                    <label>Sort Products By</label>
-                    <select
-                      value={siteSettings.homepage_products_sort_by || 'featured'}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products_sort_by: e.target.value
-                      }))}
-                    >
-                      <option value="featured">Featured Products</option>
-                      <option value="newest">Newest First</option>
-                      <option value="price_low">Price: Low to High</option>
-                      <option value="price_high">Price: High to Low</option>
-                      <option value="name">Name: A to Z</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Filter by Categories</label>
-                    <div className="categories-selection">
-                      {categories.map(category => (
-                        <label key={category.id} className="checkbox-label">
+                      {/* Image Settings */}
+                      <h4>Image Settings</h4>
+                      
+                      <div className="form-group">
+                        <label>
                           <input
                             type="checkbox"
-                            checked={(siteSettings.homepage_products_filter_categories || []).includes(category.id)}
-                            onChange={(e) => {
-                              const currentCategories = siteSettings.homepage_products_filter_categories || [];
-                              if (e.target.checked) {
-                                setSiteSettings(prev => ({
-                                  ...prev,
-                                  homepage_products_filter_categories: [...currentCategories, category.id]
-                                }));
-                              } else {
-                                setSiteSettings(prev => ({
-                                  ...prev,
-                                  homepage_products_filter_categories: currentCategories.filter(id => id !== category.id)
-                                }));
-                              }
-                            }}
+                            checked={siteSettings.products_page_show_images || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              products_page_show_images: e.target.checked
+                            }))}
                           />
-                          {category.name}
+                          Show product images
                         </label>
-                      ))}
-                    </div>
-                    <small>Leave empty to show all categories</small>
-                  </div>
+                      </div>
 
-                  <hr />
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Image Height (pixels)</label>
+                          <input
+                            type="number"
+                            min="150"
+                            max="400"
+                            value={siteSettings.products_page_image_height || 200}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              products_page_image_height: parseInt(e.target.value) || 200
+                            }))}
+                          />
+                          <small>Between 150-400 pixels</small>
+                        </div>
 
-                  {/* View All Button */}
-                  <h4>View All Button</h4>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products_show_view_all || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_show_view_all: e.target.checked
-                        }))}
-                      />
-                      Show "View All Products" button
-                    </label>
-                  </div>
+                        <div className="form-group">
+                          <label>Image Width (pixels)</label>
+                          <input
+                            type="number"
+                            min="200"
+                            max="500"
+                            value={siteSettings.products_page_image_width || 300}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              products_page_image_width: parseInt(e.target.value) || 300
+                            }))}
+                          />
+                          <small>Between 200-500 pixels</small>
+                        </div>
+                      </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Button Text</label>
-                      <input
-                        type="text"
-                        value={siteSettings.homepage_products_view_all_text || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_view_all_text: e.target.value
-                        }))}
-                        placeholder="View All Products"
-                      />
-                    </div>
+                      <hr />
 
-                    <div className="form-group">
-                      <label>Button Link</label>
-                      <input
-                        type="text"
-                        value={siteSettings.homepage_products_view_all_link || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products_view_all_link: e.target.value
-                        }))}
-                        placeholder="/products"
-                      />
-                    </div>
-                  </div>
+                      {/* Display Options */}
+                      <h4>Display Options</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_favorite || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_favorite: e.target.checked
+                              }))}
+                            />
+                            Show favorite button
+                          </label>
+                        </div>
 
-                  <hr />
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_buy_now || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_buy_now: e.target.checked
+                              }))}
+                            />
+                            Show buy now button
+                          </label>
+                        </div>
 
-                  {/* Card Style Settings */}
-                  <h4>Card Style Settings</h4>
-                  
-                  <div className="form-group">
-                    <label>Card Style</label>
-                    <select
-                      value={siteSettings.homepage_products_card_style || 'modern'}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products_card_style: e.target.value
-                      }))}
-                    >
-                      <option value="modern">Modern</option>
-                      <option value="classic">Classic</option>
-                      <option value="minimal">Minimal</option>
-                    </select>
-                  </div>
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_details || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_details: e.target.checked
+                              }))}
+                            />
+                            Show details button
+                          </label>
+                        </div>
+                      </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_card_shadow || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_card_shadow: e.target.checked
-                          }))}
-                        />
-                        Show card shadow
-                      </label>
-                    </div>
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_price || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_price: e.target.checked
+                              }))}
+                            />
+                            Show price
+                          </label>
+                        </div>
 
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_card_hover_effect || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_card_hover_effect: e.target.checked
-                          }))}
-                        />
-                        Show hover effects
-                      </label>
-                    </div>
-                  </div>
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_original_price || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_original_price: e.target.checked
+                              }))}
+                            />
+                            Show original price
+                          </label>
+                        </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_badges || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_badges: e.target.checked
-                          }))}
-                        />
-                        Show badges (Featured, New, etc.)
-                      </label>
-                    </div>
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_stock || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_stock: e.target.checked
+                              }))}
+                            />
+                            Show stock info
+                          </label>
+                        </div>
+                      </div>
 
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_rating || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_rating: e.target.checked
-                          }))}
-                        />
-                        Show ratings
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products_show_quick_view || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products_show_quick_view: e.target.checked
-                          }))}
-                        />
-                        Show quick view button
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Homepage Products 2 Settings */}
-              {activeTab === 'settings' && settingsTab === 'homepage-products2' && (
-                <div className="settings-section">
-                  <h3>Homepage Products 2 Settings</h3>
-                  <p>Configure the second products section on your homepage</p>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products2_show_section || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_show_section: e.target.checked
-                        }))}
-                      />
-                      Show homepage products 2 section
-                    </label>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Section Title</label>
-                    <input
-                      type="text"
-                      value={siteSettings.homepage_products2_title || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products2_title: e.target.value
-                      }))}
-                      placeholder="Latest Products"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Section Subtitle</label>
-                    <input
-                      type="text"
-                      value={siteSettings.homepage_products2_subtitle || ''}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products2_subtitle: e.target.value
-                      }))}
-                      placeholder="Check out our newest arrivals"
-                    />
-                  </div>
-
-                  <hr />
-
-                  {/* Layout Settings */}
-                  <h4>Layout Settings</h4>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Maximum Rows</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        value={siteSettings.homepage_products2_max_rows || 2}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_max_rows: parseInt(e.target.value) || 2
-                        }))}
-                      />
-                      <small>Number of rows to display (1-5)</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Products Per Row</label>
-                      <input
-                        type="number"
-                        min="2"
-                        max="6"
-                        value={siteSettings.homepage_products2_per_row || 4}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_per_row: parseInt(e.target.value) || 4
-                        }))}
-                      />
-                      <small>Number of products per row (2-6)</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Maximum Items</label>
-                      <input
-                        type="number"
-                        min="4"
-                        max="30"
-                        value={siteSettings.homepage_products2_max_items || 8}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_max_items: parseInt(e.target.value) || 8
-                        }))}
-                      />
-                      <small>Total number of products to show (4-30)</small>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Image Settings */}
-                  <h4>Image Settings</h4>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products2_show_images || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_show_images: e.target.checked
-                        }))}
-                      />
-                      Show product images
-                    </label>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Image Width (px)</label>
-                      <input
-                        type="number"
-                        min="100"
-                        max="500"
-                        value={siteSettings.homepage_products2_image_width || 300}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_image_width: parseInt(e.target.value) || 300
-                        }))}
-                      />
-                      <small>Product image width (100-500px)</small>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Image Height (px)</label>
-                      <input
-                        type="number"
-                        min="100"
-                        max="400"
-                        value={siteSettings.homepage_products2_image_height || 200}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_image_height: parseInt(e.target.value) || 200
-                        }))}
-                      />
-                      <small>Product image height (100-400px)</small>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Button Settings */}
-                  <h4>Button Settings</h4>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_favorite || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_favorite: e.target.checked
-                          }))}
-                        />
-                        Show favorite button
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_buy_now || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_buy_now: e.target.checked
-                          }))}
-                        />
-                        Show buy now button
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_details || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_details: e.target.checked
-                          }))}
-                        />
-                        Show details button
-                      </label>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Information Display */}
-                  <h4>Information Display</h4>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_price || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_price: e.target.checked
-                          }))}
-                        />
-                        Show price
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_original_price || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_original_price: e.target.checked
-                          }))}
-                        />
-                        Show original price
-                      </label>
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_stock || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_stock: e.target.checked
-                          }))}
-                        />
-                        Show stock status
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products2_show_category || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_show_category: e.target.checked
-                        }))}
-                      />
-                      Show category name
-                    </label>
-                  </div>
-
-                  <hr />
-
-                  {/* Sorting and Filtering */}
-                  <h4>Sorting and Filtering</h4>
-                  
-                  <div className="form-group">
-                    <label>Sort Products By</label>
-                    <select
-                      value={siteSettings.homepage_products2_sort_by || 'newest'}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products2_sort_by: e.target.value
-                      }))}
-                    >
-                      <option value="featured">Featured Products</option>
-                      <option value="newest">Newest First</option>
-                      <option value="price_low">Price: Low to High</option>
-                      <option value="price_high">Price: High to Low</option>
-                      <option value="name">Name: A to Z</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Filter by Categories</label>
-                    <div className="categories-selection">
-                      {categories.map(category => (
-                        <label key={category.id} className="checkbox-label">
+                      <div className="form-group">
+                        <label>
                           <input
                             type="checkbox"
-                            checked={(siteSettings.homepage_products2_filter_categories || []).includes(category.id)}
-                            onChange={(e) => {
-                              const currentCategories = siteSettings.homepage_products2_filter_categories || [];
-                              if (e.target.checked) {
-                                setSiteSettings(prev => ({
-                                  ...prev,
-                                  homepage_products2_filter_categories: [...currentCategories, category.id]
-                                }));
-                              } else {
-                                setSiteSettings(prev => ({
-                                  ...prev,
-                                  homepage_products2_filter_categories: currentCategories.filter(id => id !== category.id)
-                                }));
-                              }
-                            }}
+                            checked={siteSettings.products_page_show_category || false}
+                            onChange={(e) => setSiteSettings(prev => ({
+                              ...prev,
+                              products_page_show_category: e.target.checked
+                            }))}
                           />
-                          {category.name}
+                          Show category name
                         </label>
-                      ))}
-                    </div>
-                    <small>Leave empty to show all categories</small>
-                  </div>
+                      </div>
 
-                  <hr />
+                      <hr />
 
-                  {/* View All Button */}
-                  <h4>View All Button</h4>
-                  
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={siteSettings.homepage_products2_show_view_all || false}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_show_view_all: e.target.checked
-                        }))}
-                      />
-                      Show "View All Products" button
-                    </label>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Button Text</label>
-                      <input
-                        type="text"
-                        value={siteSettings.homepage_products2_view_all_text || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_view_all_text: e.target.value
-                        }))}
-                        placeholder="View All Products"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Button Link</label>
-                      <input
-                        type="text"
-                        value={siteSettings.homepage_products2_view_all_link || ''}
-                        onChange={(e) => setSiteSettings(prev => ({
-                          ...prev,
-                          homepage_products2_view_all_link: e.target.value
-                        }))}
-                        placeholder="/products"
-                      />
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  {/* Card Style Settings */}
-                  <h4>Card Style Settings</h4>
-                  
-                  <div className="form-group">
-                    <label>Card Style</label>
-                    <select
-                      value={siteSettings.homepage_products2_card_style || 'modern'}
-                      onChange={(e) => setSiteSettings(prev => ({
-                        ...prev,
-                        homepage_products2_card_style: e.target.value
-                      }))}
-                    >
-                      <option value="modern">Modern</option>
-                      <option value="classic">Classic</option>
-                      <option value="minimal">Minimal</option>
-                    </select>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_card_shadow || false}
+                      {/* Sorting */}
+                      <h4>Default Sorting</h4>
+                      
+                      <div className="form-group">
+                        <label>Default Sort By</label>
+                        <select
+                          value={siteSettings.products_page_default_sort_by || 'newest'}
                           onChange={(e) => setSiteSettings(prev => ({
                             ...prev,
-                            homepage_products2_card_shadow: e.target.checked
+                            products_page_default_sort_by: e.target.value
                           }))}
-                        />
-                        Show card shadow
-                      </label>
-                    </div>
+                        >
+                          <option value="featured">Featured Products</option>
+                          <option value="newest">Newest First</option>
+                          <option value="price_low">Price: Low to High</option>
+                          <option value="price_high">Price: High to Low</option>
+                          <option value="name">Name: A to Z</option>
+                        </select>
+                      </div>
 
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_card_hover_effect || false}
+                      <hr />
+
+                      {/* Card Style Settings */}
+                      <h4>Card Style Settings</h4>
+                      
+                      <div className="form-group">
+                        <label>Card Style</label>
+                        <select
+                          value={siteSettings.products_page_card_style || 'modern'}
                           onChange={(e) => setSiteSettings(prev => ({
                             ...prev,
-                            homepage_products2_card_hover_effect: e.target.checked
+                            products_page_card_style: e.target.value
                           }))}
-                        />
-                        Show hover effects
-                      </label>
-                    </div>
-                  </div>
+                        >
+                          <option value="modern">Modern</option>
+                          <option value="classic">Classic</option>
+                          <option value="minimal">Minimal</option>
+                        </select>
+                      </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_badges || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_badges: e.target.checked
-                          }))}
-                        />
-                        Show badges (Featured, New, etc.)
-                      </label>
-                    </div>
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_card_shadow || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_card_shadow: e.target.checked
+                              }))}
+                            />
+                            Show card shadow
+                          </label>
+                        </div>
 
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_rating || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_rating: e.target.checked
-                          }))}
-                        />
-                        Show ratings
-                      </label>
-                    </div>
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_card_hover_effect || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_card_hover_effect: e.target.checked
+                              }))}
+                            />
+                            Show hover effects
+                          </label>
+                        </div>
+                      </div>
 
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={siteSettings.homepage_products2_show_quick_view || false}
-                          onChange={(e) => setSiteSettings(prev => ({
-                            ...prev,
-                            homepage_products2_show_quick_view: e.target.checked
-                          }))}
-                        />
-                        Show quick view button
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              )}
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_badges || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_badges: e.target.checked
+                              }))}
+                            />
+                            Show badges (Featured, New, etc.)
+                          </label>
+                        </div>
 
-              <div className="form-actions">
-                <button type="submit" className="btn btn-primary">
-                  Save Settings
-                </button>
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_rating || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_rating: e.target.checked
+                              }))}
+                            />
+                            Show ratings
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_show_quick_view || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_show_quick_view: e.target.checked
+                              }))}
+                            />
+                            Show quick view button
+                          </label>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Page Features */}
+                      <h4>Page Features</h4>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_enable_pagination || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_enable_pagination: e.target.checked
+                              }))}
+                            />
+                            Enable pagination
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_enable_filters || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_enable_filters: e.target.checked
+                              }))}
+                            />
+                            Enable filters
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_enable_search || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_enable_search: e.target.checked
+                              }))}
+                            />
+                            Enable search
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+
+                </form>
               </div>
-            </form>
+            </div>
           </div>
         )}
       </div>

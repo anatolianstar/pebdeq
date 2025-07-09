@@ -174,7 +174,52 @@ def categories():
 @main_bp.route('/api/products')
 def products():
     try:
-        products = Product.query.filter_by(is_active=True).all()
+        # Get query parameters
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 12, type=int)
+        category = request.args.get('category')
+        search = request.args.get('search')
+        sort = request.args.get('sort', 'newest')
+        
+        # Build query
+        query = Product.query.filter_by(is_active=True)
+        
+        # Filter by category if specified
+        if category:
+            cat = Category.query.filter_by(slug=category, is_active=True).first()
+            if cat:
+                query = query.filter_by(category_id=cat.id)
+        
+        # Search if specified
+        if search:
+            query = query.filter(Product.name.contains(search))
+        
+        # Sort products
+        if sort == 'newest':
+            query = query.order_by(Product.created_at.desc())
+        elif sort == 'oldest':
+            query = query.order_by(Product.created_at.asc())
+        elif sort == 'price_low':
+            query = query.order_by(Product.price.asc())
+        elif sort == 'price_high':
+            query = query.order_by(Product.price.desc())
+        elif sort == 'name':
+            query = query.order_by(Product.name.asc())
+        elif sort == 'featured':
+            query = query.order_by(Product.is_featured.desc(), Product.created_at.desc())
+        else:
+            query = query.order_by(Product.created_at.desc())
+        
+        # Paginate
+        pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+        products = pagination.items
+        
+        # Get category names
+        categories = {}
+        for p in products:
+            if p.category_id not in categories:
+                cat = Category.query.get(p.category_id)
+                categories[p.category_id] = cat.name if cat else 'Unknown'
         
         return jsonify({
             'products': [{
@@ -186,13 +231,23 @@ def products():
                 'original_price': p.original_price,
                 'stock_quantity': p.stock_quantity,
                 'category_id': p.category_id,
+                'category': categories.get(p.category_id, 'Unknown'),
                 'images': p.images,
                 'video_url': p.video_url,
                 'is_featured': p.is_featured,
                 'is_active': p.is_active,
+                'has_variations': p.has_variations,
+                'variation_type': p.variation_type,
+                'variation_name': p.variation_name,
                 'created_at': p.created_at.isoformat(),
                 'updated_at': p.updated_at.isoformat()
-            } for p in products]
+            } for p in products],
+            'pagination': {
+                'page': pagination.page,
+                'pages': pagination.pages,
+                'per_page': pagination.per_page,
+                'total': pagination.total
+            }
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -344,6 +399,33 @@ def get_site_settings():
                 'homepage_products_show_badges': True,
                 'homepage_products_show_rating': False,
                 'homepage_products_show_quick_view': False,
+                'navigation_links': [
+                    {'id': 1, 'title': 'Home', 'url': '/', 'enabled': True, 'order': 1, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                    {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': True, 'order': 2, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                    {'id': 3, 'title': 'About', 'url': '/about', 'enabled': True, 'order': 3, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                    {'id': 4, 'title': 'Contact', 'url': '/contact', 'enabled': True, 'order': 4, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                    {'id': 5, 'title': 'Login', 'url': '/login', 'enabled': True, 'order': 5, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
+                    {'id': 6, 'title': 'Profile', 'url': '/profile', 'enabled': True, 'order': 6, 'is_internal': True, 'show_for': 'user', 'type': 'page'},
+                    {'id': 7, 'title': 'Admin', 'url': '/admin', 'enabled': True, 'order': 7, 'is_internal': True, 'show_for': 'admin', 'type': 'page'},
+                    {'id': 8, 'title': 'Logout', 'url': 'logout', 'enabled': True, 'order': 8, 'is_internal': True, 'show_for': 'user', 'type': 'auth'}
+                ],
+                'nav_link_color': '#2c3e50',
+                'nav_link_hover_color': '#007bff',
+                'nav_link_font_size': 16,
+                'nav_link_font_weight': '500',
+                'nav_link_text_transform': 'none',
+                'nav_link_underline': False,
+                'header_background_color': '#ffffff',
+                'header_text_color': '#2c3e50',
+                'header_height': 60,
+                'header_padding': 15,
+                'header_nav_spacing': 20,
+                'header_logo_position': 'left',
+                'header_nav_position': 'right',
+                'header_sticky': False,
+                'header_border_bottom': True,
+                'header_border_color': '#e9ecef',
+                'header_shadow': False,
                 # Homepage Products 2 Settings
                 'homepage_products2_show_section': True,
                 'homepage_products2_title': 'Latest Products',
@@ -507,6 +589,58 @@ def get_site_settings():
             'homepage_products2_show_badges': settings.homepage_products2_show_badges,
             'homepage_products2_show_rating': settings.homepage_products2_show_rating,
             'homepage_products2_show_quick_view': settings.homepage_products2_show_quick_view,
+            # Products Page Settings
+            'products_page_per_row': settings.products_page_per_row,
+            'products_page_max_items_per_page': settings.products_page_max_items_per_page,
+            'products_page_show_images': settings.products_page_show_images,
+            'products_page_image_height': settings.products_page_image_height,
+            'products_page_image_width': settings.products_page_image_width,
+            'products_page_show_favorite': settings.products_page_show_favorite,
+            'products_page_show_buy_now': settings.products_page_show_buy_now,
+            'products_page_show_details': settings.products_page_show_details,
+            'products_page_show_price': settings.products_page_show_price,
+            'products_page_show_original_price': settings.products_page_show_original_price,
+            'products_page_show_stock': settings.products_page_show_stock,
+            'products_page_show_category': settings.products_page_show_category,
+            'products_page_default_sort_by': settings.products_page_default_sort_by,
+            'products_page_card_style': settings.products_page_card_style,
+            'products_page_card_shadow': settings.products_page_card_shadow,
+            'products_page_card_hover_effect': settings.products_page_card_hover_effect,
+            'products_page_show_badges': settings.products_page_show_badges,
+            'products_page_show_rating': settings.products_page_show_rating,
+            'products_page_show_quick_view': settings.products_page_show_quick_view,
+            'products_page_enable_pagination': settings.products_page_enable_pagination,
+            'products_page_enable_filters': settings.products_page_enable_filters,
+            'products_page_enable_search': settings.products_page_enable_search,
+            'navigation_links': settings.navigation_links or [
+                {'id': 1, 'title': 'Home', 'url': '/', 'enabled': True, 'order': 1, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': True, 'order': 2, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                {'id': 3, 'title': 'About', 'url': '/about', 'enabled': True, 'order': 3, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                {'id': 4, 'title': 'Contact', 'url': '/contact', 'enabled': True, 'order': 4, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                {'id': 5, 'title': 'Login', 'url': '/login', 'enabled': True, 'order': 5, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
+                {'id': 6, 'title': 'Profile', 'url': '/profile', 'enabled': True, 'order': 6, 'is_internal': True, 'show_for': 'user', 'type': 'page'},
+                {'id': 7, 'title': 'Admin', 'url': '/admin', 'enabled': True, 'order': 7, 'is_internal': True, 'show_for': 'admin', 'type': 'page'},
+                {'id': 8, 'title': 'Logout', 'url': 'logout', 'enabled': True, 'order': 8, 'is_internal': True, 'show_for': 'user', 'type': 'auth'}
+            ],
+            'nav_link_color': settings.nav_link_color or '#2c3e50',
+            'nav_link_hover_color': settings.nav_link_hover_color or '#007bff',
+            'nav_link_font_size': settings.nav_link_font_size or 16,
+            'nav_link_font_weight': settings.nav_link_font_weight or '500',
+            'nav_link_text_transform': settings.nav_link_text_transform or 'none',
+            'nav_link_underline': settings.nav_link_underline or False,
+            'nav_link_font_family': settings.nav_link_font_family or 'inherit',
+            'nav_link_text_shadow': settings.nav_link_text_shadow or False,
+            'header_background_color': settings.header_background_color or '#ffffff',
+            'header_text_color': settings.header_text_color or '#2c3e50',
+            'header_height': settings.header_height or 60,
+            'header_padding': settings.header_padding or 15,
+            'header_nav_spacing': settings.header_nav_spacing or 20,
+            'header_logo_position': settings.header_logo_position or 'left',
+            'header_nav_position': settings.header_nav_position or 'right',
+            'header_sticky': settings.header_sticky or False,
+            'header_border_bottom': settings.header_border_bottom or True,
+            'header_border_color': settings.header_border_color or '#e9ecef',
+            'header_shadow': settings.header_shadow or False,
             'contact_social': {
                 'contact_phone': settings.contact_phone,
                 'contact_email': settings.contact_email,

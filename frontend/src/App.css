@@ -34,17 +34,19 @@ main {
 
 /* Header styles */
 .header {
-  background: #4a7c8c;
-  color: white;
+  /* background and color now controlled by admin settings */
   padding: 0;
   min-height: 50px;
-  max-height: 210px;
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+
+.header.sticky {
+  position: sticky;
+  top: 0;
 }
 
 /* Marquee Banner */
@@ -59,6 +61,7 @@ main {
   white-space: nowrap;
   cursor: default;
   justify-content: flex-start;
+  flex-shrink: 0;
 }
 
 .marquee-banner.pause-on-hover:hover .marquee-content {
@@ -109,9 +112,10 @@ main {
 
 /* Header content container */
 .header .container {
-  padding: 0.5rem 0;
+  padding: 0;
   display: flex;
   align-items: center;
+  flex: 1;
 }
 
 .header-content {
@@ -122,13 +126,12 @@ main {
   align-items: center;
   padding: 0 24px;
   width: 100%;
-  min-height: 50px;
 }
 
 .logo {
   font-size: 1.8rem;
   font-weight: 700;
-  color: white;
+  /* color now controlled by admin settings */
   text-decoration: none;
   letter-spacing: 1px;
 }
@@ -137,15 +140,15 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 100%;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 .site-logo {
   object-fit: contain;
-  max-height: 200px;
   width: auto;
   height: auto;
+  max-width: 500px;
+  max-height: 150px;
 }
 
 .nav {
@@ -155,10 +158,9 @@ main {
 }
 
 .nav a {
-  color: white;
+  /* color now controlled by admin settings */
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
+  /* font-weight and font-size now controlled by admin settings */
   transition: opacity 0.2s;
 }
 
@@ -169,9 +171,7 @@ main {
 .nav-logout-btn {
   background: none;
   border: none;
-  color: white;
-  font-weight: 500;
-  font-size: 1rem;
+  /* color, font-weight, and font-size now controlled by admin settings */
   cursor: pointer;
   transition: opacity 0.2s;
   font-family: inherit;
@@ -710,7 +710,8 @@ main {
   }
   
   .site-logo {
-    max-height: 150px;
+    max-width: 300px;
+    max-height: 80px;
   }
 }
 
@@ -2578,61 +2579,100 @@ input[type="file"]:disabled {
   min-height: 200px;
 }
 
-/* Settings Tabs Styles */
-.settings-tabs {
+/* Settings Layout Styles */
+.settings-header {
   display: flex;
-  gap: 0;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #e9ecef;
-  overflow-x: auto;
-  white-space: nowrap;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.settings-tabs .tab-btn {
-  background: none;
+.settings-header h2 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.settings-save-btn {
+  background: #28a745;
+  color: white;
   border: none;
-  padding: 12px 20px;
-  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
   font-weight: 500;
-  color: #6c757d;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-bottom: 3px solid transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
 }
 
-.settings-tabs .tab-btn:hover {
-  color: #495057;
-  background-color: #f8f9fa;
-}
-
-.settings-tabs .tab-btn.active {
-  color: #007bff;
-  border-bottom-color: #007bff;
-  background-color: #fff;
-}
-
-/* Çok kullanılan ayarlar için özel stil (ilk 4 tab) */
-.settings-tabs .tab-btn:nth-child(-n+4) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-bottom-color: transparent;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-.settings-tabs .tab-btn:nth-child(-n+4):hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+.settings-save-btn:hover {
+  background: #218838;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
 
-.settings-tabs .tab-btn:nth-child(-n+4).active {
-  background: linear-gradient(135deg, #4a5fd1 0%, #5a3a7a 100%);
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
-  border-bottom-color: #4a5fd1;
+.settings-save-btn:active {
+  transform: translateY(0);
 }
+
+.settings-layout {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.settings-navigation {
+  flex: 0 0 180px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  height: fit-content;
+}
+
+.settings-nav-link {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.settings-nav-link:hover {
+  color: #007bff;
+  background-color: #e9ecef;
+}
+
+.settings-nav-link.active {
+  color: #007bff;
+  background-color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+}
+
+.settings-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Sade menü stilleri */
 
 .settings-section {
   background: #fff;
@@ -2675,35 +2715,42 @@ input[type="file"]:disabled {
   min-width: 150px;
 }
 
-/* Responsive adjustments for settings tabs */
+/* Responsive adjustments for settings layout */
 @media (max-width: 768px) {
-  .settings-tabs {
+  .settings-header {
     flex-direction: column;
-    gap: 0;
+    gap: 1rem;
+    padding: 1rem;
+    text-align: center;
   }
   
-  .settings-tabs .tab-btn {
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-    border-right: 3px solid transparent;
+  .settings-header h2 {
+    font-size: 1.5rem;
   }
   
-  .settings-tabs .tab-btn.active {
-    border-bottom-color: #dee2e6;
-    border-right-color: #007bff;
+  .settings-save-btn {
+    width: 100%;
+    justify-content: center;
   }
   
-  /* Mobilde çok kullanılan ayarlar için özel stil */
-  .settings-tabs .tab-btn:nth-child(-n+4) {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-right-color: transparent;
-    font-weight: 600;
+  .settings-layout {
+    flex-direction: column;
+    gap: 1rem;
   }
   
-  .settings-tabs .tab-btn:nth-child(-n+4).active {
-    background: linear-gradient(135deg, #4a5fd1 0%, #5a3a7a 100%);
-    border-right-color: #4a5fd1;
+  .settings-navigation {
+    flex: none;
+    order: 1;
+    margin-bottom: 1rem;
+  }
+  
+  .settings-nav-link {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+  }
+  
+  .settings-main {
+    order: 2;
   }
   
   .settings-section {
@@ -2722,6 +2769,206 @@ input[type="file"]:disabled {
   
   .settings-section h3 {
     font-size: 1.3rem;
+  }
+}
+
+/* Navigation Links Manager Styles */
+.navigation-links-manager {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 1rem;
+  max-width: 100%;
+}
+
+.nav-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.nav-link-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.nav-link-order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.nav-link-order .form-group {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.nav-link-order .form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.order-input {
+  width: 60px !important;
+  text-align: center;
+  font-weight: 600;
+  color: #007bff;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  padding: 0.5rem 0.25rem;
+}
+
+.order-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.nav-link-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-link-header {
+  margin-bottom: 0.5rem;
+}
+
+.nav-link-title {
+  font-weight: 600;
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.nav-link-title.page {
+  color: #28a745;
+}
+
+.nav-link-title.auth {
+  color: #007bff;
+}
+
+.nav-link-title.custom {
+  color: #6c757d;
+}
+
+.nav-link-title small {
+  font-weight: normal;
+  color: #6c757d;
+  font-size: 0.75rem;
+}
+
+.nav-link-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.nav-link-details .form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.nav-link-details .form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+  transform: scale(1.2);
+}
+
+.nav-link-details .form-group label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.nav-link-details .form-group {
+  margin-bottom: 1rem;
+}
+
+.nav-link-details .form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.nav-link-details .form-group input,
+.nav-link-details .form-group select {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  min-height: 44px;
+  width: 100%;
+}
+
+.nav-link-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-link-add {
+  text-align: center;
+  padding: 1rem;
+  border: 2px dashed #dee2e6;
+  border-radius: 6px;
+  background: white;
+}
+
+.nav-link-add .btn {
+  font-weight: 600;
+}
+
+/* Responsive Navigation Links Manager */
+@media (max-width: 768px) {
+  .navigation-links-manager {
+    padding: 1rem;
+  }
+  
+  .nav-link-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .nav-link-order {
+    flex-direction: row;
+    align-self: flex-start;
+    min-width: auto;
+  }
+  
+  .nav-link-order .form-group {
+    margin-bottom: 0.5rem;
+  }
+  
+  .nav-link-details .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .nav-link-actions {
+    flex-direction: row;
+    align-self: flex-start;
   }
 }
 

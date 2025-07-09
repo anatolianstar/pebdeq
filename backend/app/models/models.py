@@ -167,6 +167,59 @@ class SiteSettings(db.Model):
     logo2_width = db.Column(db.Integer, default=120)  # İkinci logo genişliği (piksel)
     logo2_height = db.Column(db.Integer, default=40)  # İkinci logo yüksekliği (piksel)
     
+    # Header Settings
+    header_background_color = db.Column(db.String(7), default='#ffffff')
+    header_text_color = db.Column(db.String(7), default='#2c3e50')
+    header_height = db.Column(db.Integer, default=60)
+    header_padding = db.Column(db.Integer, default=15)
+    header_sticky = db.Column(db.Boolean, default=False)
+    header_shadow = db.Column(db.Boolean, default=True)
+    header_border_bottom = db.Column(db.Boolean, default=True)
+    header_border_color = db.Column(db.String(7), default='#e9ecef')
+    header_logo_position = db.Column(db.String(20), default='left')  # left, center, right
+    header_nav_position = db.Column(db.String(20), default='right')  # left, center, right
+    header_nav_spacing = db.Column(db.Integer, default=20)
+    
+    # Navigation Links Settings (Dynamic)
+    navigation_links = db.Column(db.JSON, default=lambda: [
+        {'id': 1, 'title': 'Home', 'url': '/', 'enabled': True, 'order': 1, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+        {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': True, 'order': 2, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+        {'id': 3, 'title': 'About', 'url': '/about', 'enabled': True, 'order': 3, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+        {'id': 4, 'title': 'Blog', 'url': '/blog', 'enabled': True, 'order': 4, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+        {'id': 5, 'title': 'Contact', 'url': '/contact', 'enabled': True, 'order': 5, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+        {'id': 6, 'title': 'Login', 'url': '/login', 'enabled': True, 'order': 6, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
+        {'id': 7, 'title': 'Register', 'url': '/register', 'enabled': True, 'order': 7, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
+        {'id': 8, 'title': 'Profile', 'url': '/profile', 'enabled': True, 'order': 8, 'is_internal': True, 'show_for': 'user', 'type': 'auth'},
+        {'id': 9, 'title': 'Admin', 'url': '/admin', 'enabled': True, 'order': 9, 'is_internal': True, 'show_for': 'admin', 'type': 'auth'},
+        {'id': 10, 'title': 'Logout', 'url': 'logout', 'enabled': True, 'order': 10, 'is_internal': True, 'show_for': 'user', 'type': 'auth'}
+    ])
+    
+    # Navigation Styling
+    nav_link_color = db.Column(db.String(7), default='#2c3e50')
+    nav_link_hover_color = db.Column(db.String(7), default='#007bff')
+    nav_link_active_color = db.Column(db.String(7), default='#007bff')
+    nav_link_font_size = db.Column(db.Integer, default=16)
+    nav_link_font_weight = db.Column(db.String(20), default='500')
+    nav_link_text_transform = db.Column(db.String(20), default='none')  # none, uppercase, lowercase, capitalize
+    nav_link_underline = db.Column(db.Boolean, default=False)
+    nav_link_hover_effect = db.Column(db.String(20), default='color')  # color, underline, background, scale
+    nav_link_font_family = db.Column(db.String(100), default='inherit')  # Font family selection
+    nav_link_text_shadow = db.Column(db.Boolean, default=False)  # Text shadow effect
+    
+    # Mobile Navigation Settings
+    mobile_nav_enabled = db.Column(db.Boolean, default=True)
+    mobile_nav_hamburger_color = db.Column(db.String(7), default='#2c3e50')
+    mobile_nav_background_color = db.Column(db.String(7), default='#ffffff')
+    mobile_nav_overlay = db.Column(db.Boolean, default=True)
+    mobile_nav_slide_direction = db.Column(db.String(20), default='left')  # left, right, top, bottom
+    
+    # Header Actions
+    header_show_search = db.Column(db.Boolean, default=False)
+    header_show_cart = db.Column(db.Boolean, default=False)
+    header_show_account = db.Column(db.Boolean, default=True)
+    header_show_language = db.Column(db.Boolean, default=False)
+    header_show_currency = db.Column(db.Boolean, default=False)
+    
     # Marquee Settings
     marquee_enabled = db.Column(db.Boolean, default=False)
     marquee_text = db.Column(db.Text, default='Welcome to our store! Special offers available now.')
@@ -324,6 +377,30 @@ class SiteSettings(db.Model):
     homepage_products2_show_badges = db.Column(db.Boolean, default=True)
     homepage_products2_show_rating = db.Column(db.Boolean, default=False)
     homepage_products2_show_quick_view = db.Column(db.Boolean, default=False)
+    
+    # Products Page Settings
+    products_page_per_row = db.Column(db.Integer, default=4)
+    products_page_max_items_per_page = db.Column(db.Integer, default=12)
+    products_page_show_images = db.Column(db.Boolean, default=True)
+    products_page_image_height = db.Column(db.Integer, default=200)
+    products_page_image_width = db.Column(db.Integer, default=300)
+    products_page_show_favorite = db.Column(db.Boolean, default=True)
+    products_page_show_buy_now = db.Column(db.Boolean, default=True)
+    products_page_show_details = db.Column(db.Boolean, default=True)
+    products_page_show_price = db.Column(db.Boolean, default=True)
+    products_page_show_original_price = db.Column(db.Boolean, default=True)
+    products_page_show_stock = db.Column(db.Boolean, default=True)
+    products_page_show_category = db.Column(db.Boolean, default=True)
+    products_page_default_sort_by = db.Column(db.String(50), default='newest')  # featured, newest, price_low, price_high, name
+    products_page_card_style = db.Column(db.String(50), default='modern')  # modern, classic, minimal
+    products_page_card_shadow = db.Column(db.Boolean, default=True)
+    products_page_card_hover_effect = db.Column(db.Boolean, default=True)
+    products_page_show_badges = db.Column(db.Boolean, default=True)
+    products_page_show_rating = db.Column(db.Boolean, default=False)
+    products_page_show_quick_view = db.Column(db.Boolean, default=False)
+    products_page_enable_pagination = db.Column(db.Boolean, default=True)
+    products_page_enable_filters = db.Column(db.Boolean, default=True)
+    products_page_enable_search = db.Column(db.Boolean, default=True)
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

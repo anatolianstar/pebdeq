@@ -282,6 +282,57 @@ def init_database():
                     logo_width=120,
                     logo_height=40,
                     
+                    # Header Settings
+                    header_background_color='#ffffff',
+                    header_text_color='#2c3e50',
+                    header_height=60,
+                    header_padding=15,
+                    header_sticky=False,
+                    header_shadow=True,
+                    header_border_bottom=True,
+                    header_border_color='#e9ecef',
+                    header_logo_position='left',
+                    header_nav_position='right',
+                    header_nav_spacing=20,
+                    
+                    # Navigation Links Settings (Dynamic)
+                    navigation_links=[
+                        {'id': 1, 'title': 'Home', 'url': '/', 'enabled': True, 'order': 1, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                        {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': True, 'order': 2, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                        {'id': 3, 'title': 'About', 'url': '/about', 'enabled': True, 'order': 3, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                        {'id': 4, 'title': 'Blog', 'url': '/blog', 'enabled': True, 'order': 4, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                        {'id': 5, 'title': 'Contact', 'url': '/contact', 'enabled': True, 'order': 5, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
+                        {'id': 6, 'title': 'Login', 'url': '/login', 'enabled': True, 'order': 6, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
+                        {'id': 7, 'title': 'Register', 'url': '/register', 'enabled': True, 'order': 7, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
+                        {'id': 8, 'title': 'Profile', 'url': '/profile', 'enabled': True, 'order': 8, 'is_internal': True, 'show_for': 'user', 'type': 'auth'},
+                        {'id': 9, 'title': 'Admin', 'url': '/admin', 'enabled': True, 'order': 9, 'is_internal': True, 'show_for': 'admin', 'type': 'auth'},
+                        {'id': 10, 'title': 'Logout', 'url': 'logout', 'enabled': True, 'order': 10, 'is_internal': True, 'show_for': 'user', 'type': 'auth'}
+                    ],
+                    
+                    # Navigation Styling
+                    nav_link_color='#2c3e50',
+                    nav_link_hover_color='#007bff',
+                    nav_link_active_color='#007bff',
+                    nav_link_font_size=16,
+                    nav_link_font_weight='500',
+                    nav_link_text_transform='none',
+                    nav_link_underline=False,
+                    nav_link_hover_effect='color',
+                    
+                    # Mobile Navigation Settings
+                    mobile_nav_enabled=True,
+                    mobile_nav_hamburger_color='#2c3e50',
+                    mobile_nav_background_color='#ffffff',
+                    mobile_nav_overlay=True,
+                    mobile_nav_slide_direction='left',
+                    
+                    # Header Actions
+                    header_show_search=False,
+                    header_show_cart=False,
+                    header_show_account=True,
+                    header_show_language=False,
+                    header_show_currency=False,
+                    
                     # Welcome Section
                     welcome_title='Craft, Vintage, Innovation',
                     welcome_subtitle='Discover unique products and custom designs',
@@ -418,7 +469,31 @@ def init_database():
                     homepage_products2_card_hover_effect=True,
                     homepage_products2_show_badges=True,
                     homepage_products2_show_rating=False,
-                    homepage_products2_show_quick_view=False
+                    homepage_products2_show_quick_view=False,
+                    
+                    # Products Page Settings
+                    products_page_per_row=4,
+                    products_page_max_items_per_page=12,
+                    products_page_show_images=True,
+                    products_page_image_height=200,
+                    products_page_image_width=300,
+                    products_page_show_favorite=True,
+                    products_page_show_buy_now=True,
+                    products_page_show_details=True,
+                    products_page_show_price=True,
+                    products_page_show_original_price=True,
+                    products_page_show_stock=True,
+                    products_page_show_category=True,
+                    products_page_default_sort_by='newest',
+                    products_page_card_style='modern',
+                    products_page_card_shadow=True,
+                    products_page_card_hover_effect=True,
+                    products_page_show_badges=True,
+                    products_page_show_rating=False,
+                    products_page_show_quick_view=False,
+                    products_page_enable_pagination=True,
+                    products_page_enable_filters=True,
+                    products_page_enable_search=True
                 )
                 db.session.add(settings)
                 db.session.commit()

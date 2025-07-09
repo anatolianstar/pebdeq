@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import '../pages/Home.css'; // Import CSS for card styles
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -8,21 +9,50 @@ const Products = () => {
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const [siteSettings, setSiteSettings] = useState({
+    products_page_per_row: 4,
+    products_page_max_items_per_page: 12,
+    products_page_show_images: true,
+    products_page_image_height: 200,
+    products_page_image_width: 300,
+    products_page_show_favorite: true,
+    products_page_show_buy_now: true,
+    products_page_show_details: true,
+    products_page_show_price: true,
+    products_page_show_original_price: true,
+    products_page_show_stock: true,
+    products_page_show_category: true,
+    products_page_default_sort_by: 'newest',
+    products_page_card_style: 'modern',
+    products_page_card_shadow: true,
+    products_page_card_hover_effect: true,
+    products_page_show_badges: true,
+    products_page_show_rating: false,
+    products_page_show_quick_view: false,
+    products_page_enable_pagination: true,
+    products_page_enable_filters: true,
+    products_page_enable_search: true
+  });
 
   // Get query parameters
   const category = searchParams.get('category');
   const search = searchParams.get('search');
   const page = searchParams.get('page') || 1;
-  const sort = searchParams.get('sort') || 'newest';
+  const sort = searchParams.get('sort') || siteSettings.products_page_default_sort_by;
 
   // Fetch products from backend
   useEffect(() => {
     fetchProducts();
-  }, [category, search, page, sort]);
+  }, [category, search, page, sort, siteSettings.products_page_max_items_per_page]);
 
   // Fetch categories for filter
   useEffect(() => {
     fetchCategories();
+  }, []);
+
+  // Fetch site settings
+  useEffect(() => {
+    fetchSiteSettings();
   }, []);
 
   const fetchProducts = async () => {
@@ -36,6 +66,7 @@ const Products = () => {
       if (search) params.append('search', search);
       params.append('page', page);
       params.append('sort', sort);
+      params.append('per_page', siteSettings.products_page_max_items_per_page || 12);
       
       url += params.toString();
       
@@ -64,6 +95,18 @@ const Products = () => {
       }
     } catch (err) {
       console.error('Failed to fetch categories:', err);
+    }
+  };
+
+  const fetchSiteSettings = async () => {
+    try {
+      const response = await fetch('http://localhost:5005/api/site-settings');
+      const data = await response.json();
+      if (response.ok) {
+        setSiteSettings(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch site settings:', err);
     }
   };
 
@@ -97,35 +140,88 @@ const Products = () => {
   };
 
   const ProductCard = ({ product }) => (
-    <div className="product-card">
-      <div className="product-image">
-        {product.images && product.images.length > 0 ? (
-          <img src={product.images[0]} alt={product.name} />
-        ) : (
-          <div className="no-image">
-            <span>📦</span>
+    <div className={`product-card ${siteSettings.products_page_card_shadow ? 'with-shadow' : ''} ${siteSettings.products_page_card_hover_effect ? 'with-hover' : ''}`}>
+      {/* Product Image */}
+      {siteSettings.products_page_show_images && (
+        <div className="product-image">
+          {product.images && product.images.length > 0 ? (
+            <img 
+              src={`http://localhost:5005${product.images[0]}`}
+              alt={product.name}
+              style={{
+                width: `${siteSettings.products_page_image_width}px`,
+                height: `${siteSettings.products_page_image_height}px`,
+                objectFit: 'cover'
+              }}
+            />
+          ) : (
+            <div className="no-image" style={{
+              width: `${siteSettings.products_page_image_width}px`,
+              height: `${siteSettings.products_page_image_height}px`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#f5f5f5',
+              color: '#999'
+            }}>
+              <span>📦</span>
+            </div>
+          )}
+          
+          {/* Badges */}
+          {siteSettings.products_page_show_badges && (
+            <div className="product-badges">
+              {product.is_featured && <span className="badge featured">Featured</span>}
+              {product.original_price && product.original_price > product.price && (
+                <span className="badge sale">Sale</span>
+              )}
+              {product.stock_quantity === 0 && <span className="badge out-of-stock">Out of Stock</span>}
+            </div>
+          )}
+          
+          {/* Favorite Button */}
+          {siteSettings.products_page_show_favorite && (
+            <button className="favorite-btn">
+              ❤️
+            </button>
+          )}
+        </div>
+      )}
+      
+      {/* Product Info */}
+      <div className="product-info">
+        {/* Category */}
+        {siteSettings.products_page_show_category && (
+          <div className="product-category">
+            {product.category}
           </div>
         )}
-        {product.is_featured && (
-          <span className="featured-badge">Featured</span>
+        
+        {/* Product Name */}
+        <h3 className="product-name">{product.name}</h3>
+        
+        {/* Price */}
+        {siteSettings.products_page_show_price && (
+          <div className="product-price">
+            <span className="current-price">₺{product.price}</span>
+            {siteSettings.products_page_show_original_price && product.original_price && product.original_price > product.price && (
+              <span className="original-price">₺{product.original_price}</span>
+            )}
+          </div>
         )}
-      </div>
-      <div className="product-info">
-        <h3>{product.name}</h3>
-        <p className="product-category">{product.category}</p>
-        <div className="product-price">
-          <span className="current-price">${product.price}</span>
-          {product.original_price && product.original_price > product.price && (
-            <span className="original-price">${product.original_price}</span>
-          )}
-        </div>
-        <div className="product-stock">
-          {product.stock_quantity > 0 ? (
-            <span className="in-stock">In Stock ({product.stock_quantity})</span>
-          ) : (
-            <span className="out-of-stock">Out of Stock</span>
-          )}
-        </div>
+        
+        {/* Stock Status */}
+        {siteSettings.products_page_show_stock && (
+          <div className="product-stock">
+            {product.stock_quantity > 0 ? (
+              <span className="in-stock">In Stock ({product.stock_quantity})</span>
+            ) : (
+              <span className="out-of-stock">Out of Stock</span>
+            )}
+          </div>
+        )}
+        
+        {/* Variations */}
         {product.has_variations && product.variation_type && (
           <div className="product-variations">
             <small>
@@ -136,19 +232,25 @@ const Products = () => {
             </small>
           </div>
         )}
-        <div className="product-actions">
-          <button 
-            className="btn btn-primary"
-            onClick={() => window.location.href = `/product/${product.slug}`}
-          >
-            View Details
-          </button>
-          <button 
-            className="btn btn-secondary"
-            disabled={product.stock_quantity === 0}
-          >
-            Add to Cart
-          </button>
+        
+        {/* Buttons */}
+        <div className="product-buttons">
+          {siteSettings.products_page_show_details && (
+            <button 
+              className="btn btn-details"
+              onClick={() => window.location.href = `/product/${product.slug}`}
+            >
+              View Details
+            </button>
+          )}
+          {siteSettings.products_page_show_buy_now && (
+            <button 
+              className="btn btn-buy-now"
+              disabled={product.stock_quantity === 0}
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -213,69 +315,90 @@ const Products = () => {
         </div>
 
         {/* Search and Filters */}
-        <div className="products-controls">
-          <div className="search-section">
-            <input
-              type="text"
-              placeholder="Search products..."
-              defaultValue={search || ''}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleSearch(e.target.value);
-                }
-              }}
-              className="search-input"
-            />
-            <button 
-              onClick={() => handleSearch(document.querySelector('.search-input').value)}
-              className="search-btn"
-            >
-              Search
-            </button>
-          </div>
-
-          <div className="filter-section">
-            <div className="category-filters">
-              <button 
-                className={`filter-btn ${!category ? 'active' : ''}`}
-                onClick={() => handleCategoryFilter(null)}
-              >
-                All Categories
-              </button>
-              {categories.map(cat => (
-                <button
-                  key={cat.id}
-                  className={`filter-btn ${category === cat.slug ? 'active' : ''}`}
-                  onClick={() => handleCategoryFilter(cat.slug)}
+        {(siteSettings.products_page_enable_search || siteSettings.products_page_enable_filters) && (
+          <div className="products-controls">
+            {/* Search Section */}
+            {siteSettings.products_page_enable_search && (
+              <div className="search-section">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  defaultValue={search || ''}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch(e.target.value);
+                    }
+                  }}
+                  className="search-input"
+                />
+                <button 
+                  onClick={() => handleSearch(document.querySelector('.search-input').value)}
+                  className="search-btn"
                 >
-                  {cat.name}
+                  Search
                 </button>
-              ))}
-            </div>
+              </div>
+            )}
 
-            <div className="sort-section">
-              <select 
-                value={sort} 
-                onChange={(e) => handleSort(e.target.value)}
-                className="sort-select"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="price_low">Price: Low to High</option>
-                <option value="price_high">Price: High to Low</option>
-              </select>
-            </div>
+            {/* Filter Section */}
+            {siteSettings.products_page_enable_filters && (
+              <div className="filter-section">
+                <div className="category-filters">
+                  <button 
+                    className={`filter-btn ${!category ? 'active' : ''}`}
+                    onClick={() => handleCategoryFilter(null)}
+                  >
+                    All Categories
+                  </button>
+                  {categories.map(cat => (
+                    <button
+                      key={cat.id}
+                      className={`filter-btn ${category === cat.slug ? 'active' : ''}`}
+                      onClick={() => handleCategoryFilter(cat.slug)}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="sort-section">
+                  <select 
+                    value={sort} 
+                    onChange={(e) => handleSort(e.target.value)}
+                    className="sort-select"
+                  >
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="price_low">Price: Low to High</option>
+                    <option value="price_high">Price: High to Low</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {/* Products Grid */}
-        <div className="products-grid">
+        <div 
+          className={`products-grid ${siteSettings.products_page_card_style}`}
+          style={{
+            gridTemplateColumns: `repeat(${siteSettings.products_page_per_row}, 1fr)`,
+            gap: '1.5rem',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 1rem'
+          }}
+        >
           {products.length > 0 ? (
             products.map(product => (
               <ProductCard key={product.id} product={product} />
             ))
           ) : (
-            <div className="no-products">
+            <div className="no-products" style={{
+              gridColumn: `1 / -1`,
+              textAlign: 'center',
+              padding: '2rem'
+            }}>
               <h3>No products found</h3>
               <p>Try adjusting your search or filters</p>
             </div>
@@ -283,7 +406,7 @@ const Products = () => {
         </div>
 
         {/* Pagination */}
-        <Pagination />
+        {siteSettings.products_page_enable_pagination && <Pagination />}
 
         {/* Results Info */}
         {pagination.total > 0 && (
