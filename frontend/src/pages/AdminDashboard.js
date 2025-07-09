@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
+import BackgroundRemovalModal from '../components/BackgroundRemovalModal';
 
 const AdminDashboard = () => {
   const { user, loading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [settingsTab, setSettingsTab] = useState('identity');
+  const [settingsTab, setSettingsTab] = useState('products-page');
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -58,6 +59,11 @@ const AdminDashboard = () => {
   const [uploadingCategoryBackground, setUploadingCategoryBackground] = useState(false);
   const [uploadingProductImages, setUploadingProductImages] = useState(false);
   const [uploadingProductVideo, setUploadingProductVideo] = useState(false);
+  
+  // Background removal modal states
+  const [backgroundRemovalModalOpen, setBackgroundRemovalModalOpen] = useState(false);
+  const [modalImages, setModalImages] = useState([]);
+  const [isEditingModalImages, setIsEditingModalImages] = useState(false);
 
   const [newVariationType, setNewVariationType] = useState({
     name: '',
@@ -1092,8 +1098,30 @@ const AdminDashboard = () => {
       
       if (response.ok) {
         const data = await response.json();
+        const uploadedImages = data.files.map(file => file.url);
+        
+        // Update the appropriate product state
+        let updatedImages = [];
+        if (editingProduct) {
+          updatedImages = [...(editingProduct.images || []), ...uploadedImages];
+          setEditingProduct(prev => ({
+            ...prev,
+            images: updatedImages
+          }));
+        } else {
+          updatedImages = [...(newProduct.images || []), ...uploadedImages];
+          setNewProduct(prev => ({
+            ...prev,
+            images: updatedImages
+          }));
+        }
+        
         toast.success(`${data.files.length} images uploaded successfully`);
-        return data.files.map(file => file.url);
+        
+        // Open background removal modal
+        openBackgroundRemovalModal(updatedImages, !!editingProduct);
+        
+        return uploadedImages;
       } else {
         const error = await response.json();
         toast.error(error.error || 'Upload failed');
@@ -1162,6 +1190,33 @@ const AdminDashboard = () => {
       console.error('Error deleting file:', error);
       toast.error('Delete failed');
       return false;
+    }
+  };
+
+  // Background removal modal functions
+  const openBackgroundRemovalModal = (images, isEditing = false) => {
+    setModalImages([...images]);
+    setIsEditingModalImages(isEditing);
+    setBackgroundRemovalModalOpen(true);
+  };
+
+  const closeBackgroundRemovalModal = () => {
+    setBackgroundRemovalModalOpen(false);
+    setModalImages([]);
+    setIsEditingModalImages(false);
+  };
+
+  const handleModalImagesSave = (updatedImages) => {
+    if (isEditingModalImages) {
+      setEditingProduct(prev => ({
+        ...prev,
+        images: updatedImages
+      }));
+    } else {
+      setNewProduct(prev => ({
+        ...prev,
+        images: updatedImages
+      }));
     }
   };
 
@@ -1824,23 +1879,44 @@ const AdminDashboard = () => {
                     <div className="image-preview-grid">
                       {newProduct.images.map((imageUrl, index) => (
                         <div key={index} className="image-preview-item">
-                          <img 
-                            src={imageUrl} 
-                            alt={`Product ${index + 1}`}
-                            style={{ width: '80px', height: '80px', objectFit: 'contain', borderRadius: '4px', padding: '5px' }}
-                          />
-                          <button 
-                            type="button"
-                            className="btn btn-sm btn-danger"
-                            onClick={() => {
-                              const newImages = newProduct.images.filter((_, i) => i !== index);
-                              setNewProduct({...newProduct, images: newImages});
-                            }}
-                          >
-                            Remove
-                          </button>
+                          <div className="image-container">
+                            <img 
+                              src={imageUrl} 
+                              alt={`Product ${index + 1}`}
+                              style={{ 
+                                width: '80px', 
+                                height: '80px', 
+                                objectFit: 'contain', 
+                                borderRadius: '4px', 
+                                padding: '5px',
+                                border: '1px solid #ddd'
+                              }}
+                            />
+                          </div>
+                          
+                          <div className="image-actions">
+                            <button 
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => {
+                                const newImages = newProduct.images.filter((_, i) => i !== index);
+                                setNewProduct({...newProduct, images: newImages});
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
                       ))}
+                      <div className="image-actions-footer">
+                        <button 
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={() => openBackgroundRemovalModal(newProduct.images, false)}
+                        >
+                          🎨 Edit Images & Remove Backgrounds
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -2102,6 +2178,7 @@ const AdminDashboard = () => {
                       Active
                     </label>
                   </div>
+
                 </div>
                 
                 <button type="submit" className="btn btn-primary">
@@ -2236,23 +2313,44 @@ const AdminDashboard = () => {
                           <div className="image-preview-grid">
                             {editingProduct.images.map((imageUrl, index) => (
                               <div key={index} className="image-preview-item">
-                                                          <img 
-                            src={imageUrl} 
-                            alt={`Product ${index + 1}`}
-                            style={{ width: '80px', height: '80px', objectFit: 'contain', borderRadius: '4px', padding: '5px' }}
-                          />
-                                <button 
-                                  type="button"
-                                  className="btn btn-sm btn-danger"
-                                  onClick={() => {
-                                    const newImages = editingProduct.images.filter((_, i) => i !== index);
-                                    setEditingProduct({...editingProduct, images: newImages});
-                                  }}
-                                >
-                                  Remove
-                                </button>
+                                <div className="image-container">
+                                  <img 
+                                    src={imageUrl} 
+                                    alt={`Product ${index + 1}`}
+                                    style={{ 
+                                      width: '80px', 
+                                      height: '80px', 
+                                      objectFit: 'contain', 
+                                      borderRadius: '4px', 
+                                      padding: '5px',
+                                      border: '1px solid #ddd'
+                                    }}
+                                  />
+                                </div>
+                                
+                                <div className="image-actions">
+                                  <button 
+                                    type="button"
+                                    className="btn btn-sm btn-danger"
+                                    onClick={() => {
+                                      const newImages = editingProduct.images.filter((_, i) => i !== index);
+                                      setEditingProduct({...editingProduct, images: newImages});
+                                    }}
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
                               </div>
                             ))}
+                            <div className="image-actions-footer">
+                              <button 
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() => openBackgroundRemovalModal(editingProduct.images, true)}
+                              >
+                                🎨 Edit Images & Remove Backgrounds
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -2545,6 +2643,7 @@ const AdminDashboard = () => {
                           Active
                         </label>
                       </div>
+
                     </div>
                     
                     <div className="modal-actions">
@@ -3969,6 +4068,8 @@ const AdminDashboard = () => {
                           Show product images
                         </label>
                       </div>
+
+
 
                       <div className="form-row">
                         <div className="form-group">
@@ -6529,6 +6630,14 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
+      
+      {/* Background Removal Modal */}
+      <BackgroundRemovalModal
+        isOpen={backgroundRemovalModalOpen}
+        onClose={closeBackgroundRemovalModal}
+        images={modalImages}
+        onSaveImages={handleModalImagesSave}
+      />
     </div>
   );
 };

@@ -388,6 +388,7 @@ class SiteSettings(db.Model):
     products_page_show_images = db.Column(db.Boolean, default=True)
     products_page_image_height = db.Column(db.Integer, default=200)
     products_page_image_width = db.Column(db.Integer, default=300)
+    products_page_remove_image_background = db.Column(db.Boolean, default=False)  # Resim arka planını kaldır
     products_page_show_favorite = db.Column(db.Boolean, default=True)
     products_page_show_buy_now = db.Column(db.Boolean, default=True)
     products_page_show_details = db.Column(db.Boolean, default=True)

@@ -143,7 +143,12 @@ const Products = () => {
     <div className={`product-card ${siteSettings.products_page_card_shadow ? 'with-shadow' : ''} ${siteSettings.products_page_card_hover_effect ? 'with-hover' : ''}`}>
       {/* Product Image */}
       {siteSettings.products_page_show_images && (
-        <div className="product-image">
+        <div 
+          className="product-image"
+          style={{
+            backgroundColor: '#f8f9fa'
+          }}
+        >
           {product.images && product.images.length > 0 ? (
             <img 
               src={`http://localhost:5005${product.images[0]}`}
@@ -151,7 +156,9 @@ const Products = () => {
               style={{
                 width: `${siteSettings.products_page_image_width}px`,
                 height: `${siteSettings.products_page_image_height}px`,
-                objectFit: 'cover'
+                objectFit: 'contain',
+                backgroundColor: 'transparent',
+                padding: '10px'
               }}
             />
           ) : (
