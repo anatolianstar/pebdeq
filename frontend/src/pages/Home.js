@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+import ImagePreviewModal from '../components/ImagePreviewModal';
 
 const Home = () => {
   const [siteSettings, setSiteSettings] = useState({
@@ -75,6 +76,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [previewModal, setPreviewModal] = useState({ isOpen: false, images: [], currentIndex: 0, altText: '' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +94,11 @@ const Home = () => {
         
         if (siteResponse.ok) {
           console.log('Site settings loaded:', siteData);
+          console.log('Image preview settings:', {
+            homepage_products: siteData.homepage_products_enable_image_preview,
+            homepage_products2: siteData.homepage_products2_enable_image_preview,
+            full_data: siteData
+          });
           setSiteSettings(siteData);
         }
         
@@ -244,6 +251,14 @@ const Home = () => {
     console.log('Buy now:', product);
   };
 
+  const openPreviewModal = (images, currentIndex, altText) => {
+    setPreviewModal({ isOpen: true, images, currentIndex, altText });
+  };
+
+  const closePreviewModal = () => {
+    setPreviewModal({ isOpen: false, images: [], currentIndex: 0, altText: '' });
+  };
+
   return (
     <div 
       className="home-container"
@@ -365,17 +380,40 @@ const Home = () => {
               >
                 {/* Product Image */}
                 {siteSettings.homepage_products_show_images && product.images && product.images.length > 0 && (
-                  <div className="product-image">
-                    <Link to={`/product/${product.slug}`}>
-                      <img 
-                        src={`http://localhost:5005${product.images[0]}`} 
-                        alt={product.name}
-                        style={{
-                          cursor: 'pointer',
-                          display: 'block'
-                        }}
-                      />
-                    </Link>
+                  <div className="product-image image-preview-hover">
+                    <div style={{ position: 'relative' }}>
+                      <Link to={`/product/${product.slug}`}>
+                        <img 
+                          src={`http://localhost:5005${product.images[0]}`} 
+                          alt={product.name}
+                          style={{
+                            cursor: 'pointer',
+                            display: 'block'
+                          }}
+                        />
+                      </Link>
+                      {(siteSettings.homepage_products_enable_image_preview !== false) && (
+                        <div 
+                          className="image-zoom-overlay"
+                          onClick={(e) => {
+                            console.log('Homepage Products 1 - Clicked! Setting:', siteSettings.homepage_products_enable_image_preview);
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const productImages = product.images.map(img => `http://localhost:5005${img}`);
+                            openPreviewModal(productImages, 0, product.name);
+                          }}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            cursor: 'zoom-in',
+                            zIndex: 5
+                          }}
+                        />
+                      )}
+                    </div>
                     
                     {/* Badges */}
                     {siteSettings.homepage_products_show_badges && (
@@ -415,12 +453,24 @@ const Home = () => {
                     )}
                     
                     {/* Product Name */}
-                    <h3 className="product-name">{product.name}</h3>
+                    <h3 className="product-name" style={{
+                      color: siteSettings.homepage_products_product_name_color || '#333333',
+                      fontFamily: siteSettings.homepage_products_product_name_font_family || 'Arial, sans-serif',
+                      fontSize: `${siteSettings.homepage_products_product_name_font_size || 18}px`,
+                      fontWeight: siteSettings.homepage_products_product_name_font_weight || 'bold',
+                      fontStyle: siteSettings.homepage_products_product_name_font_style || 'normal'
+                    }}>{product.name}</h3>
                     
                     {/* Price */}
                     {siteSettings.homepage_products_show_price && (
                       <div className="product-price">
-                        <span className="current-price">₺{product.price}</span>
+                        <span className="current-price" style={{
+                          color: siteSettings.homepage_products_product_price_color || '#007bff',
+                          fontFamily: siteSettings.homepage_products_product_price_font_family || 'Arial, sans-serif',
+                          fontSize: `${siteSettings.homepage_products_product_price_font_size || 16}px`,
+                          fontWeight: siteSettings.homepage_products_product_price_font_weight || 'bold',
+                          fontStyle: siteSettings.homepage_products_product_price_font_style || 'normal'
+                        }}>₺{product.price}</span>
                         {siteSettings.homepage_products_show_original_price && product.original_price && product.original_price > product.price && (
                           <span className="original-price">₺{product.original_price}</span>
                         )}
@@ -442,7 +492,20 @@ const Home = () => {
                   {/* Buttons */}
                   <div className="product-buttons">
                     {siteSettings.homepage_products_show_details && (
-                      <Link to={`/product/${product.slug}`} className="btn btn-details">
+                      <Link to={`/product/${product.slug}`} className="btn btn-details" style={{
+                        backgroundColor: siteSettings.homepage_products_view_details_button_color || '#007bff',
+                        color: siteSettings.homepage_products_view_details_button_text_color || '#ffffff',
+                        fontFamily: siteSettings.homepage_products_view_details_button_font_family || 'Arial, sans-serif',
+                        fontSize: `${siteSettings.homepage_products_view_details_button_font_size || 14}px`,
+                        fontWeight: siteSettings.homepage_products_view_details_button_font_weight || 'normal',
+                        fontStyle: siteSettings.homepage_products_view_details_button_font_style || 'normal',
+                        border: 'none',
+                        borderRadius: '4px',
+                        padding: '8px 16px',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        cursor: 'pointer'
+                      }}>
                         Details
                       </Link>
                     )}
@@ -453,6 +516,18 @@ const Home = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           handleBuyNow(product);
+                        }}
+                        style={{
+                          backgroundColor: siteSettings.homepage_products_add_to_cart_button_color || '#28a745',
+                          color: siteSettings.homepage_products_add_to_cart_button_text_color || '#ffffff',
+                          fontFamily: siteSettings.homepage_products_add_to_cart_button_font_family || 'Arial, sans-serif',
+                          fontSize: `${siteSettings.homepage_products_add_to_cart_button_font_size || 14}px`,
+                          fontWeight: siteSettings.homepage_products_add_to_cart_button_font_weight || 'normal',
+                          fontStyle: siteSettings.homepage_products_add_to_cart_button_font_style || 'normal',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '8px 16px',
+                          cursor: 'pointer'
                         }}
                       >
                         Buy Now
@@ -510,17 +585,40 @@ const Home = () => {
               >
                 {/* Product Image */}
                 {siteSettings.homepage_products2_show_images && product.images && product.images.length > 0 && (
-                  <div className="product-image">
-                    <Link to={`/product/${product.slug}`}>
-                      <img 
-                        src={`http://localhost:5005${product.images[0]}`} 
-                        alt={product.name}
-                        style={{
-                          cursor: 'pointer',
-                          display: 'block'
-                        }}
-                      />
-                    </Link>
+                  <div className="product-image image-preview-hover">
+                    <div style={{ position: 'relative' }}>
+                      <Link to={`/product/${product.slug}`}>
+                        <img 
+                          src={`http://localhost:5005${product.images[0]}`} 
+                          alt={product.name}
+                          style={{
+                            cursor: 'pointer',
+                            display: 'block'
+                          }}
+                        />
+                      </Link>
+                      {(siteSettings.homepage_products2_enable_image_preview !== false) && (
+                        <div 
+                          className="image-zoom-overlay"
+                          onClick={(e) => {
+                            console.log('Homepage Products 2 - Clicked! Setting:', siteSettings.homepage_products2_enable_image_preview);
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const productImages = product.images.map(img => `http://localhost:5005${img}`);
+                            openPreviewModal(productImages, 0, product.name);
+                          }}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            cursor: 'zoom-in',
+                            zIndex: 5
+                          }}
+                        />
+                      )}
+                    </div>
                     
                     {/* Badges */}
                     {siteSettings.homepage_products2_show_badges && (
@@ -560,12 +658,24 @@ const Home = () => {
                     )}
                     
                     {/* Product Name */}
-                    <h3 className="product-name">{product.name}</h3>
+                    <h3 className="product-name" style={{
+                      color: siteSettings.homepage_products2_product_name_color || '#333333',
+                      fontFamily: siteSettings.homepage_products2_product_name_font_family || 'Arial, sans-serif',
+                      fontSize: `${siteSettings.homepage_products2_product_name_font_size || 18}px`,
+                      fontWeight: siteSettings.homepage_products2_product_name_font_weight || 'bold',
+                      fontStyle: siteSettings.homepage_products2_product_name_font_style || 'normal'
+                    }}>{product.name}</h3>
                     
                     {/* Price */}
                     {siteSettings.homepage_products2_show_price && (
                       <div className="product-price">
-                        <span className="current-price">₺{product.price}</span>
+                        <span className="current-price" style={{
+                          color: siteSettings.homepage_products2_product_price_color || '#007bff',
+                          fontFamily: siteSettings.homepage_products2_product_price_font_family || 'Arial, sans-serif',
+                          fontSize: `${siteSettings.homepage_products2_product_price_font_size || 16}px`,
+                          fontWeight: siteSettings.homepage_products2_product_price_font_weight || 'bold',
+                          fontStyle: siteSettings.homepage_products2_product_price_font_style || 'normal'
+                        }}>₺{product.price}</span>
                         {siteSettings.homepage_products2_show_original_price && product.original_price && product.original_price > product.price && (
                           <span className="original-price">₺{product.original_price}</span>
                         )}
@@ -587,7 +697,20 @@ const Home = () => {
                   {/* Buttons */}
                   <div className="product-buttons">
                     {siteSettings.homepage_products2_show_details && (
-                      <Link to={`/product/${product.slug}`} className="btn btn-details">
+                      <Link to={`/product/${product.slug}`} className="btn btn-details" style={{
+                        backgroundColor: siteSettings.homepage_products2_view_details_button_color || '#007bff',
+                        color: siteSettings.homepage_products2_view_details_button_text_color || '#ffffff',
+                        fontFamily: siteSettings.homepage_products2_view_details_button_font_family || 'Arial, sans-serif',
+                        fontSize: `${siteSettings.homepage_products2_view_details_button_font_size || 14}px`,
+                        fontWeight: siteSettings.homepage_products2_view_details_button_font_weight || 'normal',
+                        fontStyle: siteSettings.homepage_products2_view_details_button_font_style || 'normal',
+                        border: 'none',
+                        borderRadius: '4px',
+                        padding: '8px 16px',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        cursor: 'pointer'
+                      }}>
                         Details
                       </Link>
                     )}
@@ -598,6 +721,18 @@ const Home = () => {
                           e.preventDefault();
                           e.stopPropagation();
                           handleBuyNow(product);
+                        }}
+                        style={{
+                          backgroundColor: siteSettings.homepage_products2_add_to_cart_button_color || '#28a745',
+                          color: siteSettings.homepage_products2_add_to_cart_button_text_color || '#ffffff',
+                          fontFamily: siteSettings.homepage_products2_add_to_cart_button_font_family || 'Arial, sans-serif',
+                          fontSize: `${siteSettings.homepage_products2_add_to_cart_button_font_size || 14}px`,
+                          fontWeight: siteSettings.homepage_products2_add_to_cart_button_font_weight || 'normal',
+                          fontStyle: siteSettings.homepage_products2_add_to_cart_button_font_style || 'normal',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '8px 16px',
+                          cursor: 'pointer'
                         }}
                       >
                         Buy Now
@@ -626,6 +761,15 @@ const Home = () => {
         <div className="feature-card">🔒 Secure Checkout</div>
         <div className="feature-card">📦 Quality Guarantee</div>
       </section>
+      
+      {/* Image Preview Modal */}
+      <ImagePreviewModal
+        isOpen={previewModal.isOpen}
+        onClose={closePreviewModal}
+        images={previewModal.images}
+        currentIndex={previewModal.currentIndex}
+        altText={previewModal.altText}
+      />
     </div>
   );
 };

@@ -225,6 +225,7 @@ const AdminDashboard = () => {
     homepage_products_show_badges: true,
     homepage_products_show_rating: false,
     homepage_products_show_quick_view: false,
+    homepage_products_enable_image_preview: true,
     // Homepage Products 2 Settings
     homepage_products2_show_section: true,
     homepage_products2_title: 'Latest Products',
@@ -251,6 +252,7 @@ const AdminDashboard = () => {
     homepage_products2_show_badges: true,
     homepage_products2_show_rating: false,
     homepage_products2_show_quick_view: false,
+    homepage_products2_enable_image_preview: true,
     
     // Products Page Settings
     products_page_background_color: '#ffffff',
@@ -274,6 +276,166 @@ const AdminDashboard = () => {
     products_page_enable_pagination: true,
     products_page_enable_filters: true,
     products_page_enable_search: true,
+    products_page_enable_image_preview: true,
+    
+    // Product Detail Page Settings
+    product_detail_show_thumbnails: true,
+    product_detail_show_category_badge: true,
+    product_detail_show_featured_badge: true,
+    product_detail_show_stock_info: true,
+    product_detail_show_variations: true,
+    product_detail_show_description: true,
+    product_detail_show_details_section: true,
+    product_detail_show_video: true,
+    product_detail_show_buy_now_button: true,
+    product_detail_show_continue_shopping_button: true,
+    product_detail_show_quantity_selector: true,
+    product_detail_show_image_lightbox: true,
+    product_detail_add_to_cart_button_color: '#007bff',
+    product_detail_add_to_cart_button_text_color: '#ffffff',
+    product_detail_buy_now_button_color: '#28a745',
+    product_detail_buy_now_button_text_color: '#ffffff',
+    product_detail_continue_shopping_button_color: '#007bff',
+    product_detail_continue_shopping_button_text_color: '#007bff',
+    product_detail_product_name_color: '#333333',
+    product_detail_product_price_color: '#007bff',
+    product_detail_product_description_color: '#333333',
+    product_detail_product_details_label_color: '#666666',
+    product_detail_product_details_value_color: '#333333',
+    
+    // Product Detail Page Font Settings
+    product_detail_product_name_font_family: 'Arial, sans-serif',
+    product_detail_product_name_font_size: 28,
+    product_detail_product_name_font_weight: 'bold',
+    product_detail_product_name_font_style: 'normal',
+    product_detail_product_price_font_family: 'Arial, sans-serif',
+    product_detail_product_price_font_size: 24,
+    product_detail_product_price_font_weight: 'bold',
+    product_detail_product_price_font_style: 'normal',
+    product_detail_product_description_font_family: 'Arial, sans-serif',
+    product_detail_product_description_font_size: 16,
+    product_detail_product_description_font_weight: 'normal',
+    product_detail_product_description_font_style: 'normal',
+    product_detail_product_details_label_font_family: 'Arial, sans-serif',
+    product_detail_product_details_label_font_size: 14,
+    product_detail_product_details_label_font_weight: 'bold',
+    product_detail_product_details_label_font_style: 'normal',
+    product_detail_product_details_value_font_family: 'Arial, sans-serif',
+    product_detail_product_details_value_font_size: 14,
+    product_detail_product_details_value_font_weight: 'normal',
+    product_detail_product_details_value_font_style: 'normal',
+    
+    // Products Page Font & Color Settings
+    products_page_title_color: '#333333',
+    products_page_title_font_family: 'Arial, sans-serif',
+    products_page_title_font_size: 32,
+    products_page_title_font_weight: 'bold',
+    products_page_title_font_style: 'normal',
+    products_page_subtitle_color: '#666666',
+    products_page_subtitle_font_family: 'Arial, sans-serif',
+    products_page_subtitle_font_size: 16,
+    products_page_subtitle_font_weight: 'normal',
+    products_page_subtitle_font_style: 'normal',
+    products_page_product_name_color: '#333333',
+    products_page_product_name_font_family: 'Arial, sans-serif',
+    products_page_product_name_font_size: 18,
+    products_page_product_name_font_weight: 'bold',
+    products_page_product_name_font_style: 'normal',
+    products_page_product_price_color: '#007bff',
+    products_page_product_price_font_family: 'Arial, sans-serif',
+    products_page_product_price_font_size: 16,
+    products_page_product_price_font_weight: 'bold',
+    products_page_product_price_font_style: 'normal',
+    products_page_product_category_color: '#666666',
+    products_page_product_category_font_family: 'Arial, sans-serif',
+    products_page_product_category_font_size: 14,
+    products_page_product_category_font_weight: 'normal',
+    products_page_product_category_font_style: 'normal',
+    products_page_stock_info_color: '#28a745',
+    products_page_stock_info_font_family: 'Arial, sans-serif',
+    products_page_stock_info_font_size: 12,
+    products_page_stock_info_font_weight: 'normal',
+    products_page_stock_info_font_style: 'normal',
+    products_page_view_details_button_color: '#007bff',
+    products_page_view_details_button_text_color: '#ffffff',
+    products_page_view_details_button_font_family: 'Arial, sans-serif',
+    products_page_view_details_button_font_size: 14,
+    products_page_view_details_button_font_weight: 'normal',
+    products_page_view_details_button_font_style: 'normal',
+    products_page_add_to_cart_button_color: '#28a745',
+    products_page_add_to_cart_button_text_color: '#ffffff',
+    products_page_add_to_cart_button_font_family: 'Arial, sans-serif',
+    products_page_add_to_cart_button_font_size: 14,
+    products_page_add_to_cart_button_font_weight: 'normal',
+    products_page_add_to_cart_button_font_style: 'normal',
+    
+    // Homepage Products 1 Font & Color Settings
+    homepage_products_product_name_color: '#333333',
+    homepage_products_product_name_font_family: 'Arial, sans-serif',
+    homepage_products_product_name_font_size: 18,
+    homepage_products_product_name_font_weight: 'bold',
+    homepage_products_product_name_font_style: 'normal',
+    homepage_products_product_price_color: '#007bff',
+    homepage_products_product_price_font_family: 'Arial, sans-serif',
+    homepage_products_product_price_font_size: 16,
+    homepage_products_product_price_font_weight: 'bold',
+    homepage_products_product_price_font_style: 'normal',
+    homepage_products_product_category_color: '#666666',
+    homepage_products_product_category_font_family: 'Arial, sans-serif',
+    homepage_products_product_category_font_size: 14,
+    homepage_products_product_category_font_weight: 'normal',
+    homepage_products_product_category_font_style: 'normal',
+    homepage_products_stock_info_color: '#28a745',
+    homepage_products_stock_info_font_family: 'Arial, sans-serif',
+    homepage_products_stock_info_font_size: 12,
+    homepage_products_stock_info_font_weight: 'normal',
+    homepage_products_stock_info_font_style: 'normal',
+    homepage_products_view_details_button_color: '#007bff',
+    homepage_products_view_details_button_text_color: '#ffffff',
+    homepage_products_view_details_button_font_family: 'Arial, sans-serif',
+    homepage_products_view_details_button_font_size: 14,
+    homepage_products_view_details_button_font_weight: 'normal',
+    homepage_products_view_details_button_font_style: 'normal',
+    homepage_products_add_to_cart_button_color: '#28a745',
+    homepage_products_add_to_cart_button_text_color: '#ffffff',
+    homepage_products_add_to_cart_button_font_family: 'Arial, sans-serif',
+    homepage_products_add_to_cart_button_font_size: 14,
+    homepage_products_add_to_cart_button_font_weight: 'normal',
+    homepage_products_add_to_cart_button_font_style: 'normal',
+    
+    // Homepage Products 2 Font & Color Settings
+    homepage_products2_product_name_color: '#333333',
+    homepage_products2_product_name_font_family: 'Arial, sans-serif',
+    homepage_products2_product_name_font_size: 18,
+    homepage_products2_product_name_font_weight: 'bold',
+    homepage_products2_product_name_font_style: 'normal',
+    homepage_products2_product_price_color: '#007bff',
+    homepage_products2_product_price_font_family: 'Arial, sans-serif',
+    homepage_products2_product_price_font_size: 16,
+    homepage_products2_product_price_font_weight: 'bold',
+    homepage_products2_product_price_font_style: 'normal',
+    homepage_products2_product_category_color: '#666666',
+    homepage_products2_product_category_font_family: 'Arial, sans-serif',
+    homepage_products2_product_category_font_size: 14,
+    homepage_products2_product_category_font_weight: 'normal',
+    homepage_products2_product_category_font_style: 'normal',
+    homepage_products2_stock_info_color: '#28a745',
+    homepage_products2_stock_info_font_family: 'Arial, sans-serif',
+    homepage_products2_stock_info_font_size: 12,
+    homepage_products2_stock_info_font_weight: 'normal',
+    homepage_products2_stock_info_font_style: 'normal',
+    homepage_products2_view_details_button_color: '#007bff',
+    homepage_products2_view_details_button_text_color: '#ffffff',
+    homepage_products2_view_details_button_font_family: 'Arial, sans-serif',
+    homepage_products2_view_details_button_font_size: 14,
+    homepage_products2_view_details_button_font_weight: 'normal',
+    homepage_products2_view_details_button_font_style: 'normal',
+    homepage_products2_add_to_cart_button_color: '#28a745',
+    homepage_products2_add_to_cart_button_text_color: '#ffffff',
+    homepage_products2_add_to_cart_button_font_family: 'Arial, sans-serif',
+    homepage_products2_add_to_cart_button_font_size: 14,
+    homepage_products2_add_to_cart_button_font_weight: 'normal',
+    homepage_products2_add_to_cart_button_font_style: 'normal',
     
     // Navigation Links Settings
     navigation_links: [
@@ -483,6 +645,8 @@ const AdminDashboard = () => {
           ...data.homepage_products2_settings,
           // Products Page Settings
           ...data.products_page_settings,
+          // Product Detail Settings
+          ...data.product_detail_settings,
           // Navigation Links
           navigation_links: data.navigation_links,
           nav_link_color: data.nav_link_color,
@@ -508,11 +672,18 @@ const AdminDashboard = () => {
         };
         setSiteSettings(flattenedData);
       } else {
-        toast.error('Failed to fetch site settings');
+        console.error('Failed to fetch site settings, status:', response.status);
+        if (response.status === 401) {
+          toast.error('Authentication required for admin access');
+        } else if (response.status === 403) {
+          toast.error('Admin access required');
+        } else {
+          toast.error(`Failed to fetch site settings (${response.status})`);
+        }
       }
     } catch (error) {
       console.error('Error fetching site settings:', error);
-      toast.error('Error fetching site settings');
+      toast.error('Network error fetching site settings');
     }
   };
 
@@ -3428,6 +3599,27 @@ const AdminDashboard = () => {
                 </button>
                 <button 
                   type="button"
+                  className={`settings-nav-link ${settingsTab === 'product-detail' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('product-detail')}
+                >
+                  Product Detail
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'products-page-styling' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('products-page-styling')}
+                >
+                  Products Page Style
+                </button>
+                <button 
+                  type="button"
+                  className={`settings-nav-link ${settingsTab === 'homepage-products-styling' ? 'active' : ''}`}
+                  onClick={() => setSettingsTab('homepage-products-styling')}
+                >
+                  Homepage Products Style
+                </button>
+                <button 
+                  type="button"
                   className={`settings-nav-link ${settingsTab === 'homepage-products' ? 'active' : ''}`}
                   onClick={() => setSettingsTab('homepage-products')}
                 >
@@ -4361,6 +4553,20 @@ const AdminDashboard = () => {
                               }))}
                             />
                             Enable search
+                          </label>
+                        </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.products_page_enable_image_preview || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_enable_image_preview: e.target.checked
+                              }))}
+                            />
+                            Enable image preview modal
                           </label>
                         </div>
                       </div>
@@ -5848,6 +6054,20 @@ const AdminDashboard = () => {
                             Show quick view button
                           </label>
                         </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products_enable_image_preview || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_enable_image_preview: e.target.checked
+                              }))}
+                            />
+                            Enable image preview modal
+                          </label>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -6270,6 +6490,20 @@ const AdminDashboard = () => {
                             Show quick view button
                           </label>
                         </div>
+
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={siteSettings.homepage_products2_enable_image_preview || false}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_enable_image_preview: e.target.checked
+                              }))}
+                            />
+                            Enable image preview modal
+                          </label>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -6543,8 +6777,1467 @@ const AdminDashboard = () => {
                     </div>
                   )}
 
+                  {/* Product Detail Tab */}
+                  {settingsTab === 'product-detail' && (
+                    <div className="settings-section">
+                      <h3>Product Detail Page Settings</h3>
+                      <p>Customize which elements are shown on product detail pages and their colors</p>
 
+                      {/* Display Options */}
+                      <div style={{ backgroundColor: '#fff3cd', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>👁️ Display Options</h4>
+                        <p>Control which elements are shown on product detail pages</p>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_thumbnails || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_thumbnails: e.target.checked
+                                }))}
+                              />
+                              Show Image Thumbnails
+                            </label>
+                          </div>
 
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_category_badge || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_category_badge: e.target.checked
+                                }))}
+                              />
+                              Show Category Badge
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_featured_badge || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_featured_badge: e.target.checked
+                                }))}
+                              />
+                              Show Featured Badge
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_stock_info || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_stock_info: e.target.checked
+                                }))}
+                              />
+                              Show Stock Information
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_variations || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_variations: e.target.checked
+                                }))}
+                              />
+                              Show Product Variations
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_description || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_description: e.target.checked
+                                }))}
+                              />
+                              Show Product Description
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_details_section || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_details_section: e.target.checked
+                                }))}
+                              />
+                              Show Product Details Section
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_video || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_video: e.target.checked
+                                }))}
+                              />
+                              Show Product Video
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_buy_now_button || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_buy_now_button: e.target.checked
+                                }))}
+                              />
+                              Show Buy Now Button
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_continue_shopping_button || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_continue_shopping_button: e.target.checked
+                                }))}
+                              />
+                              Show Continue Shopping Button
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_quantity_selector || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_quantity_selector: e.target.checked
+                                }))}
+                              />
+                              Show Quantity Selector
+                            </label>
+                          </div>
+
+                          <div className="form-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={siteSettings.product_detail_show_image_lightbox || false}
+                                onChange={(e) => setSiteSettings(prev => ({
+                                  ...prev,
+                                  product_detail_show_image_lightbox: e.target.checked
+                                }))}
+                              />
+                              Show Image Lightbox
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Button Colors */}
+                      <div style={{ backgroundColor: '#e8f5e8', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🎨 Button Colors</h4>
+                        <p>Customize button colors and text colors</p>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Add to Cart Button Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_add_to_cart_button_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_add_to_cart_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Add to Cart Button Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_add_to_cart_button_text_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_add_to_cart_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Buy Now Button Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_buy_now_button_color || '#28a745'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_buy_now_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Buy Now Button Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_buy_now_button_text_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_buy_now_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Continue Shopping Button Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_continue_shopping_button_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_continue_shopping_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Continue Shopping Button Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_continue_shopping_button_text_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_continue_shopping_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Text Colors */}
+                      <div style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🖋️ Text Colors</h4>
+                        <p>Customize text colors for product information</p>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Product Name Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_product_name_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_name_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Price Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_product_price_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_price_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Description Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_product_description_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_description_color: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Product Details Label Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_product_details_label_color || '#666666'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_label_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Details Value Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.product_detail_product_details_value_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_value_color: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      {/* Font Settings */}
+                      <div style={{ backgroundColor: '#e8f5e8', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🖋️ Font Settings</h4>
+                        <p>Customize font family, size, weight, and style for different text elements</p>
+                        
+                        {/* Product Name Font */}
+                        <h5>Product Name</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.product_detail_product_name_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_name_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.product_detail_product_name_font_size || 28}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_name_font_size: parseInt(e.target.value) || 28
+                              }))}
+                              min="10"
+                              max="100"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.product_detail_product_name_font_weight || 'bold'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_name_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.product_detail_product_name_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_name_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Product Price Font */}
+                        <h5>Product Price</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.product_detail_product_price_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_price_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.product_detail_product_price_font_size || 24}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_price_font_size: parseInt(e.target.value) || 24
+                              }))}
+                              min="10"
+                              max="100"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.product_detail_product_price_font_weight || 'bold'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_price_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.product_detail_product_price_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_price_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Product Description Font */}
+                        <h5>Product Description</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.product_detail_product_description_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_description_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.product_detail_product_description_font_size || 16}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_description_font_size: parseInt(e.target.value) || 16
+                              }))}
+                              min="10"
+                              max="100"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.product_detail_product_description_font_weight || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_description_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.product_detail_product_description_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_description_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Product Details Label Font */}
+                        <h5>Product Details Labels</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.product_detail_product_details_label_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_label_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.product_detail_product_details_label_font_size || 14}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_label_font_size: parseInt(e.target.value) || 14
+                              }))}
+                              min="10"
+                              max="100"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.product_detail_product_details_label_font_weight || 'bold'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_label_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.product_detail_product_details_label_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_label_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Product Details Value Font */}
+                        <h5>Product Details Values</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.product_detail_product_details_value_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_value_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.product_detail_product_details_value_font_size || 14}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_value_font_size: parseInt(e.target.value) || 14
+                              }))}
+                              min="10"
+                              max="100"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.product_detail_product_details_value_font_weight || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_value_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.product_detail_product_details_value_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                product_detail_product_details_value_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Products Page Styling Tab */}
+                  {settingsTab === 'products-page-styling' && (
+                    <div className="settings-section">
+                      <h3>Products Page Style Settings</h3>
+                      <p>Customize the appearance of product cards on the Products page</p>
+
+                      {/* Page Title and Subtitle Styling */}
+                      <div style={{ backgroundColor: '#fff8dc', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>📄 Page Title Styling</h4>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Title Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_title_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_title_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Title Font Family</label>
+                            <select
+                              value={siteSettings.products_page_title_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_title_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Title Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_title_font_size || 32}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_title_font_size: parseInt(e.target.value) || 32
+                              }))}
+                              min="16"
+                              max="60"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Title Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_title_font_weight || 'bold'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_title_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <h5>Subtitle Styling</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Subtitle Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_subtitle_color || '#666666'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_subtitle_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Subtitle Font Family</label>
+                            <select
+                              value={siteSettings.products_page_subtitle_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_subtitle_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Subtitle Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_subtitle_font_size || 16}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_subtitle_font_size: parseInt(e.target.value) || 16
+                              }))}
+                              min="12"
+                              max="30"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Subtitle Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_subtitle_font_weight || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_subtitle_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Product Name Styling */}
+                      <div style={{ backgroundColor: '#fff3cd', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>📝 Product Name Styling</h4>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_product_name_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_name_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.products_page_product_name_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_name_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_product_name_font_size || 18}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_name_font_size: parseInt(e.target.value) || 18
+                              }))}
+                              min="10"
+                              max="50"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_product_name_font_weight || 'bold'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_name_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.products_page_product_name_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_name_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Product Price Styling */}
+                      <div style={{ backgroundColor: '#e8f5e8', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>💰 Product Price Styling</h4>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_product_price_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_price_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.products_page_product_price_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_price_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_product_price_font_size || 16}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_price_font_size: parseInt(e.target.value) || 16
+                              }))}
+                              min="10"
+                              max="50"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_product_price_font_weight || 'bold'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_price_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.products_page_product_price_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_price_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Category Styling */}
+                      <div style={{ backgroundColor: '#f0f8ff', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🏷️ Category Label Styling</h4>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_product_category_color || '#666666'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_category_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Family</label>
+                            <select
+                              value={siteSettings.products_page_product_category_font_family || 'Arial, sans-serif'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_category_font_family: e.target.value
+                              }))}
+                            >
+                              <option value="Arial, sans-serif">Arial</option>
+                              <option value="'Times New Roman', serif">Times New Roman</option>
+                              <option value="'Courier New', monospace">Courier New</option>
+                              <option value="'Georgia', serif">Georgia</option>
+                              <option value="'Verdana', sans-serif">Verdana</option>
+                              <option value="'Tahoma', sans-serif">Tahoma</option>
+                              <option value="'Roboto', sans-serif">Roboto</option>
+                              <option value="'Open Sans', sans-serif">Open Sans</option>
+                              <option value="'Lato', sans-serif">Lato</option>
+                              <option value="'Montserrat', sans-serif">Montserrat</option>
+                              <option value="'Poppins', sans-serif">Poppins</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_product_category_font_size || 14}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_category_font_size: parseInt(e.target.value) || 14
+                              }))}
+                              min="10"
+                              max="30"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_product_category_font_weight || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_category_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="100">100 (Thin)</option>
+                              <option value="300">300 (Light)</option>
+                              <option value="400">400 (Regular)</option>
+                              <option value="500">500 (Medium)</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                              <option value="900">900 (Black)</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Style</label>
+                            <select
+                              value={siteSettings.products_page_product_category_font_style || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_product_category_font_style: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="italic">Italic</option>
+                              <option value="oblique">Oblique</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Button Styling */}
+                      <div style={{ backgroundColor: '#ffeaa7', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🔘 Button Styling</h4>
+                        
+                        <h5>View Details Button</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Background Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_view_details_button_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_view_details_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_view_details_button_text_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_view_details_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_view_details_button_font_size || 14}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_view_details_button_font_size: parseInt(e.target.value) || 14
+                              }))}
+                              min="10"
+                              max="24"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_view_details_button_font_weight || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_view_details_button_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <h5>Add to Cart Button</h5>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Background Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_add_to_cart_button_color || '#28a745'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_add_to_cart_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.products_page_add_to_cart_button_text_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_add_to_cart_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.products_page_add_to_cart_button_font_size || 14}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_add_to_cart_button_font_size: parseInt(e.target.value) || 14
+                              }))}
+                              min="10"
+                              max="24"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Font Weight</label>
+                            <select
+                              value={siteSettings.products_page_add_to_cart_button_font_weight || 'normal'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                products_page_add_to_cart_button_font_weight: e.target.value
+                              }))}
+                            >
+                              <option value="normal">Normal</option>
+                              <option value="bold">Bold</option>
+                              <option value="600">600 (Semi Bold)</option>
+                              <option value="700">700 (Bold)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Homepage Products Styling Tab */}
+                  {settingsTab === 'homepage-products-styling' && (
+                    <div className="settings-section">
+                      <h3>Homepage Products Style Settings</h3>
+                      <p>Customize the appearance of product cards on the Homepage</p>
+
+                      <div style={{ backgroundColor: '#e3f2fd', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🏠 Homepage Products Section 1</h4>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Product Name Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products_product_name_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_product_name_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Name Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.homepage_products_product_name_font_size || 18}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_product_name_font_size: parseInt(e.target.value) || 18
+                              }))}
+                              min="10"
+                              max="50"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Price Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products_product_price_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_product_price_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Price Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.homepage_products_product_price_font_size || 16}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_product_price_font_size: parseInt(e.target.value) || 16
+                              }))}
+                              min="10"
+                              max="50"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Add to Cart Button Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products_add_to_cart_button_color || '#28a745'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_add_to_cart_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Add to Cart Button Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products_add_to_cart_button_text_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products_add_to_cart_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ backgroundColor: '#f3e5f5', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4>🏠 Homepage Products Section 2</h4>
+                        
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Product Name Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products2_product_name_color || '#333333'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_product_name_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Name Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.homepage_products2_product_name_font_size || 18}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_product_name_font_size: parseInt(e.target.value) || 18
+                              }))}
+                              min="10"
+                              max="50"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Price Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products2_product_price_color || '#007bff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_product_price_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Product Price Font Size (px)</label>
+                            <input
+                              type="number"
+                              value={siteSettings.homepage_products2_product_price_font_size || 16}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_product_price_font_size: parseInt(e.target.value) || 16
+                              }))}
+                              min="10"
+                              max="50"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Add to Cart Button Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products2_add_to_cart_button_color || '#28a745'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_add_to_cart_button_color: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Add to Cart Button Text Color</label>
+                            <input
+                              type="color"
+                              value={siteSettings.homepage_products2_add_to_cart_button_text_color || '#ffffff'}
+                              onChange={(e) => setSiteSettings(prev => ({
+                                ...prev,
+                                homepage_products2_add_to_cart_button_text_color: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                 </form>
               </div>

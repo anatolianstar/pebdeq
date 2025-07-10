@@ -962,7 +962,41 @@ def get_site_settings():
                 'homepage_products_card_hover_effect': settings.homepage_products_card_hover_effect,
                 'homepage_products_show_badges': settings.homepage_products_show_badges,
                 'homepage_products_show_rating': settings.homepage_products_show_rating,
-                'homepage_products_show_quick_view': settings.homepage_products_show_quick_view
+                'homepage_products_show_quick_view': settings.homepage_products_show_quick_view,
+                'homepage_products_enable_image_preview': settings.homepage_products_enable_image_preview,
+                # Homepage Products 1 Font & Color Settings
+                'homepage_products_product_name_color': settings.homepage_products_product_name_color,
+                'homepage_products_product_name_font_family': settings.homepage_products_product_name_font_family,
+                'homepage_products_product_name_font_size': settings.homepage_products_product_name_font_size,
+                'homepage_products_product_name_font_weight': settings.homepage_products_product_name_font_weight,
+                'homepage_products_product_name_font_style': settings.homepage_products_product_name_font_style,
+                'homepage_products_product_price_color': settings.homepage_products_product_price_color,
+                'homepage_products_product_price_font_family': settings.homepage_products_product_price_font_family,
+                'homepage_products_product_price_font_size': settings.homepage_products_product_price_font_size,
+                'homepage_products_product_price_font_weight': settings.homepage_products_product_price_font_weight,
+                'homepage_products_product_price_font_style': settings.homepage_products_product_price_font_style,
+                'homepage_products_product_category_color': settings.homepage_products_product_category_color,
+                'homepage_products_product_category_font_family': settings.homepage_products_product_category_font_family,
+                'homepage_products_product_category_font_size': settings.homepage_products_product_category_font_size,
+                'homepage_products_product_category_font_weight': settings.homepage_products_product_category_font_weight,
+                'homepage_products_product_category_font_style': settings.homepage_products_product_category_font_style,
+                'homepage_products_stock_info_color': settings.homepage_products_stock_info_color,
+                'homepage_products_stock_info_font_family': settings.homepage_products_stock_info_font_family,
+                'homepage_products_stock_info_font_size': settings.homepage_products_stock_info_font_size,
+                'homepage_products_stock_info_font_weight': settings.homepage_products_stock_info_font_weight,
+                'homepage_products_stock_info_font_style': settings.homepage_products_stock_info_font_style,
+                'homepage_products_view_details_button_color': settings.homepage_products_view_details_button_color,
+                'homepage_products_view_details_button_text_color': settings.homepage_products_view_details_button_text_color,
+                'homepage_products_view_details_button_font_family': settings.homepage_products_view_details_button_font_family,
+                'homepage_products_view_details_button_font_size': settings.homepage_products_view_details_button_font_size,
+                'homepage_products_view_details_button_font_weight': settings.homepage_products_view_details_button_font_weight,
+                'homepage_products_view_details_button_font_style': settings.homepage_products_view_details_button_font_style,
+                'homepage_products_add_to_cart_button_color': settings.homepage_products_add_to_cart_button_color,
+                'homepage_products_add_to_cart_button_text_color': settings.homepage_products_add_to_cart_button_text_color,
+                'homepage_products_add_to_cart_button_font_family': settings.homepage_products_add_to_cart_button_font_family,
+                'homepage_products_add_to_cart_button_font_size': settings.homepage_products_add_to_cart_button_font_size,
+                'homepage_products_add_to_cart_button_font_weight': settings.homepage_products_add_to_cart_button_font_weight,
+                'homepage_products_add_to_cart_button_font_style': settings.homepage_products_add_to_cart_button_font_style
             },
             # Homepage Products 2 Settings
             'homepage_products2_settings': {
@@ -992,7 +1026,41 @@ def get_site_settings():
                 'homepage_products2_card_hover_effect': settings.homepage_products2_card_hover_effect,
                 'homepage_products2_show_badges': settings.homepage_products2_show_badges,
                 'homepage_products2_show_rating': settings.homepage_products2_show_rating,
-                'homepage_products2_show_quick_view': settings.homepage_products2_show_quick_view
+                'homepage_products2_show_quick_view': settings.homepage_products2_show_quick_view,
+                'homepage_products2_enable_image_preview': settings.homepage_products2_enable_image_preview,
+                # Homepage Products 2 Font & Color Settings
+                'homepage_products2_product_name_color': settings.homepage_products2_product_name_color,
+                'homepage_products2_product_name_font_family': settings.homepage_products2_product_name_font_family,
+                'homepage_products2_product_name_font_size': settings.homepage_products2_product_name_font_size,
+                'homepage_products2_product_name_font_weight': settings.homepage_products2_product_name_font_weight,
+                'homepage_products2_product_name_font_style': settings.homepage_products2_product_name_font_style,
+                'homepage_products2_product_price_color': settings.homepage_products2_product_price_color,
+                'homepage_products2_product_price_font_family': settings.homepage_products2_product_price_font_family,
+                'homepage_products2_product_price_font_size': settings.homepage_products2_product_price_font_size,
+                'homepage_products2_product_price_font_weight': settings.homepage_products2_product_price_font_weight,
+                'homepage_products2_product_price_font_style': settings.homepage_products2_product_price_font_style,
+                'homepage_products2_product_category_color': settings.homepage_products2_product_category_color,
+                'homepage_products2_product_category_font_family': settings.homepage_products2_product_category_font_family,
+                'homepage_products2_product_category_font_size': settings.homepage_products2_product_category_font_size,
+                'homepage_products2_product_category_font_weight': settings.homepage_products2_product_category_font_weight,
+                'homepage_products2_product_category_font_style': settings.homepage_products2_product_category_font_style,
+                'homepage_products2_stock_info_color': settings.homepage_products2_stock_info_color,
+                'homepage_products2_stock_info_font_family': settings.homepage_products2_stock_info_font_family,
+                'homepage_products2_stock_info_font_size': settings.homepage_products2_stock_info_font_size,
+                'homepage_products2_stock_info_font_weight': settings.homepage_products2_stock_info_font_weight,
+                'homepage_products2_stock_info_font_style': settings.homepage_products2_stock_info_font_style,
+                'homepage_products2_view_details_button_color': settings.homepage_products2_view_details_button_color,
+                'homepage_products2_view_details_button_text_color': settings.homepage_products2_view_details_button_text_color,
+                'homepage_products2_view_details_button_font_family': settings.homepage_products2_view_details_button_font_family,
+                'homepage_products2_view_details_button_font_size': settings.homepage_products2_view_details_button_font_size,
+                'homepage_products2_view_details_button_font_weight': settings.homepage_products2_view_details_button_font_weight,
+                'homepage_products2_view_details_button_font_style': settings.homepage_products2_view_details_button_font_style,
+                'homepage_products2_add_to_cart_button_color': settings.homepage_products2_add_to_cart_button_color,
+                'homepage_products2_add_to_cart_button_text_color': settings.homepage_products2_add_to_cart_button_text_color,
+                'homepage_products2_add_to_cart_button_font_family': settings.homepage_products2_add_to_cart_button_font_family,
+                'homepage_products2_add_to_cart_button_font_size': settings.homepage_products2_add_to_cart_button_font_size,
+                'homepage_products2_add_to_cart_button_font_weight': settings.homepage_products2_add_to_cart_button_font_weight,
+                'homepage_products2_add_to_cart_button_font_style': settings.homepage_products2_add_to_cart_button_font_style
             },
             # Products Page Settings
             'products_page_settings': {
@@ -1018,38 +1086,131 @@ def get_site_settings():
                 'products_page_show_quick_view': settings.products_page_show_quick_view,
                 'products_page_enable_pagination': settings.products_page_enable_pagination,
                 'products_page_enable_filters': settings.products_page_enable_filters,
-                'products_page_enable_search': settings.products_page_enable_search
+                'products_page_enable_search': settings.products_page_enable_search,
+                'products_page_enable_image_preview': settings.products_page_enable_image_preview,
+                # Products Page Title Styling
+                'products_page_title_color': settings.products_page_title_color,
+                'products_page_title_font_family': settings.products_page_title_font_family,
+                'products_page_title_font_size': settings.products_page_title_font_size,
+                'products_page_title_font_weight': settings.products_page_title_font_weight,
+                'products_page_title_font_style': settings.products_page_title_font_style,
+                'products_page_subtitle_color': settings.products_page_subtitle_color,
+                'products_page_subtitle_font_family': settings.products_page_subtitle_font_family,
+                'products_page_subtitle_font_size': settings.products_page_subtitle_font_size,
+                'products_page_subtitle_font_weight': settings.products_page_subtitle_font_weight,
+                'products_page_subtitle_font_style': settings.products_page_subtitle_font_style,
+                # Products Page Font & Color Settings
+                'products_page_product_name_color': settings.products_page_product_name_color,
+                'products_page_product_name_font_family': settings.products_page_product_name_font_family,
+                'products_page_product_name_font_size': settings.products_page_product_name_font_size,
+                'products_page_product_name_font_weight': settings.products_page_product_name_font_weight,
+                'products_page_product_name_font_style': settings.products_page_product_name_font_style,
+                'products_page_product_price_color': settings.products_page_product_price_color,
+                'products_page_product_price_font_family': settings.products_page_product_price_font_family,
+                'products_page_product_price_font_size': settings.products_page_product_price_font_size,
+                'products_page_product_price_font_weight': settings.products_page_product_price_font_weight,
+                'products_page_product_price_font_style': settings.products_page_product_price_font_style,
+                'products_page_product_category_color': settings.products_page_product_category_color,
+                'products_page_product_category_font_family': settings.products_page_product_category_font_family,
+                'products_page_product_category_font_size': settings.products_page_product_category_font_size,
+                'products_page_product_category_font_weight': settings.products_page_product_category_font_weight,
+                'products_page_product_category_font_style': settings.products_page_product_category_font_style,
+                'products_page_stock_info_color': settings.products_page_stock_info_color,
+                'products_page_stock_info_font_family': settings.products_page_stock_info_font_family,
+                'products_page_stock_info_font_size': settings.products_page_stock_info_font_size,
+                'products_page_stock_info_font_weight': settings.products_page_stock_info_font_weight,
+                'products_page_stock_info_font_style': settings.products_page_stock_info_font_style,
+                'products_page_view_details_button_color': settings.products_page_view_details_button_color,
+                'products_page_view_details_button_text_color': settings.products_page_view_details_button_text_color,
+                'products_page_view_details_button_font_family': settings.products_page_view_details_button_font_family,
+                'products_page_view_details_button_font_size': settings.products_page_view_details_button_font_size,
+                'products_page_view_details_button_font_weight': settings.products_page_view_details_button_font_weight,
+                'products_page_view_details_button_font_style': settings.products_page_view_details_button_font_style,
+                'products_page_add_to_cart_button_color': settings.products_page_add_to_cart_button_color,
+                'products_page_add_to_cart_button_text_color': settings.products_page_add_to_cart_button_text_color,
+                'products_page_add_to_cart_button_font_family': settings.products_page_add_to_cart_button_font_family,
+                'products_page_add_to_cart_button_font_size': settings.products_page_add_to_cart_button_font_size,
+                'products_page_add_to_cart_button_font_weight': settings.products_page_add_to_cart_button_font_weight,
+                'products_page_add_to_cart_button_font_style': settings.products_page_add_to_cart_button_font_style
+            },
+            # Product Detail Page Settings
+            'product_detail_settings': {
+                'product_detail_show_thumbnails': settings.product_detail_show_thumbnails,
+                'product_detail_show_category_badge': settings.product_detail_show_category_badge,
+                'product_detail_show_featured_badge': settings.product_detail_show_featured_badge,
+                'product_detail_show_stock_info': settings.product_detail_show_stock_info,
+                'product_detail_show_variations': settings.product_detail_show_variations,
+                'product_detail_show_description': settings.product_detail_show_description,
+                'product_detail_show_details_section': settings.product_detail_show_details_section,
+                'product_detail_show_video': settings.product_detail_show_video,
+                'product_detail_show_buy_now_button': settings.product_detail_show_buy_now_button,
+                'product_detail_show_continue_shopping_button': settings.product_detail_show_continue_shopping_button,
+                'product_detail_show_quantity_selector': settings.product_detail_show_quantity_selector,
+                'product_detail_show_image_lightbox': settings.product_detail_show_image_lightbox,
+                'product_detail_add_to_cart_button_color': settings.product_detail_add_to_cart_button_color,
+                'product_detail_add_to_cart_button_text_color': settings.product_detail_add_to_cart_button_text_color,
+                'product_detail_buy_now_button_color': settings.product_detail_buy_now_button_color,
+                'product_detail_buy_now_button_text_color': settings.product_detail_buy_now_button_text_color,
+                'product_detail_continue_shopping_button_color': settings.product_detail_continue_shopping_button_color,
+                'product_detail_continue_shopping_button_text_color': settings.product_detail_continue_shopping_button_text_color,
+                'product_detail_product_name_color': settings.product_detail_product_name_color,
+                'product_detail_product_price_color': settings.product_detail_product_price_color,
+                'product_detail_product_description_color': settings.product_detail_product_description_color,
+                'product_detail_product_details_label_color': settings.product_detail_product_details_label_color,
+                'product_detail_product_details_value_color': settings.product_detail_product_details_value_color,
+                # Font Settings
+                'product_detail_product_name_font_family': settings.product_detail_product_name_font_family,
+                'product_detail_product_name_font_size': settings.product_detail_product_name_font_size,
+                'product_detail_product_name_font_weight': settings.product_detail_product_name_font_weight,
+                'product_detail_product_name_font_style': settings.product_detail_product_name_font_style,
+                'product_detail_product_price_font_family': settings.product_detail_product_price_font_family,
+                'product_detail_product_price_font_size': settings.product_detail_product_price_font_size,
+                'product_detail_product_price_font_weight': settings.product_detail_product_price_font_weight,
+                'product_detail_product_price_font_style': settings.product_detail_product_price_font_style,
+                'product_detail_product_description_font_family': settings.product_detail_product_description_font_family,
+                'product_detail_product_description_font_size': settings.product_detail_product_description_font_size,
+                'product_detail_product_description_font_weight': settings.product_detail_product_description_font_weight,
+                'product_detail_product_description_font_style': settings.product_detail_product_description_font_style,
+                'product_detail_product_details_label_font_family': settings.product_detail_product_details_label_font_family,
+                'product_detail_product_details_label_font_size': settings.product_detail_product_details_label_font_size,
+                'product_detail_product_details_label_font_weight': settings.product_detail_product_details_label_font_weight,
+                'product_detail_product_details_label_font_style': settings.product_detail_product_details_label_font_style,
+                'product_detail_product_details_value_font_family': settings.product_detail_product_details_value_font_family,
+                'product_detail_product_details_value_font_size': settings.product_detail_product_details_value_font_size,
+                'product_detail_product_details_value_font_weight': settings.product_detail_product_details_value_font_weight,
+                'product_detail_product_details_value_font_style': settings.product_detail_product_details_value_font_style
             },
             # Navigation Links
-            'navigation_links': settings.navigation_links or [
-                {'id': 1, 'title': 'Home', 'url': '/', 'enabled': True, 'order': 1, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                {'id': 2, 'title': 'Products', 'url': '/products', 'enabled': True, 'order': 2, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                {'id': 3, 'title': 'About', 'url': '/about', 'enabled': True, 'order': 3, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                {'id': 4, 'title': 'Contact', 'url': '/contact', 'enabled': True, 'order': 4, 'is_internal': True, 'show_for': 'all', 'type': 'page'},
-                {'id': 5, 'title': 'Login', 'url': '/login', 'enabled': True, 'order': 5, 'is_internal': True, 'show_for': 'guest', 'type': 'auth'},
-                {'id': 6, 'title': 'Profile', 'url': '/profile', 'enabled': True, 'order': 6, 'is_internal': True, 'show_for': 'user', 'type': 'page'},
-                {'id': 7, 'title': 'Admin', 'url': '/admin', 'enabled': True, 'order': 7, 'is_internal': True, 'show_for': 'admin', 'type': 'page'},
-                {'id': 8, 'title': 'Logout', 'url': 'logout', 'enabled': True, 'order': 8, 'is_internal': True, 'show_for': 'user', 'type': 'auth'}
+            'navigation_links': [
+                {
+                    'id': link.id,
+                    'name': link.name,
+                    'url': link.url,
+                    'order': link.order,
+                    'is_active': link.is_active
+                }
+                for link in (settings.navigation_links or [])
             ],
-            'nav_link_color': settings.nav_link_color or '#2c3e50',
-            'nav_link_hover_color': settings.nav_link_hover_color or '#007bff',
-            'nav_link_font_size': settings.nav_link_font_size or 16,
-            'nav_link_font_weight': settings.nav_link_font_weight or '500',
-            'nav_link_text_transform': settings.nav_link_text_transform or 'none',
-            'nav_link_underline': settings.nav_link_underline or False,
-            'nav_link_font_family': settings.nav_link_font_family or 'inherit',
-            'nav_link_text_shadow': settings.nav_link_text_shadow or False,
-            'header_background_color': settings.header_background_color or '#ffffff',
-            'header_text_color': settings.header_text_color or '#2c3e50',
-            'header_height': settings.header_height or 60,
-            'header_padding': settings.header_padding or 15,
-            'header_nav_spacing': settings.header_nav_spacing or 20,
-            'header_logo_position': settings.header_logo_position or 'left',
-            'header_nav_position': settings.header_nav_position or 'right',
-            'header_sticky': settings.header_sticky or False,
-            'header_border_bottom': settings.header_border_bottom or True,
-            'header_border_color': settings.header_border_color or '#e9ecef',
-            'header_shadow': settings.header_shadow or False
+            # Header Settings
+            'nav_link_color': settings.nav_link_color,
+            'nav_link_hover_color': settings.nav_link_hover_color,
+            'nav_link_font_size': settings.nav_link_font_size,
+            'nav_link_font_weight': settings.nav_link_font_weight,
+            'nav_link_text_transform': settings.nav_link_text_transform,
+            'nav_link_underline': settings.nav_link_underline,
+            'nav_link_font_family': settings.nav_link_font_family,
+            'nav_link_text_shadow': settings.nav_link_text_shadow,
+            'header_background_color': settings.header_background_color,
+            'header_text_color': settings.header_text_color,
+            'header_height': settings.header_height,
+            'header_padding': settings.header_padding,
+            'header_nav_spacing': settings.header_nav_spacing,
+            'header_logo_position': settings.header_logo_position,
+            'header_nav_position': settings.header_nav_position,
+            'header_sticky': settings.header_sticky,
+            'header_border_bottom': settings.header_border_bottom,
+            'header_border_color': settings.header_border_color,
+            'header_shadow': settings.header_shadow
         })
     
     except Exception as e:
@@ -1302,6 +1463,8 @@ def update_site_settings():
             settings.homepage_products_show_rating = data['homepage_products_show_rating']
         if 'homepage_products_show_quick_view' in data:
             settings.homepage_products_show_quick_view = data['homepage_products_show_quick_view']
+        if 'homepage_products_enable_image_preview' in data:
+            settings.homepage_products_enable_image_preview = data['homepage_products_enable_image_preview']
         
         # Homepage Products 2 Settings
         if 'homepage_products2_show_section' in data:
@@ -1358,6 +1521,8 @@ def update_site_settings():
             settings.homepage_products2_show_rating = data['homepage_products2_show_rating']
         if 'homepage_products2_show_quick_view' in data:
             settings.homepage_products2_show_quick_view = data['homepage_products2_show_quick_view']
+        if 'homepage_products2_enable_image_preview' in data:
+            settings.homepage_products2_enable_image_preview = data['homepage_products2_enable_image_preview']
         
         # Navigation Links
         if 'navigation_links' in data:
@@ -1452,6 +1617,484 @@ def update_site_settings():
             settings.products_page_enable_filters = data['products_page_enable_filters']
         if 'products_page_enable_search' in data:
             settings.products_page_enable_search = data['products_page_enable_search']
+        if 'products_page_enable_image_preview' in data:
+            settings.products_page_enable_image_preview = data['products_page_enable_image_preview']
+        
+        # Product Detail Page Settings
+        if 'product_detail_show_thumbnails' in data:
+            settings.product_detail_show_thumbnails = data['product_detail_show_thumbnails']
+        if 'product_detail_show_category_badge' in data:
+            settings.product_detail_show_category_badge = data['product_detail_show_category_badge']
+        if 'product_detail_show_featured_badge' in data:
+            settings.product_detail_show_featured_badge = data['product_detail_show_featured_badge']
+        if 'product_detail_show_stock_info' in data:
+            settings.product_detail_show_stock_info = data['product_detail_show_stock_info']
+        if 'product_detail_show_variations' in data:
+            settings.product_detail_show_variations = data['product_detail_show_variations']
+        if 'product_detail_show_description' in data:
+            settings.product_detail_show_description = data['product_detail_show_description']
+        if 'product_detail_show_details_section' in data:
+            settings.product_detail_show_details_section = data['product_detail_show_details_section']
+        if 'product_detail_show_video' in data:
+            settings.product_detail_show_video = data['product_detail_show_video']
+        if 'product_detail_show_buy_now_button' in data:
+            settings.product_detail_show_buy_now_button = data['product_detail_show_buy_now_button']
+        if 'product_detail_show_continue_shopping_button' in data:
+            settings.product_detail_show_continue_shopping_button = data['product_detail_show_continue_shopping_button']
+        if 'product_detail_show_quantity_selector' in data:
+            settings.product_detail_show_quantity_selector = data['product_detail_show_quantity_selector']
+        if 'product_detail_show_image_lightbox' in data:
+            settings.product_detail_show_image_lightbox = data['product_detail_show_image_lightbox']
+        
+        # Product Detail Button Colors
+        if 'product_detail_add_to_cart_button_color' in data:
+            settings.product_detail_add_to_cart_button_color = data['product_detail_add_to_cart_button_color']
+        if 'product_detail_add_to_cart_button_text_color' in data:
+            settings.product_detail_add_to_cart_button_text_color = data['product_detail_add_to_cart_button_text_color']
+        if 'product_detail_buy_now_button_color' in data:
+            settings.product_detail_buy_now_button_color = data['product_detail_buy_now_button_color']
+        if 'product_detail_buy_now_button_text_color' in data:
+            settings.product_detail_buy_now_button_text_color = data['product_detail_buy_now_button_text_color']
+        if 'product_detail_continue_shopping_button_color' in data:
+            settings.product_detail_continue_shopping_button_color = data['product_detail_continue_shopping_button_color']
+        if 'product_detail_continue_shopping_button_text_color' in data:
+            settings.product_detail_continue_shopping_button_text_color = data['product_detail_continue_shopping_button_text_color']
+        
+        # Product Detail Text Colors
+        if 'product_detail_product_name_color' in data:
+            settings.product_detail_product_name_color = data['product_detail_product_name_color']
+        if 'product_detail_product_price_color' in data:
+            settings.product_detail_product_price_color = data['product_detail_product_price_color']
+        if 'product_detail_product_description_color' in data:
+            settings.product_detail_product_description_color = data['product_detail_product_description_color']
+        if 'product_detail_product_details_label_color' in data:
+            settings.product_detail_product_details_label_color = data['product_detail_product_details_label_color']
+        if 'product_detail_product_details_value_color' in data:
+            settings.product_detail_product_details_value_color = data['product_detail_product_details_value_color']
+        
+        # Product Detail Page Font Settings
+        if 'product_detail_product_name_font_family' in data:
+            settings.product_detail_product_name_font_family = data['product_detail_product_name_font_family']
+        if 'product_detail_product_name_font_size' in data:
+            settings.product_detail_product_name_font_size = data['product_detail_product_name_font_size']
+        if 'product_detail_product_name_font_weight' in data:
+            settings.product_detail_product_name_font_weight = data['product_detail_product_name_font_weight']
+        if 'product_detail_product_name_font_style' in data:
+            settings.product_detail_product_name_font_style = data['product_detail_product_name_font_style']
+        
+        if 'product_detail_product_price_font_family' in data:
+            settings.product_detail_product_price_font_family = data['product_detail_product_price_font_family']
+        if 'product_detail_product_price_font_size' in data:
+            settings.product_detail_product_price_font_size = data['product_detail_product_price_font_size']
+        if 'product_detail_product_price_font_weight' in data:
+            settings.product_detail_product_price_font_weight = data['product_detail_product_price_font_weight']
+        if 'product_detail_product_price_font_style' in data:
+            settings.product_detail_product_price_font_style = data['product_detail_product_price_font_style']
+        
+        if 'product_detail_product_description_font_family' in data:
+            settings.product_detail_product_description_font_family = data['product_detail_product_description_font_family']
+        if 'product_detail_product_description_font_size' in data:
+            settings.product_detail_product_description_font_size = data['product_detail_product_description_font_size']
+        if 'product_detail_product_description_font_weight' in data:
+            settings.product_detail_product_description_font_weight = data['product_detail_product_description_font_weight']
+        if 'product_detail_product_description_font_style' in data:
+            settings.product_detail_product_description_font_style = data['product_detail_product_description_font_style']
+        
+        if 'product_detail_product_details_label_font_family' in data:
+            settings.product_detail_product_details_label_font_family = data['product_detail_product_details_label_font_family']
+        if 'product_detail_product_details_label_font_size' in data:
+            settings.product_detail_product_details_label_font_size = data['product_detail_product_details_label_font_size']
+        if 'product_detail_product_details_label_font_weight' in data:
+            settings.product_detail_product_details_label_font_weight = data['product_detail_product_details_label_font_weight']
+        if 'product_detail_product_details_label_font_style' in data:
+            settings.product_detail_product_details_label_font_style = data['product_detail_product_details_label_font_style']
+        
+        if 'product_detail_product_details_value_font_family' in data:
+            settings.product_detail_product_details_value_font_family = data['product_detail_product_details_value_font_family']
+        if 'product_detail_product_details_value_font_size' in data:
+            settings.product_detail_product_details_value_font_size = data['product_detail_product_details_value_font_size']
+        if 'product_detail_product_details_value_font_weight' in data:
+            settings.product_detail_product_details_value_font_weight = data['product_detail_product_details_value_font_weight']
+        if 'product_detail_product_details_value_font_style' in data:
+            settings.product_detail_product_details_value_font_style = data['product_detail_product_details_value_font_style']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
+        
+        # Products Page Font & Color Settings
+        if 'products_page_product_name_color' in data:
+            settings.products_page_product_name_color = data['products_page_product_name_color']
+        if 'products_page_product_name_font_size' in data:
+            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
+        if 'products_page_product_price_color' in data:
+            settings.products_page_product_price_color = data['products_page_product_price_color']
+        if 'products_page_product_price_font_size' in data:
+            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
+        if 'products_page_add_to_cart_button_color' in data:
+            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
+        if 'products_page_add_to_cart_button_text_color' in data:
+            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
+        
+        # Homepage Products 1 Font & Color Settings
+        if 'homepage_products_product_name_color' in data:
+            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
+        if 'homepage_products_product_name_font_size' in data:
+            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
+        if 'homepage_products_product_price_color' in data:
+            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
+        if 'homepage_products_product_price_font_size' in data:
+            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
+        if 'homepage_products_add_to_cart_button_color' in data:
+            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
+        if 'homepage_products_add_to_cart_button_text_color' in data:
+            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
+        
+        # Homepage Products 2 Font & Color Settings
+        if 'homepage_products2_product_name_color' in data:
+            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
+        if 'homepage_products2_product_name_font_size' in data:
+            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
+        if 'homepage_products2_product_price_color' in data:
+            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
+        if 'homepage_products2_product_price_font_size' in data:
+            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
+        if 'homepage_products2_add_to_cart_button_color' in data:
+            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
+        if 'homepage_products2_add_to_cart_button_text_color' in data:
+            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
         
         db.session.commit()
         

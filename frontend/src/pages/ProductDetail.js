@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 
@@ -17,11 +17,70 @@ const ProductDetail = () => {
   const [addingToCart, setAddingToCart] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+  const [siteSettings, setSiteSettings] = useState({
+    product_detail_show_thumbnails: true,
+    product_detail_show_category_badge: true,
+    product_detail_show_featured_badge: true,
+    product_detail_show_stock_info: true,
+    product_detail_show_variations: true,
+    product_detail_show_description: true,
+    product_detail_show_details_section: true,
+    product_detail_show_video: true,
+    product_detail_show_buy_now_button: true,
+    product_detail_show_continue_shopping_button: true,
+    product_detail_show_quantity_selector: true,
+    product_detail_show_image_lightbox: true,
+    product_detail_add_to_cart_button_color: '#007bff',
+    product_detail_add_to_cart_button_text_color: '#ffffff',
+    product_detail_buy_now_button_color: '#28a745',
+    product_detail_buy_now_button_text_color: '#ffffff',
+    product_detail_continue_shopping_button_color: '#007bff',
+    product_detail_continue_shopping_button_text_color: '#007bff',
+    product_detail_product_name_color: '#333333',
+    product_detail_product_price_color: '#007bff',
+    product_detail_product_description_color: '#333333',
+    product_detail_product_details_label_color: '#666666',
+    product_detail_product_details_value_color: '#333333',
+    // Font Settings
+    product_detail_product_name_font_family: 'Arial, sans-serif',
+    product_detail_product_name_font_size: 28,
+    product_detail_product_name_font_weight: 'bold',
+    product_detail_product_name_font_style: 'normal',
+    product_detail_product_price_font_family: 'Arial, sans-serif',
+    product_detail_product_price_font_size: 24,
+    product_detail_product_price_font_weight: 'bold',
+    product_detail_product_price_font_style: 'normal',
+    product_detail_product_description_font_family: 'Arial, sans-serif',
+    product_detail_product_description_font_size: 16,
+    product_detail_product_description_font_weight: 'normal',
+    product_detail_product_description_font_style: 'normal',
+    product_detail_product_details_label_font_family: 'Arial, sans-serif',
+    product_detail_product_details_label_font_size: 14,
+    product_detail_product_details_label_font_weight: 'bold',
+    product_detail_product_details_label_font_style: 'normal',
+    product_detail_product_details_value_font_family: 'Arial, sans-serif',
+    product_detail_product_details_value_font_size: 14,
+    product_detail_product_details_value_font_weight: 'normal',
+    product_detail_product_details_value_font_style: 'normal'
+  });
 
   useEffect(() => {
     fetchProduct();
+    fetchSiteSettings();
     window.scrollTo(0, 0);
   }, [slug]);
+
+  const fetchSiteSettings = async () => {
+    try {
+      const response = await fetch('http://localhost:5005/api/site-settings');
+      const data = await response.json();
+      if (response.ok) {
+        setSiteSettings(prev => ({ ...prev, ...data }));
+      }
+    } catch (err) {
+      console.error('Error fetching site settings:', err);
+    }
+  };
 
   const fetchProduct = async () => {
     try {
@@ -94,6 +153,7 @@ const ProductDetail = () => {
   };
 
   const openLightbox = (imageIndex) => {
+    if (!siteSettings.product_detail_show_image_lightbox) return;
     setLightboxImageIndex(imageIndex);
     setLightboxOpen(true);
   };
@@ -178,7 +238,7 @@ const ProductDetail = () => {
         <div className="product-detail-content">
           {/* Product Images */}
           <div className="product-images">
-            <div className="main-image" onClick={() => images.length > 0 && openLightbox(selectedImage)}>
+            <div className="main-image" onClick={() => images.length > 0 && siteSettings.product_detail_show_image_lightbox && openLightbox(selectedImage)}>
               {images.length > 0 ? (
                 <img 
                   src={images[selectedImage]} 
@@ -186,8 +246,8 @@ const ProductDetail = () => {
                   onError={(e) => {
                     e.target.src = '/images/placeholder.jpg';
                   }}
-                  style={{ cursor: 'pointer' }}
-                  title="Click for large image"
+                  style={{ cursor: siteSettings.product_detail_show_image_lightbox ? 'pointer' : 'default' }}
+                  title={siteSettings.product_detail_show_image_lightbox ? "Click for large image" : ""}
                 />
               ) : (
                 <div className="no-image">
@@ -197,7 +257,7 @@ const ProductDetail = () => {
               )}
             </div>
             
-            {images.length > 1 && (
+            {images.length > 1 && siteSettings.product_detail_show_thumbnails && (
               <div className="image-thumbnails">
                 {images.map((image, index) => (
                   <img
@@ -206,12 +266,12 @@ const ProductDetail = () => {
                     alt={`${product.name} ${index + 1}`}
                     className={selectedImage === index ? 'active' : ''}
                     onClick={() => setSelectedImage(index)}
-                    onDoubleClick={() => openLightbox(index)}
+                    onDoubleClick={() => siteSettings.product_detail_show_image_lightbox && openLightbox(index)}
                     onError={(e) => {
                       e.target.src = '/images/placeholder.jpg';
                     }}
                     style={{ cursor: 'pointer' }}
-                    title="Double click for large image"
+                    title={siteSettings.product_detail_show_image_lightbox ? "Double click for large image" : ""}
                   />
                 ))}
               </div>
@@ -221,57 +281,73 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="product-info">
             <div className="product-header">
-              <h1>{product.name}</h1>
+              <h1 style={{ 
+                color: siteSettings.product_detail_product_name_color,
+                fontFamily: siteSettings.product_detail_product_name_font_family,
+                fontSize: `${siteSettings.product_detail_product_name_font_size}px`,
+                fontWeight: siteSettings.product_detail_product_name_font_weight,
+                fontStyle: siteSettings.product_detail_product_name_font_style
+              }}>{product.name}</h1>
               <div className="product-meta">
-                <span className="category">{product.category}</span>
-                {product.is_featured && (
+                {siteSettings.product_detail_show_category_badge && (
+                  <span className="category">{product.category}</span>
+                )}
+                {siteSettings.product_detail_show_featured_badge && product.is_featured && (
                   <span className="featured-badge">Öne Çıkan</span>
                 )}
               </div>
             </div>
 
             <div className="product-price">
-              <span className="current-price">${currentPrice.toFixed(2)}</span>
+              <span className="current-price" style={{ 
+                color: siteSettings.product_detail_product_price_color,
+                fontFamily: siteSettings.product_detail_product_price_font_family,
+                fontSize: `${siteSettings.product_detail_product_price_font_size}px`,
+                fontWeight: siteSettings.product_detail_product_price_font_weight,
+                fontStyle: siteSettings.product_detail_product_price_font_style
+              }}>${currentPrice.toFixed(2)}</span>
               {product.original_price && product.original_price > currentPrice && (
                 <span className="original-price">${product.original_price.toFixed(2)}</span>
               )}
             </div>
 
-            <div className="product-stock">
-              {currentStock > 0 ? (
-                <span className="in-stock">
-                                          ✅ In stock ({currentStock} units)
-                </span>
-              ) : (
-                                  <span className="out-of-stock">❌ Out of stock</span>
-              )}
-            </div>
+            {siteSettings.product_detail_show_stock_info && (
+              <div className="product-stock">
+                {currentStock > 0 ? (
+                  <span className="in-stock">
+                    ✅ In stock ({currentStock} units)
+                  </span>
+                ) : (
+                  <span className="out-of-stock">❌ Out of stock</span>
+                )}
+              </div>
+            )}
 
             {/* Variations */}
-            {product.has_variations && product.variation_options && product.variation_options.length > 0 && (
+            {siteSettings.product_detail_show_variations && product.has_variations && product.variation_options && product.variation_options.length > 0 && (
               <div className="product-variations">
                 <h3>
                   {product.variation_type === 'custom' ? product.variation_name : 
-                                        product.variation_type === 'color' ? 'Color' :
-                                       product.variation_type === 'size' ? 'Size' :
-                                        product.variation_type === 'weight' ? 'Weight' : 'Options'}
+                   product.variation_type === 'color' ? 'Color' :
+                   product.variation_type === 'size' ? 'Size' :
+                   product.variation_type === 'weight' ? 'Weight' : 'Options'}
                 </h3>
                 <div className="variation-options">
                   {product.variation_options.map((option, index) => (
-                                         <button
-                       key={index}
-                       className={`variation-option ${selectedVariation === option ? 'selected' : ''}`}
-                       onClick={() => setSelectedVariation(option)}
-                       disabled={option.stock === 0}
-                     >
-                       <span className="option-name">{option.name}</span>
-                       <span className="option-price">
-                         ${(product.price + (option.price_modifier || 0)).toFixed(2)}
-                       </span>
-                       {option.stock === 0 && (
-                         <span className="out-of-stock-badge">Out of stock</span>
-                       )}
-                     </button>
+                    <button
+                      key={index}
+                      className={`variation-option ${selectedVariation === option ? 'selected' : ''}`}
+                      onClick={() => setSelectedVariation(option)}
+                      disabled={option.stock === 0}
+                    >
+                      <span className="option-name">{option.name}</span>
+                      <span className="option-price">
+                        ${(product.price + (option.price_modifier || 0)).toFixed(2)}
+                      </span>
+                      {option.stock === 0 && (
+                        <span className="out-of-stock-badge">Out of stock</span>
+                      )}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -279,92 +355,204 @@ const ProductDetail = () => {
 
             {/* Quantity and Add to Cart */}
             <div className="purchase-section">
-              <div className="quantity-selector">
-                <label>Miktar:</label>
-                <div className="quantity-controls">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <span className="quantity">{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity(Math.min(currentStock, quantity + 1))}
-                    disabled={quantity >= currentStock}
-                  >
-                    +
-                  </button>
+              {siteSettings.product_detail_show_quantity_selector && (
+                <div className="quantity-selector">
+                  <label>Miktar:</label>
+                  <div className="quantity-controls">
+                    <button 
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <span className="quantity">{quantity}</span>
+                    <button 
+                      onClick={() => setQuantity(Math.min(currentStock, quantity + 1))}
+                      disabled={quantity >= currentStock}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="purchase-buttons">
                 <button 
                   className="btn btn-primary add-to-cart"
                   onClick={handleAddToCart}
                   disabled={currentStock === 0 || addingToCart}
+                  style={{
+                    backgroundColor: siteSettings.product_detail_add_to_cart_button_color,
+                    color: siteSettings.product_detail_add_to_cart_button_text_color,
+                    borderColor: siteSettings.product_detail_add_to_cart_button_color
+                  }}
                 >
-                                      {addingToCart ? 'Adding...' : '🛒 Add to Cart'}
+                  {addingToCart ? 'Adding...' : '🛒 Add to Cart'}
                 </button>
-                <button 
-                  className="btn btn-secondary buy-now"
-                  disabled={currentStock === 0}
-                >
-                  💳 Buy Now
-                </button>
+                {siteSettings.product_detail_show_buy_now_button && (
+                  <button 
+                    className="btn btn-secondary buy-now"
+                    disabled={currentStock === 0}
+                    style={{
+                      backgroundColor: siteSettings.product_detail_buy_now_button_color,
+                      color: siteSettings.product_detail_buy_now_button_text_color,
+                      borderColor: siteSettings.product_detail_buy_now_button_color
+                    }}
+                  >
+                    💳 Buy Now
+                  </button>
+                )}
               </div>
+              
+              {/* Continue Shopping Button */}
+              {siteSettings.product_detail_show_continue_shopping_button && (
+                <div className="continue-shopping">
+                  <Link 
+                    to="/products" 
+                    className="btn btn-outline continue-shopping-btn"
+                    style={{
+                      borderColor: siteSettings.product_detail_continue_shopping_button_color,
+                      color: siteSettings.product_detail_continue_shopping_button_text_color
+                    }}
+                  >
+                    ← Continue Shopping
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Product Description */}
-            <div className="product-description">
-                              <h3>Product Description</h3>
-              <p>{product.description}</p>
-            </div>
+            {siteSettings.product_detail_show_description && (
+              <div className="product-description">
+                <h3>Product Description</h3>
+                <p style={{ 
+                  color: siteSettings.product_detail_product_description_color,
+                  fontFamily: siteSettings.product_detail_product_description_font_family,
+                  fontSize: `${siteSettings.product_detail_product_description_font_size}px`,
+                  fontWeight: siteSettings.product_detail_product_description_font_weight,
+                  fontStyle: siteSettings.product_detail_product_description_font_style
+                }}>{product.description}</p>
+              </div>
+            )}
 
             {/* Product Details */}
-            <div className="product-details">
-                              <h3>Product Details</h3>
-              <div className="details-grid">
-                <div className="detail-item">
-                                      <span className="label">Category:</span>
-                  <span className="value">{product.category}</span>
-                </div>
-                <div className="detail-item">
-                                        <span className="label">Stock Code:</span>
-                  <span className="value">{product.id}</span>
-                </div>
-                {product.weight && (
+            {siteSettings.product_detail_show_details_section && (
+              <div className="product-details">
+                <h3>Product Details</h3>
+                <div className="details-grid">
                   <div className="detail-item">
-                                          <span className="label">Weight:</span>
-                    <span className="value">{product.weight}</span>
+                    <span className="label" style={{ 
+                      color: siteSettings.product_detail_product_details_label_color,
+                      fontFamily: siteSettings.product_detail_product_details_label_font_family,
+                      fontSize: `${siteSettings.product_detail_product_details_label_font_size}px`,
+                      fontWeight: siteSettings.product_detail_product_details_label_font_weight,
+                      fontStyle: siteSettings.product_detail_product_details_label_font_style
+                    }}>Category:</span>
+                    <span className="value" style={{ 
+                      color: siteSettings.product_detail_product_details_value_color,
+                      fontFamily: siteSettings.product_detail_product_details_value_font_family,
+                      fontSize: `${siteSettings.product_detail_product_details_value_font_size}px`,
+                      fontWeight: siteSettings.product_detail_product_details_value_font_weight,
+                      fontStyle: siteSettings.product_detail_product_details_value_font_style
+                    }}>{product.category}</span>
                   </div>
-                )}
-                {product.dimensions && (
                   <div className="detail-item">
-                                          <span className="label">Sizes:</span>
-                    <span className="value">{product.dimensions}</span>
+                    <span className="label" style={{ 
+                      color: siteSettings.product_detail_product_details_label_color,
+                      fontFamily: siteSettings.product_detail_product_details_label_font_family,
+                      fontSize: `${siteSettings.product_detail_product_details_label_font_size}px`,
+                      fontWeight: siteSettings.product_detail_product_details_label_font_weight,
+                      fontStyle: siteSettings.product_detail_product_details_label_font_style
+                    }}>Stock Code:</span>
+                    <span className="value" style={{ 
+                      color: siteSettings.product_detail_product_details_value_color,
+                      fontFamily: siteSettings.product_detail_product_details_value_font_family,
+                      fontSize: `${siteSettings.product_detail_product_details_value_font_size}px`,
+                      fontWeight: siteSettings.product_detail_product_details_value_font_weight,
+                      fontStyle: siteSettings.product_detail_product_details_value_font_style
+                    }}>{product.id}</span>
                   </div>
-                )}
-                {product.material && (
+                  {product.weight && (
+                    <div className="detail-item">
+                      <span className="label" style={{ 
+                        color: siteSettings.product_detail_product_details_label_color,
+                        fontFamily: siteSettings.product_detail_product_details_label_font_family,
+                        fontSize: `${siteSettings.product_detail_product_details_label_font_size}px`,
+                        fontWeight: siteSettings.product_detail_product_details_label_font_weight,
+                        fontStyle: siteSettings.product_detail_product_details_label_font_style
+                      }}>Weight:</span>
+                      <span className="value" style={{ 
+                        color: siteSettings.product_detail_product_details_value_color,
+                        fontFamily: siteSettings.product_detail_product_details_value_font_family,
+                        fontSize: `${siteSettings.product_detail_product_details_value_font_size}px`,
+                        fontWeight: siteSettings.product_detail_product_details_value_font_weight,
+                        fontStyle: siteSettings.product_detail_product_details_value_font_style
+                      }}>{product.weight}</span>
+                    </div>
+                  )}
+                  {product.dimensions && (
+                    <div className="detail-item">
+                      <span className="label" style={{ 
+                        color: siteSettings.product_detail_product_details_label_color,
+                        fontFamily: siteSettings.product_detail_product_details_label_font_family,
+                        fontSize: `${siteSettings.product_detail_product_details_label_font_size}px`,
+                        fontWeight: siteSettings.product_detail_product_details_label_font_weight,
+                        fontStyle: siteSettings.product_detail_product_details_label_font_style
+                      }}>Sizes:</span>
+                      <span className="value" style={{ 
+                        color: siteSettings.product_detail_product_details_value_color,
+                        fontFamily: siteSettings.product_detail_product_details_value_font_family,
+                        fontSize: `${siteSettings.product_detail_product_details_value_font_size}px`,
+                        fontWeight: siteSettings.product_detail_product_details_value_font_weight,
+                        fontStyle: siteSettings.product_detail_product_details_value_font_style
+                      }}>{product.dimensions}</span>
+                    </div>
+                  )}
+                  {product.material && (
+                    <div className="detail-item">
+                      <span className="label" style={{ 
+                        color: siteSettings.product_detail_product_details_label_color,
+                        fontFamily: siteSettings.product_detail_product_details_label_font_family,
+                        fontSize: `${siteSettings.product_detail_product_details_label_font_size}px`,
+                        fontWeight: siteSettings.product_detail_product_details_label_font_weight,
+                        fontStyle: siteSettings.product_detail_product_details_label_font_style
+                      }}>Material:</span>
+                      <span className="value" style={{ 
+                        color: siteSettings.product_detail_product_details_value_color,
+                        fontFamily: siteSettings.product_detail_product_details_value_font_family,
+                        fontSize: `${siteSettings.product_detail_product_details_value_font_size}px`,
+                        fontWeight: siteSettings.product_detail_product_details_value_font_weight,
+                        fontStyle: siteSettings.product_detail_product_details_value_font_style
+                      }}>{product.material}</span>
+                    </div>
+                  )}
                   <div className="detail-item">
-                    <span className="label">Material:</span>
-                    <span className="value">{product.material}</span>
+                    <span className="label" style={{ 
+                      color: siteSettings.product_detail_product_details_label_color,
+                      fontFamily: siteSettings.product_detail_product_details_label_font_family,
+                      fontSize: `${siteSettings.product_detail_product_details_label_font_size}px`,
+                      fontWeight: siteSettings.product_detail_product_details_label_font_weight,
+                      fontStyle: siteSettings.product_detail_product_details_label_font_style
+                    }}>Status:</span>
+                    <span className="value" style={{ 
+                      color: siteSettings.product_detail_product_details_value_color,
+                      fontFamily: siteSettings.product_detail_product_details_value_font_family,
+                      fontSize: `${siteSettings.product_detail_product_details_value_font_size}px`,
+                      fontWeight: siteSettings.product_detail_product_details_value_font_weight,
+                      fontStyle: siteSettings.product_detail_product_details_value_font_style
+                    }}>{product.is_active ? 'Active' : 'Inactive'}</span>
                   </div>
-                )}
-                <div className="detail-item">
-                                      <span className="label">Status:</span>
-                                      <span className="value">{product.is_active ? 'Active' : 'Inactive'}</span>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Video if available */}
-            {product.video_url && (
+            {siteSettings.product_detail_show_video && product.video_url && (
               <div className="product-video">
                 <h3>Product Video</h3>
                 <video controls width="100%">
                   <source src={product.video_url} type="video/mp4" />
-                                      Your browser does not support video playback.
+                  Your browser does not support video playback.
                 </video>
               </div>
             )}
@@ -373,7 +561,7 @@ const ProductDetail = () => {
       </div>
 
       {/* Image Lightbox Modal */}
-      {lightboxOpen && (
+      {siteSettings.product_detail_show_image_lightbox && lightboxOpen && (
         <div className="lightbox-overlay" onClick={closeLightbox}>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <button className="lightbox-close" onClick={closeLightbox}>
@@ -688,6 +876,30 @@ const ProductDetail = () => {
           cursor: not-allowed;
         }
 
+        .continue-shopping {
+          margin-top: 1.5rem;
+          text-align: center;
+        }
+
+        .btn-outline {
+          background: transparent;
+          color: #007bff;
+          border: 2px solid #007bff;
+          padding: 0.75rem 2rem;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 500;
+          display: inline-block;
+          transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+          background: #007bff;
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
         .product-description, .product-details {
           margin: 2rem 0;
         }
@@ -761,8 +973,8 @@ const ProductDetail = () => {
 
         .lightbox-content {
           position: relative;
-          max-width: 90vw;
-          max-height: 90vh;
+          max-width: 95vw;
+          max-height: 95vh;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -830,10 +1042,14 @@ const ProductDetail = () => {
         }
 
         .lightbox-image {
-          max-width: 80vw;
-          max-height: 70vh;
+          max-width: 90vw;
+          max-height: 85vh;
+          min-width: 600px;
+          min-height: 600px;
           object-fit: contain;
           display: block;
+          width: auto;
+          height: auto;
         }
 
         .lightbox-info {
@@ -863,7 +1079,7 @@ const ProductDetail = () => {
           padding: 10px;
           background: rgba(255, 255, 255, 0.9);
           border-radius: 8px;
-          max-width: 80vw;
+          max-width: 90vw;
           overflow-x: auto;
         }
 
@@ -906,6 +1122,15 @@ const ProductDetail = () => {
             flex-direction: column;
           }
 
+          .continue-shopping {
+            margin-top: 1rem;
+          }
+
+          .btn-outline {
+            padding: 0.625rem 1.5rem;
+            font-size: 0.9rem;
+          }
+
           .variation-options {
             justify-content: center;
           }
@@ -925,7 +1150,9 @@ const ProductDetail = () => {
 
           .lightbox-image {
             max-width: 95vw;
-            max-height: 60vh;
+            max-height: 80vh;
+            min-width: 400px;
+            min-height: 400px;
           }
 
           .lightbox-thumbnails {

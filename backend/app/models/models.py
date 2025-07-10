@@ -351,6 +351,7 @@ class SiteSettings(db.Model):
     homepage_products_show_badges = db.Column(db.Boolean, default=True)
     homepage_products_show_rating = db.Column(db.Boolean, default=False)
     homepage_products_show_quick_view = db.Column(db.Boolean, default=False)
+    homepage_products_enable_image_preview = db.Column(db.Boolean, default=True)
     
     # Homepage Products 2 Settings
     homepage_products2_show_section = db.Column(db.Boolean, default=True)
@@ -380,6 +381,7 @@ class SiteSettings(db.Model):
     homepage_products2_show_badges = db.Column(db.Boolean, default=True)
     homepage_products2_show_rating = db.Column(db.Boolean, default=False)
     homepage_products2_show_quick_view = db.Column(db.Boolean, default=False)
+    homepage_products2_enable_image_preview = db.Column(db.Boolean, default=True)
     
     # Products Page Settings
     products_page_background_color = db.Column(db.String(7), default='#ffffff')  # Products sayfa arka plan rengi
@@ -406,6 +408,191 @@ class SiteSettings(db.Model):
     products_page_enable_pagination = db.Column(db.Boolean, default=True)
     products_page_enable_filters = db.Column(db.Boolean, default=True)
     products_page_enable_search = db.Column(db.Boolean, default=True)
+    products_page_enable_image_preview = db.Column(db.Boolean, default=True)
+    
+    # Product Detail Page Settings
+    product_detail_show_thumbnails = db.Column(db.Boolean, default=True)
+    product_detail_show_category_badge = db.Column(db.Boolean, default=True)
+    product_detail_show_featured_badge = db.Column(db.Boolean, default=True)
+    product_detail_show_stock_info = db.Column(db.Boolean, default=True)
+    product_detail_show_variations = db.Column(db.Boolean, default=True)
+    product_detail_show_description = db.Column(db.Boolean, default=True)
+    product_detail_show_details_section = db.Column(db.Boolean, default=True)
+    product_detail_show_video = db.Column(db.Boolean, default=True)
+    product_detail_show_buy_now_button = db.Column(db.Boolean, default=True)
+    product_detail_show_continue_shopping_button = db.Column(db.Boolean, default=True)
+    product_detail_show_quantity_selector = db.Column(db.Boolean, default=True)
+    product_detail_show_image_lightbox = db.Column(db.Boolean, default=True)
+    
+    # Product Detail Button Colors
+    product_detail_add_to_cart_button_color = db.Column(db.String(7), default='#007bff')
+    product_detail_add_to_cart_button_text_color = db.Column(db.String(7), default='#ffffff')
+    product_detail_buy_now_button_color = db.Column(db.String(7), default='#28a745')
+    product_detail_buy_now_button_text_color = db.Column(db.String(7), default='#ffffff')
+    product_detail_continue_shopping_button_color = db.Column(db.String(7), default='#007bff')
+    product_detail_continue_shopping_button_text_color = db.Column(db.String(7), default='#007bff')
+    
+    # Product Detail Text Colors
+    product_detail_product_name_color = db.Column(db.String(7), default='#333333')
+    product_detail_product_price_color = db.Column(db.String(7), default='#007bff')
+    product_detail_product_description_color = db.Column(db.String(7), default='#333333')
+    product_detail_product_details_label_color = db.Column(db.String(7), default='#666666')
+    product_detail_product_details_value_color = db.Column(db.String(50), default='#333333')
+    
+    # Product Detail Page Font Settings
+    product_detail_product_name_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    product_detail_product_name_font_size = db.Column(db.Integer, default=28)
+    product_detail_product_name_font_weight = db.Column(db.String(20), default='bold')
+    product_detail_product_name_font_style = db.Column(db.String(20), default='normal')
+    
+    product_detail_product_price_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    product_detail_product_price_font_size = db.Column(db.Integer, default=24)
+    product_detail_product_price_font_weight = db.Column(db.String(20), default='bold')
+    product_detail_product_price_font_style = db.Column(db.String(20), default='normal')
+    
+    product_detail_product_description_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    product_detail_product_description_font_size = db.Column(db.Integer, default=16)
+    product_detail_product_description_font_weight = db.Column(db.String(20), default='normal')
+    product_detail_product_description_font_style = db.Column(db.String(20), default='normal')
+    
+    product_detail_product_details_label_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    product_detail_product_details_label_font_size = db.Column(db.Integer, default=14)
+    product_detail_product_details_label_font_weight = db.Column(db.String(20), default='bold')
+    product_detail_product_details_label_font_style = db.Column(db.String(20), default='normal')
+    
+    product_detail_product_details_value_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    product_detail_product_details_value_font_size = db.Column(db.Integer, default=14)
+    product_detail_product_details_value_font_weight = db.Column(db.String(20), default='normal')
+    product_detail_product_details_value_font_style = db.Column(db.String(20), default='normal')
+    
+    # Products Page Font & Color Settings
+    products_page_product_name_color = db.Column(db.String(7), default='#333333')
+    products_page_product_name_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_product_name_font_size = db.Column(db.Integer, default=18)
+    products_page_product_name_font_weight = db.Column(db.String(20), default='bold')
+    products_page_product_name_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_title_color = db.Column(db.String(7), default='#333333')
+    products_page_title_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_title_font_size = db.Column(db.Integer, default=32)
+    products_page_title_font_weight = db.Column(db.String(20), default='bold')
+    products_page_title_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_subtitle_color = db.Column(db.String(7), default='#666666')
+    products_page_subtitle_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_subtitle_font_size = db.Column(db.Integer, default=16)
+    products_page_subtitle_font_weight = db.Column(db.String(20), default='normal')
+    products_page_subtitle_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_product_price_color = db.Column(db.String(7), default='#007bff')
+    products_page_product_price_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_product_price_font_size = db.Column(db.Integer, default=16)
+    products_page_product_price_font_weight = db.Column(db.String(20), default='bold')
+    products_page_product_price_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_product_category_color = db.Column(db.String(7), default='#666666')
+    products_page_product_category_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_product_category_font_size = db.Column(db.Integer, default=14)
+    products_page_product_category_font_weight = db.Column(db.String(20), default='normal')
+    products_page_product_category_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_stock_info_color = db.Column(db.String(7), default='#28a745')
+    products_page_stock_info_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_stock_info_font_size = db.Column(db.Integer, default=12)
+    products_page_stock_info_font_weight = db.Column(db.String(20), default='normal')
+    products_page_stock_info_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_view_details_button_color = db.Column(db.String(7), default='#007bff')
+    products_page_view_details_button_text_color = db.Column(db.String(7), default='#ffffff')
+    products_page_view_details_button_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_view_details_button_font_size = db.Column(db.Integer, default=14)
+    products_page_view_details_button_font_weight = db.Column(db.String(20), default='normal')
+    products_page_view_details_button_font_style = db.Column(db.String(20), default='normal')
+    
+    products_page_add_to_cart_button_color = db.Column(db.String(7), default='#28a745')
+    products_page_add_to_cart_button_text_color = db.Column(db.String(7), default='#ffffff')
+    products_page_add_to_cart_button_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    products_page_add_to_cart_button_font_size = db.Column(db.Integer, default=14)
+    products_page_add_to_cart_button_font_weight = db.Column(db.String(20), default='normal')
+    products_page_add_to_cart_button_font_style = db.Column(db.String(20), default='normal')
+    
+    # Homepage Products 1 Font & Color Settings
+    homepage_products_product_name_color = db.Column(db.String(7), default='#333333')
+    homepage_products_product_name_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products_product_name_font_size = db.Column(db.Integer, default=18)
+    homepage_products_product_name_font_weight = db.Column(db.String(20), default='bold')
+    homepage_products_product_name_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products_product_price_color = db.Column(db.String(7), default='#007bff')
+    homepage_products_product_price_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products_product_price_font_size = db.Column(db.Integer, default=16)
+    homepage_products_product_price_font_weight = db.Column(db.String(20), default='bold')
+    homepage_products_product_price_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products_product_category_color = db.Column(db.String(7), default='#666666')
+    homepage_products_product_category_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products_product_category_font_size = db.Column(db.Integer, default=14)
+    homepage_products_product_category_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products_product_category_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products_stock_info_color = db.Column(db.String(7), default='#28a745')
+    homepage_products_stock_info_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products_stock_info_font_size = db.Column(db.Integer, default=12)
+    homepage_products_stock_info_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products_stock_info_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products_view_details_button_color = db.Column(db.String(7), default='#007bff')
+    homepage_products_view_details_button_text_color = db.Column(db.String(7), default='#ffffff')
+    homepage_products_view_details_button_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products_view_details_button_font_size = db.Column(db.Integer, default=14)
+    homepage_products_view_details_button_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products_view_details_button_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products_add_to_cart_button_color = db.Column(db.String(7), default='#28a745')
+    homepage_products_add_to_cart_button_text_color = db.Column(db.String(7), default='#ffffff')
+    homepage_products_add_to_cart_button_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products_add_to_cart_button_font_size = db.Column(db.Integer, default=14)
+    homepage_products_add_to_cart_button_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products_add_to_cart_button_font_style = db.Column(db.String(20), default='normal')
+    
+    # Homepage Products 2 Font & Color Settings
+    homepage_products2_product_name_color = db.Column(db.String(7), default='#333333')
+    homepage_products2_product_name_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products2_product_name_font_size = db.Column(db.Integer, default=18)
+    homepage_products2_product_name_font_weight = db.Column(db.String(20), default='bold')
+    homepage_products2_product_name_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products2_product_price_color = db.Column(db.String(7), default='#007bff')
+    homepage_products2_product_price_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products2_product_price_font_size = db.Column(db.Integer, default=16)
+    homepage_products2_product_price_font_weight = db.Column(db.String(20), default='bold')
+    homepage_products2_product_price_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products2_product_category_color = db.Column(db.String(7), default='#666666')
+    homepage_products2_product_category_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products2_product_category_font_size = db.Column(db.Integer, default=14)
+    homepage_products2_product_category_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products2_product_category_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products2_stock_info_color = db.Column(db.String(7), default='#28a745')
+    homepage_products2_stock_info_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products2_stock_info_font_size = db.Column(db.Integer, default=12)
+    homepage_products2_stock_info_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products2_stock_info_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products2_view_details_button_color = db.Column(db.String(7), default='#007bff')
+    homepage_products2_view_details_button_text_color = db.Column(db.String(7), default='#ffffff')
+    homepage_products2_view_details_button_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products2_view_details_button_font_size = db.Column(db.Integer, default=14)
+    homepage_products2_view_details_button_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products2_view_details_button_font_style = db.Column(db.String(20), default='normal')
+    
+    homepage_products2_add_to_cart_button_color = db.Column(db.String(7), default='#28a745')
+    homepage_products2_add_to_cart_button_text_color = db.Column(db.String(7), default='#ffffff')
+    homepage_products2_add_to_cart_button_font_family = db.Column(db.String(100), default='Arial, sans-serif')
+    homepage_products2_add_to_cart_button_font_size = db.Column(db.Integer, default=14)
+    homepage_products2_add_to_cart_button_font_weight = db.Column(db.String(20), default='normal')
+    homepage_products2_add_to_cart_button_font_style = db.Column(db.String(20), default='normal')
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

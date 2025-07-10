@@ -265,7 +265,8 @@
   }
 
   .product-card.with-hover:hover .product-image img {
-    transform: scale(1.05);
+    transform: scale(1.15);
+    filter: brightness(1.1);
   }
 
   .product-badges {
