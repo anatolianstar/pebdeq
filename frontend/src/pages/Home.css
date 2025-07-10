@@ -206,11 +206,13 @@
 
   .products-grid {
     display: grid;
-    gap: 1rem;
-    max-width: 1200px;
+    gap: 1.5rem;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 1rem;
     justify-content: center;
+    /* Dynamic grid based on admin settings */
+    grid-template-columns: repeat(var(--products-per-row, 4), 1fr);
   }
 
   .product-card {
@@ -219,6 +221,9 @@
     overflow: hidden;
     transition: all 0.3s ease;
     position: relative;
+    /* Ensure consistent card heights */
+    display: flex;
+    flex-direction: column;
   }
 
   .product-card.with-shadow {
@@ -233,12 +238,30 @@
   .product-image {
     position: relative;
     overflow: hidden;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1; /* Force square aspect ratio */
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 12px; /* Equal padding on all sides */
   }
 
   .product-image img {
     width: 100%;
-    height: auto;
-    transition: transform 0.3s ease;
+    height: 100%;
+    transition: transform 0.3s ease !important;
+    object-fit: cover !important; /* Keep cover for square filling */
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Force specific sizing for product images */
+  .product-card .product-image img,
+  .homepage-products-section .product-image img,
+  .homepage-products2-section .product-image img {
+    flex-shrink: 0 !important;
   }
 
   .product-card.with-hover:hover .product-image img {
@@ -291,6 +314,21 @@
   .favorite-btn:hover {
     background: #ff6b6b;
     transform: scale(1.1);
+  }
+
+  .product-info-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .product-info-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .product-info-link:visited {
+    color: inherit;
   }
 
       .product-info {
@@ -418,13 +456,44 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
-  /* Responsive Design */
-  @media (max-width: 768px) {
+  /* Large tablet - 5 columns */
+  @media (max-width: 1400px) {
     .products-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
+      grid-template-columns: repeat(var(--products-per-row-tablet, 4), 1fr);
+    }
+  }
+
+  /* Medium tablet - Dynamic columns */
+  @media (max-width: 1200px) {
+    .products-grid {
+      grid-template-columns: repeat(var(--products-per-row-tablet, 4), 1fr);
+    }
+  }
+
+  /* Small tablet - Dynamic columns */
+  @media (max-width: 900px) {
+    .products-grid {
+      grid-template-columns: repeat(var(--products-per-row-mobile, 3), 1fr);
+    }
+  }
+
+  /* Large mobile - Dynamic columns */
+  @media (max-width: 700px) {
+    .products-grid {
+      grid-template-columns: repeat(var(--products-per-row-small, 2), 1fr);
+    }
+  }
+
+  /* Mobile - Always 1 column */
+  @media (max-width: 480px) {
+    .products-grid {
+      grid-template-columns: 1fr;
       gap: 1rem;
     }
-    
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
     .product-info {
       padding: 0.75rem;
     }
@@ -441,20 +510,150 @@
       width: 100%;
     }
   }
+  
+  /* Responsive card content based on grid size */
 
-  @media (max-width: 480px) {
-    .products-grid {
-      grid-template-columns: 1fr !important;
+  /* Desktop - 6 columns (en küçük kartlar) */
+  .products-grid .product-card .product-name {
+    font-size: 0.95rem;
+  }
+
+  .products-grid .product-card .current-price {
+    font-size: 1.1rem;
+  }
+
+  .products-grid .product-card .product-info {
+    padding: 0.8rem;
+  }
+
+  /* Large tablet - 5 columns */
+  @media (max-width: 1400px) {
+    .products-grid .product-card .product-name {
+      font-size: 1rem;
+    }
+    
+    .products-grid .product-card .current-price {
+      font-size: 1.15rem;
+    }
+    
+    .products-grid .product-card .product-info {
+      padding: 0.9rem;
     }
   }
 
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .products-grid[style*="repeat(4"] {
-      grid-template-columns: repeat(3, 1fr) !important;
+  /* Medium tablet - 4 columns */
+  @media (max-width: 1200px) {
+    .products-grid .product-card .product-name {
+      font-size: 1.05rem;
     }
     
-    .products-grid[style*="repeat(6"] {
-      grid-template-columns: repeat(4, 1fr) !important;
+    .products-grid .product-card .current-price {
+      font-size: 1.2rem;
+    }
+    
+    .products-grid .product-card .product-info {
+      padding: 1rem;
+    }
+  }
+
+  /* Small tablet - 3 columns (büyük kartlar) */
+  @media (max-width: 900px) {
+    .products-grid .product-card .product-name {
+      font-size: 1.1rem;
+    }
+    
+    .products-grid .product-card .current-price {
+      font-size: 1.25rem;
+    }
+    
+    .products-grid .product-card .product-info {
+      padding: 1.1rem;
+    }
+  }
+
+  /* Large mobile - 2 columns (en büyük kartlar) */
+  @media (max-width: 700px) {
+    .products-grid .product-card .product-name {
+      font-size: 1.15rem;
+    }
+    
+    .products-grid .product-card .current-price {
+      font-size: 1.3rem;
+    }
+    
+    .products-grid .product-card .product-info {
+      padding: 1.2rem;
+    }
+  }
+  
+  /* Dynamic image sizes based on column count */
+  .products-grid .product-card .product-image {
+    height: var(--image-size, 280px);
+  }
+
+  /* Large tablet - Dynamic image size */
+  @media (max-width: 1400px) {
+    .products-grid .product-card .product-image {
+      height: var(--image-size-tablet, 300px);
+    }
+  }
+
+  /* Medium tablet - Dynamic image size */
+  @media (max-width: 1200px) {
+    .products-grid .product-card .product-image {
+      height: var(--image-size-tablet, 320px);
+    }
+  }
+
+  /* Small tablet - Dynamic image size */
+  @media (max-width: 900px) {
+    .products-grid .product-card .product-image {
+      height: var(--image-size-mobile, 350px);
+    }
+  }
+
+  /* Large mobile - Dynamic image size */
+  @media (max-width: 700px) {
+    .products-grid .product-card .product-image {
+      height: var(--image-size-small, 300px);
+    }
+  }
+  
+  /* Desktop - 6 columns (en küçük kartlar) */
+  .products-grid .product-card .product-buttons .btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Large tablet - 5 columns */
+  @media (max-width: 1400px) {
+    .products-grid .product-card .product-buttons .btn {
+      padding: 7px 14px;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Medium tablet - 4 columns */
+  @media (max-width: 1200px) {
+    .products-grid .product-card .product-buttons .btn {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Small tablet - 3 columns (büyük kartlar) */
+  @media (max-width: 900px) {
+    .products-grid .product-card .product-buttons .btn {
+      padding: 9px 18px;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Large mobile - 2 columns (en büyük kartlar) */
+  @media (max-width: 700px) {
+    .products-grid .product-card .product-buttons .btn {
+      padding: 10px 20px;
+      font-size: 0.95rem;
     }
   }
   

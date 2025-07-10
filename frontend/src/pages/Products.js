@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import '../pages/Home.css'; // Import CSS for card styles
 
 const Products = () => {
@@ -13,8 +13,6 @@ const Products = () => {
     products_page_per_row: 4,
     products_page_max_items_per_page: 12,
     products_page_show_images: true,
-    products_page_image_height: 200,
-    products_page_image_width: 300,
     products_page_show_favorite: true,
     products_page_show_buy_now: true,
     products_page_show_details: true,
@@ -66,7 +64,7 @@ const Products = () => {
       if (search) params.append('search', search);
       params.append('page', page);
       params.append('sort', sort);
-      params.append('per_page', siteSettings.products_page_max_items_per_page || 12);
+      params.append('per_page', siteSettings.products_page_max_items_per_page || 18);
       
       url += params.toString();
       
@@ -103,6 +101,7 @@ const Products = () => {
       const response = await fetch('http://localhost:5005/api/site-settings');
       const data = await response.json();
       if (response.ok) {
+        console.log('Products page - Site settings loaded:', data);
         setSiteSettings(data);
       }
     } catch (err) {
@@ -143,34 +142,20 @@ const Products = () => {
     <div className={`product-card ${siteSettings.products_page_card_shadow ? 'with-shadow' : ''} ${siteSettings.products_page_card_hover_effect ? 'with-hover' : ''}`}>
       {/* Product Image */}
       {siteSettings.products_page_show_images && (
-        <div 
-          className="product-image"
-          style={{
-            backgroundColor: '#f8f9fa'
-          }}
-        >
+        <div className="product-image">
           {product.images && product.images.length > 0 ? (
-            <img 
-              src={`http://localhost:5005${product.images[0]}`}
-              alt={product.name}
-              style={{
-                width: `${siteSettings.products_page_image_width}px`,
-                height: `${siteSettings.products_page_image_height}px`,
-                objectFit: 'contain',
-                backgroundColor: 'transparent',
-                padding: '10px'
-              }}
-            />
+            <Link to={`/product/${product.slug}`}>
+              <img 
+                src={`http://localhost:5005${product.images[0]}`}
+                alt={product.name}
+                style={{
+                  cursor: 'pointer',
+                  display: 'block'
+                }}
+              />
+            </Link>
           ) : (
-            <div className="no-image" style={{
-              width: `${siteSettings.products_page_image_width}px`,
-              height: `${siteSettings.products_page_image_height}px`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#f5f5f5',
-              color: '#999'
-            }}>
+            <div className="no-image">
               <span>📦</span>
             </div>
           )}
@@ -188,7 +173,14 @@ const Products = () => {
           
           {/* Favorite Button */}
           {siteSettings.products_page_show_favorite && (
-            <button className="favorite-btn">
+            <button 
+              className="favorite-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // Handle favorite functionality
+              }}
+            >
               ❤️
             </button>
           )}
@@ -197,58 +189,57 @@ const Products = () => {
       
       {/* Product Info */}
       <div className="product-info">
-        {/* Category */}
-        {siteSettings.products_page_show_category && (
-          <div className="product-category">
-            {product.category}
-          </div>
-        )}
-        
-        {/* Product Name */}
-        <h3 className="product-name">{product.name}</h3>
-        
-        {/* Price */}
-        {siteSettings.products_page_show_price && (
-          <div className="product-price">
-            <span className="current-price">₺{product.price}</span>
-            {siteSettings.products_page_show_original_price && product.original_price && product.original_price > product.price && (
-              <span className="original-price">₺{product.original_price}</span>
-            )}
-          </div>
-        )}
-        
-        {/* Stock Status */}
-        {siteSettings.products_page_show_stock && (
-          <div className="product-stock">
-            {product.stock_quantity > 0 ? (
-              <span className="in-stock">In Stock ({product.stock_quantity})</span>
-            ) : (
-              <span className="out-of-stock">Out of Stock</span>
-            )}
-          </div>
-        )}
-        
-        {/* Variations */}
-        {product.has_variations && product.variation_type && (
-          <div className="product-variations">
-            <small>
-              {product.variation_type === 'custom' ? product.variation_name : 
-               product.variation_type === 'color' ? 'Renk' :
-               product.variation_type === 'size' ? 'Boyut' :
-               product.variation_type === 'weight' ? 'Ağırlık' : 'Seçenekler'} varyasyonları mevcut
-            </small>
-          </div>
-        )}
+        <Link to={`/product/${product.slug}`} className="product-info-link">
+          {/* Category */}
+          {siteSettings.products_page_show_category && (
+            <div className="product-category">
+              {product.category}
+            </div>
+          )}
+          
+          {/* Product Name */}
+          <h3 className="product-name">{product.name}</h3>
+          
+          {/* Price */}
+          {siteSettings.products_page_show_price && (
+            <div className="product-price">
+              <span className="current-price">₺{product.price}</span>
+              {siteSettings.products_page_show_original_price && product.original_price && product.original_price > product.price && (
+                <span className="original-price">₺{product.original_price}</span>
+              )}
+            </div>
+          )}
+          
+          {/* Stock Status */}
+          {siteSettings.products_page_show_stock && (
+            <div className="product-stock">
+              {product.stock_quantity > 0 ? (
+                <span className="in-stock">In Stock ({product.stock_quantity})</span>
+              ) : (
+                <span className="out-of-stock">Out of Stock</span>
+              )}
+            </div>
+          )}
+          
+          {/* Variations */}
+          {product.has_variations && product.variation_type && (
+            <div className="product-variations">
+              <small>
+                {product.variation_type === 'custom' ? product.variation_name : 
+                                    product.variation_type === 'color' ? 'Color' :
+                                         product.variation_type === 'size' ? 'Size' :
+                                    product.variation_type === 'weight' ? 'Weight' : 'Options'} variations available
+              </small>
+            </div>
+          )}
+        </Link>
         
         {/* Buttons */}
         <div className="product-buttons">
           {siteSettings.products_page_show_details && (
-            <button 
-              className="btn btn-details"
-              onClick={() => window.location.href = `/product/${product.slug}`}
-            >
+            <Link to={`/product/${product.slug}`} className="btn btn-details">
               View Details
-            </button>
+            </Link>
           )}
           {siteSettings.products_page_show_buy_now && (
             <button 
@@ -320,7 +311,7 @@ const Products = () => {
         backgroundColor: siteSettings.products_page_background_color || '#ffffff'
       }}
     >
-      <div className="container">
+      <div className="container products-container">
         <div className="products-header">
           <h1>Products</h1>
           <p>Discover our amazing collection of products</p>
@@ -394,11 +385,14 @@ const Products = () => {
         <div 
           className={`products-grid ${siteSettings.products_page_card_style}`}
           style={{
-            gridTemplateColumns: `repeat(${siteSettings.products_page_per_row}, 1fr)`,
-            gap: '1.5rem',
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '0 1rem'
+            '--products-per-row': siteSettings.products_page_per_row || 4,
+            '--products-per-row-tablet': Math.min(siteSettings.products_page_per_row || 4, 4),
+            '--products-per-row-mobile': Math.min(siteSettings.products_page_per_row || 4, 3),
+            '--products-per-row-small': Math.min(siteSettings.products_page_per_row || 4, 2),
+            '--image-size': `${Math.max(180, Math.min(600, 1368 / (siteSettings.products_page_per_row || 4) - 50))}px`,
+            '--image-size-tablet': `${Math.max(180, Math.min(500, 1200 / Math.min(siteSettings.products_page_per_row || 4, 4) - 50))}px`,
+            '--image-size-mobile': `${Math.max(180, Math.min(400, 900 / Math.min(siteSettings.products_page_per_row || 4, 3) - 50))}px`,
+            '--image-size-small': `${Math.max(200, Math.min(350, 700 / Math.min(siteSettings.products_page_per_row || 4, 2) - 50))}px`
           }}
         >
           {products.length > 0 ? (

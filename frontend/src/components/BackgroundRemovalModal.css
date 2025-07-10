@@ -367,4 +367,30 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Crop button styles */
+.crop-button-container {
+  margin-top: 0.5rem;
+}
+
+.btn-crop {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.btn-crop:hover {
+  background: #ff5252;
+}
+
+.btn-crop:disabled {
+  background: #ddd;
+  cursor: not-allowed;
 } 

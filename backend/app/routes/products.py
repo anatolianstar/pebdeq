@@ -444,4 +444,52 @@ def save_processed_image():
         })
     
     except Exception as e:
-        return jsonify({'error': f'Image save failed: {str(e)}'}), 500 
+        return jsonify({'error': f'Image save failed: {str(e)}'}), 500
+
+@products_bp.route('/upload-cropped-image', methods=['POST'])
+def upload_cropped_image():
+    try:
+        # Get image data from request
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image provided'}), 400
+        
+        image_file = request.files['image']
+        if image_file.filename == '':
+            return jsonify({'error': 'No image selected'}), 400
+        
+        # Read image data
+        image_data = image_file.read()
+        
+        # Open image with PIL for processing
+        input_image = Image.open(io.BytesIO(image_data))
+        
+        # Ensure image is in RGB mode and square
+        if input_image.mode != 'RGB':
+            input_image = input_image.convert('RGB')
+        
+        # Resize to standard square size (300x300) for consistency
+        output_image = input_image.resize((300, 300), Image.Resampling.LANCZOS)
+        
+        # Generate unique filename
+        filename = f"{uuid.uuid4().hex}.jpg"
+        
+        # Save to uploads/products directory
+        upload_dir = os.path.join(current_app.root_path, '..', 'uploads', 'products')
+        os.makedirs(upload_dir, exist_ok=True)
+        
+        filepath = os.path.join(upload_dir, filename)
+        
+        # Save the image with good quality
+        output_image.save(filepath, 'JPEG', quality=90, optimize=True)
+        
+        # Return the URL
+        image_url = f'/uploads/products/{filename}'
+        
+        return jsonify({
+            'success': True,
+            'image_url': image_url,
+            'message': 'Cropped image saved successfully'
+        })
+    
+    except Exception as e:
+        return jsonify({'error': f'Cropped image save failed: {str(e)}'}), 500 

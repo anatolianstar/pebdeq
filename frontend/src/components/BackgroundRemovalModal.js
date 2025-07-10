@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import './BackgroundRemovalModal.css';
+import ImageCropModal from './ImageCropModal';
 
 const BackgroundRemovalModal = ({ 
   isOpen, 
@@ -12,6 +13,19 @@ const BackgroundRemovalModal = ({
   const [imagePreviews, setImagePreviews] = useState({});
   const [processing, setProcessing] = useState(false);
   const [selectedModel, setSelectedModel] = useState('rembg');
+  
+  // Crop modal states
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [currentCropImageUrl, setCurrentCropImageUrl] = useState('');
+  const [currentCropImageIndex, setCurrentCropImageIndex] = useState(null);
+  
+  // Local images state to track real-time changes
+  const [localImages, setLocalImages] = useState(images);
+  
+  // Update local images when images prop changes
+  useEffect(() => {
+    setLocalImages(images);
+  }, [images]);
 
   const handleRemoveBackground = async (imageUrl, imageIndex) => {
     try {
@@ -24,7 +38,8 @@ const BackgroundRemovalModal = ({
       }));
 
       // Fetch the image and convert to File object
-      const response = await fetch(`http://localhost:5005${imageUrl}`);
+      const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `http://localhost:5005${imageUrl}`;
+      const response = await fetch(fullImageUrl);
       const blob = await response.blob();
       const file = new File([blob], 'image.jpg', { type: blob.type });
 
@@ -100,8 +115,11 @@ const BackgroundRemovalModal = ({
         const result = await response.json();
         
         // Update the image in the list
-        const updatedImages = [...images];
+        const updatedImages = [...localImages];
         updatedImages[imageIndex] = result.image_url;
+        
+        // Update local images state first
+        setLocalImages(updatedImages);
         
         // Clear preview and state
         setImagePreviews(prev => {
@@ -148,10 +166,76 @@ const BackgroundRemovalModal = ({
     });
   };
 
+  const handleOpenCropModal = (imageUrl, imageIndex) => {
+    const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `http://localhost:5005${imageUrl}`;
+    setCurrentCropImageUrl(fullImageUrl);
+    setCurrentCropImageIndex(imageIndex);
+    setCropModalOpen(true);
+  };
+
+  const handleCloseCropModal = () => {
+    setCropModalOpen(false);
+    setCurrentCropImageUrl('');
+    setCurrentCropImageIndex(null);
+  };
+
+  const handleCropComplete = async (croppedFile) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', croppedFile);
+
+      const response = await fetch('/api/products/upload-cropped-image', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        
+        // Update the image in the list
+        const updatedImages = [...localImages];
+        updatedImages[currentCropImageIndex] = result.image_url;
+        
+        // Update local images state first
+        setLocalImages(updatedImages);
+        
+        // Update parent component
+        onSaveImages(updatedImages);
+        
+        // Close crop modal
+        handleCloseCropModal();
+        
+        // Clear any existing state for this image
+        setImageStates(prev => ({
+          ...prev,
+          [currentCropImageIndex]: 'none'
+        }));
+        
+        // Clear any existing preview for this image
+        setImagePreviews(prev => {
+          const newPreviews = { ...prev };
+          delete newPreviews[currentCropImageIndex];
+          return newPreviews;
+        });
+        
+        toast.success('Cropped image successfully saved! You can now remove the background.');
+      } else {
+        const error = await response.json();
+        toast.error(`Crop save failed: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Error saving cropped image:', error);
+      toast.error('Cropped image could not be saved');
+    }
+  };
+
   const handleCloseModal = () => {
     // Clear all states
     setImageStates({});
     setImagePreviews({});
+    setCropModalOpen(false);
+    setCurrentCropImageUrl('');
+    setCurrentCropImageIndex(null);
     onClose();
   };
 
@@ -171,11 +255,6 @@ const BackgroundRemovalModal = ({
         </div>
         
         <div className="modal-content">
-          <div className="instructions">
-            <p>💡 <strong>Instructions:</strong> Check the "Remove background" option for each image you want to process. Review the preview and save if satisfied.</p>
-            <p>🎯 <strong>Best results:</strong> Images with solid, uniform backgrounds (white, single color, etc.)</p>
-          </div>
-          
           <div className="model-selection">
             <label className="model-label">
               <strong>🤖 AI Model:</strong>
@@ -191,11 +270,11 @@ const BackgroundRemovalModal = ({
           </div>
           
           <div className="images-grid">
-            {images.map((imageUrl, index) => (
-              <div key={index} className="image-card">
+            {localImages.map((imageUrl, index) => (
+              <div key={`${index}-${imageUrl}`} className="image-card">
                 <div className="image-container">
                   <img 
-                    src={imagePreviews[index] || imageUrl} 
+                    src={imagePreviews[index] || `http://localhost:5005${imageUrl}`} 
                     alt={`Product ${index + 1}`}
                     className={`preview-image ${imageStates[index] === 'preview' ? 'has-preview' : ''}`}
                   />
@@ -239,6 +318,16 @@ const BackgroundRemovalModal = ({
                     </label>
                   </div>
                   
+                  <div className="crop-button-container">
+                    <button
+                      className="btn btn-crop"
+                      onClick={() => handleOpenCropModal(imageUrl, index)}
+                      disabled={imageStates[index] === 'processing'}
+                    >
+                      ✂️ Crop to Square
+                    </button>
+                  </div>
+                  
                   {imageStates[index] === 'preview' && (
                     <div className="action-buttons">
                       <button
@@ -270,6 +359,15 @@ const BackgroundRemovalModal = ({
           </button>
         </div>
       </div>
+      
+      {/* Image Crop Modal */}
+      <ImageCropModal
+        isOpen={cropModalOpen}
+        onClose={handleCloseCropModal}
+        imageUrl={currentCropImageUrl}
+        onCropComplete={handleCropComplete}
+        title="Crop Image to Square Format"
+      />
     </div>
   );
 };

@@ -207,8 +207,6 @@ const AdminDashboard = () => {
     homepage_products_per_row: 4,
     homepage_products_max_items: 8,
     homepage_products_show_images: true,
-    homepage_products_image_height: 200,
-    homepage_products_image_width: 300,
     homepage_products_show_favorite: true,
     homepage_products_show_buy_now: true,
     homepage_products_show_details: true,
@@ -235,8 +233,6 @@ const AdminDashboard = () => {
     homepage_products2_per_row: 4,
     homepage_products2_max_items: 8,
     homepage_products2_show_images: true,
-    homepage_products2_image_height: 200,
-    homepage_products2_image_width: 300,
     homepage_products2_show_favorite: true,
     homepage_products2_show_buy_now: true,
     homepage_products2_show_details: true,
@@ -261,8 +257,6 @@ const AdminDashboard = () => {
     products_page_per_row: 4,
     products_page_max_items_per_page: 12,
     products_page_show_images: true,
-    products_page_image_height: 200,
-    products_page_image_width: 300,
     products_page_show_favorite: true,
     products_page_show_buy_now: true,
     products_page_show_details: true,
@@ -1308,7 +1302,7 @@ const AdminDashboard = () => {
         
         // Show update info separately if there are updates
         if (data.updated_count && data.updated_count > 0) {
-          toast.info(`✅ ${data.updated_count} ürün güncellendi`);
+          toast.info(`✅ ${data.updated_count} products updated`);
         }
         
         // Try to refresh products list
@@ -1316,11 +1310,11 @@ const AdminDashboard = () => {
           await fetchProducts();
         } catch (refreshError) {
           console.error('Error refreshing products list:', refreshError);
-          toast.error('⚠️ Import başarılı ama ürün listesi yenilenemedi. Sayfayı yenileyin.');
+          toast.error('⚠️ Import successful but product list could not be refreshed. Please refresh the page.');
         }
         
       } else {
-        toast.error(data.error || 'Excel import işlemi başarısız');
+        toast.error(data.error || 'Excel import operation failed');
       }
     } catch (error) {
       console.error('Error importing products:', error);
@@ -1332,11 +1326,11 @@ const AdminDashboard = () => {
       
       // Only show error if it's a real import failure, not a UI update issue
       if (error.message && (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed to fetch'))) {
-        toast.error(`Excel import hatası: ${error.message}`);
+        toast.error(`Excel import error: ${error.message}`);
       } else {
         // For other errors (likely UI related), just log them
         console.warn('Non-critical error during import process:', error.message);
-        toast.error('Import işlemi tamamlandı ancak sayfa yenilenemedi. Lütfen sayfayı manuel olarak yenileyin.');
+        toast.error('Import operation completed but page could not be refreshed. Please refresh the page manually.');
       }
     }
   };
@@ -1740,6 +1734,7 @@ const AdminDashboard = () => {
                     <th>Category</th>
                     <th>Price</th>
                     <th>Stock</th>
+                    <th>Images</th>
                     <th>Featured</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -1752,6 +1747,20 @@ const AdminDashboard = () => {
                       <td>{product.category}</td>
                       <td>${product.price}</td>
                       <td>{product.stock_quantity}</td>
+                      <td style={{ textAlign: 'center' }}>
+                        <div className="product-image-status">
+                          {product.images && product.images.length > 0 ? (
+                            <>
+                              <span className="image-icon image-status-has-images">📷</span>
+                              <span className="image-count">
+                                {product.images.length}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="image-icon image-status-no-images" title="No images">📷❌</span>
+                          )}
+                        </div>
+                      </td>
                       <td>
                         <span className={`badge ${product.is_featured ? 'featured' : 'not-featured'}`}>
                           {product.is_featured ? 'Yes' : 'No'}
@@ -3161,6 +3170,7 @@ const AdminDashboard = () => {
                       <tr>
                         <th>Product</th>
                         <th>Variation Type</th>
+                        <th>Images</th>
                         <th>Options</th>
                         <th>Actions</th>
                       </tr>
@@ -3182,6 +3192,20 @@ const AdminDashboard = () => {
                               {product.variation_type === 'weight' && 'Weight'}
                               {product.variation_type === 'custom' && product.variation_name}
                             </span>
+                          </td>
+                          <td style={{ textAlign: 'center' }}>
+                            <div className="product-image-status">
+                              {product.images && product.images.length > 0 ? (
+                                <>
+                                  <span className="image-icon image-status-has-images">📷</span>
+                                  <span className="image-count">
+                                    {product.images.length}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="image-icon image-status-no-images" title="No images">📷❌</span>
+                              )}
+                            </div>
                           </td>
                           <td>
                             <div className="variation-options-preview">
@@ -4070,40 +4094,6 @@ const AdminDashboard = () => {
                       </div>
 
 
-
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label>Image Height (pixels)</label>
-                          <input
-                            type="number"
-                            min="150"
-                            max="400"
-                            value={siteSettings.products_page_image_height || 200}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              products_page_image_height: parseInt(e.target.value) || 200
-                            }))}
-                          />
-                          <small>Between 150-400 pixels</small>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Image Width (pixels)</label>
-                          <input
-                            type="number"
-                            min="200"
-                            max="500"
-                            value={siteSettings.products_page_image_width || 300}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              products_page_image_width: parseInt(e.target.value) || 300
-                            }))}
-                          />
-                          <small>Between 200-500 pixels</small>
-                        </div>
-                      </div>
-
-                      <hr />
 
                       {/* Display Options */}
                       <h4>Display Options</h4>
@@ -5557,40 +5547,6 @@ const AdminDashboard = () => {
                         </label>
                       </div>
 
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label>Image Width (px)</label>
-                          <input
-                            type="number"
-                            min="100"
-                            max="500"
-                            value={siteSettings.homepage_products_image_width || 300}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              homepage_products_image_width: parseInt(e.target.value) || 300
-                            }))}
-                          />
-                          <small>Product image width (100-500px)</small>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Image Height (px)</label>
-                          <input
-                            type="number"
-                            min="100"
-                            max="400"
-                            value={siteSettings.homepage_products_image_height || 200}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              homepage_products_image_height: parseInt(e.target.value) || 200
-                            }))}
-                          />
-                          <small>Product image height (100-400px)</small>
-                        </div>
-                      </div>
-
-                      <hr />
-
                       {/* Button Settings */}
                       <h4>Button Settings</h4>
                       
@@ -6012,40 +5968,6 @@ const AdminDashboard = () => {
                           Show product images
                         </label>
                       </div>
-
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label>Image Width (px)</label>
-                          <input
-                            type="number"
-                            min="100"
-                            max="500"
-                            value={siteSettings.homepage_products2_image_width || 300}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              homepage_products2_image_width: parseInt(e.target.value) || 300
-                            }))}
-                          />
-                          <small>Product image width (100-500px)</small>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Image Height (px)</label>
-                          <input
-                            type="number"
-                            min="100"
-                            max="400"
-                            value={siteSettings.homepage_products2_image_height || 200}
-                            onChange={(e) => setSiteSettings(prev => ({
-                              ...prev,
-                              homepage_products2_image_height: parseInt(e.target.value) || 200
-                            }))}
-                          />
-                          <small>Product image height (100-400px)</small>
-                        </div>
-                      </div>
-
-                      <hr />
 
                       {/* Button Settings */}
                       <h4>Button Settings</h4>

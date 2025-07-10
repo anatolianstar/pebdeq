@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
@@ -25,8 +26,6 @@ const Home = () => {
     homepage_products_per_row: 4,
     homepage_products_max_items: 8,
     homepage_products_show_images: true,
-    homepage_products_image_height: 200,
-    homepage_products_image_width: 300,
     homepage_products_show_favorite: true,
     homepage_products_show_buy_now: true,
     homepage_products_show_details: true,
@@ -53,8 +52,6 @@ const Home = () => {
     homepage_products2_per_row: 4,
     homepage_products2_max_items: 8,
     homepage_products2_show_images: true,
-    homepage_products2_image_height: 200,
-    homepage_products2_image_width: 300,
     homepage_products2_show_favorite: true,
     homepage_products2_show_buy_now: true,
     homepage_products2_show_details: true,
@@ -94,6 +91,7 @@ const Home = () => {
         const productsData = await productsResponse.json();
         
         if (siteResponse.ok) {
+          console.log('Site settings loaded:', siteData);
           setSiteSettings(siteData);
         }
         
@@ -350,8 +348,14 @@ const Home = () => {
           <div 
             className={`products-grid ${siteSettings.homepage_products_card_style}`}
             style={{
-              gridTemplateColumns: `repeat(${siteSettings.homepage_products_per_row}, 1fr)`,
-              maxWidth: `${siteSettings.homepage_products_per_row * 300}px`
+              '--products-per-row': siteSettings.homepage_products_per_row || 4,
+              '--products-per-row-tablet': Math.min(siteSettings.homepage_products_per_row || 4, 4),
+              '--products-per-row-mobile': Math.min(siteSettings.homepage_products_per_row || 4, 3),
+              '--products-per-row-small': Math.min(siteSettings.homepage_products_per_row || 4, 2),
+              '--image-size': `${Math.max(180, Math.min(600, 1368 / (siteSettings.homepage_products_per_row || 4) - 50))}px`,
+              '--image-size-tablet': `${Math.max(180, Math.min(500, 1200 / Math.min(siteSettings.homepage_products_per_row || 4, 4) - 50))}px`,
+              '--image-size-mobile': `${Math.max(180, Math.min(400, 900 / Math.min(siteSettings.homepage_products_per_row || 4, 3) - 50))}px`,
+              '--image-size-small': `${Math.max(200, Math.min(350, 700 / Math.min(siteSettings.homepage_products_per_row || 4, 2) - 50))}px`
             }}
           >
             {displayProducts.map((product) => (
@@ -362,15 +366,16 @@ const Home = () => {
                 {/* Product Image */}
                 {siteSettings.homepage_products_show_images && product.images && product.images.length > 0 && (
                   <div className="product-image">
-                    <img 
-                      src={`http://localhost:5005${product.images[0]}`} 
-                      alt={product.name}
-                      style={{
-                        width: `${siteSettings.homepage_products_image_width}px`,
-                        height: `${siteSettings.homepage_products_image_height}px`,
-                        objectFit: 'cover'
-                      }}
-                    />
+                    <Link to={`/product/${product.slug}`}>
+                      <img 
+                        src={`http://localhost:5005${product.images[0]}`} 
+                        alt={product.name}
+                        style={{
+                          cursor: 'pointer',
+                          display: 'block'
+                        }}
+                      />
+                    </Link>
                     
                     {/* Badges */}
                     {siteSettings.homepage_products_show_badges && (
@@ -387,7 +392,11 @@ const Home = () => {
                     {siteSettings.homepage_products_show_favorite && (
                       <button 
                         className="favorite-btn"
-                        onClick={() => handleFavoriteToggle(product.id)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleFavoriteToggle(product.id);
+                        }}
                       >
                         ❤️
                       </button>
@@ -397,48 +406,54 @@ const Home = () => {
                 
                 {/* Product Info */}
                 <div className="product-info">
-                  {/* Category */}
-                  {siteSettings.homepage_products_show_category && (
-                    <div className="product-category">
-                      {getCategoryName(product.category_id)}
-                    </div>
-                  )}
-                  
-                  {/* Product Name */}
-                  <h3 className="product-name">{product.name}</h3>
-                  
-                  {/* Price */}
-                  {siteSettings.homepage_products_show_price && (
-                    <div className="product-price">
-                      <span className="current-price">₺{product.price}</span>
-                      {siteSettings.homepage_products_show_original_price && product.original_price && product.original_price > product.price && (
-                        <span className="original-price">₺{product.original_price}</span>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Stock Status */}
-                  {siteSettings.homepage_products_show_stock && (
-                    <div className="product-stock">
-                      {product.stock_quantity > 0 ? (
-                        <span className="in-stock">In Stock ({product.stock_quantity})</span>
-                      ) : (
-                        <span className="out-of-stock">Out of Stock</span>
-                      )}
-                    </div>
-                  )}
+                  <Link to={`/product/${product.slug}`} className="product-info-link">
+                    {/* Category */}
+                    {siteSettings.homepage_products_show_category && (
+                      <div className="product-category">
+                        {getCategoryName(product.category_id)}
+                      </div>
+                    )}
+                    
+                    {/* Product Name */}
+                    <h3 className="product-name">{product.name}</h3>
+                    
+                    {/* Price */}
+                    {siteSettings.homepage_products_show_price && (
+                      <div className="product-price">
+                        <span className="current-price">₺{product.price}</span>
+                        {siteSettings.homepage_products_show_original_price && product.original_price && product.original_price > product.price && (
+                          <span className="original-price">₺{product.original_price}</span>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Stock Status */}
+                    {siteSettings.homepage_products_show_stock && (
+                      <div className="product-stock">
+                        {product.stock_quantity > 0 ? (
+                          <span className="in-stock">In Stock ({product.stock_quantity})</span>
+                        ) : (
+                          <span className="out-of-stock">Out of Stock</span>
+                        )}
+                      </div>
+                    )}
+                  </Link>
                   
                   {/* Buttons */}
                   <div className="product-buttons">
                     {siteSettings.homepage_products_show_details && (
-                      <a href={`/product/${product.slug}`} className="btn btn-details">
+                      <Link to={`/product/${product.slug}`} className="btn btn-details">
                         Details
-                      </a>
+                      </Link>
                     )}
                     {siteSettings.homepage_products_show_buy_now && product.stock_quantity > 0 && (
                       <button 
                         className="btn btn-buy-now"
-                        onClick={() => handleBuyNow(product)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleBuyNow(product);
+                        }}
                       >
                         Buy Now
                       </button>
@@ -478,8 +493,14 @@ const Home = () => {
           <div 
             className={`products-grid ${siteSettings.homepage_products2_card_style}`}
             style={{
-              gridTemplateColumns: `repeat(${siteSettings.homepage_products2_per_row}, 1fr)`,
-              maxWidth: `${siteSettings.homepage_products2_per_row * 300}px`
+              '--products-per-row': siteSettings.homepage_products2_per_row || 4,
+              '--products-per-row-tablet': Math.min(siteSettings.homepage_products2_per_row || 4, 4),
+              '--products-per-row-mobile': Math.min(siteSettings.homepage_products2_per_row || 4, 3),
+              '--products-per-row-small': Math.min(siteSettings.homepage_products2_per_row || 4, 2),
+              '--image-size': `${Math.max(180, Math.min(600, 1368 / (siteSettings.homepage_products2_per_row || 4) - 50))}px`,
+              '--image-size-tablet': `${Math.max(180, Math.min(500, 1200 / Math.min(siteSettings.homepage_products2_per_row || 4, 4) - 50))}px`,
+              '--image-size-mobile': `${Math.max(180, Math.min(400, 900 / Math.min(siteSettings.homepage_products2_per_row || 4, 3) - 50))}px`,
+              '--image-size-small': `${Math.max(200, Math.min(350, 700 / Math.min(siteSettings.homepage_products2_per_row || 4, 2) - 50))}px`
             }}
           >
             {displayProducts2.map((product) => (
@@ -490,15 +511,16 @@ const Home = () => {
                 {/* Product Image */}
                 {siteSettings.homepage_products2_show_images && product.images && product.images.length > 0 && (
                   <div className="product-image">
-                    <img 
-                      src={`http://localhost:5005${product.images[0]}`} 
-                      alt={product.name}
-                      style={{
-                        width: `${siteSettings.homepage_products2_image_width}px`,
-                        height: `${siteSettings.homepage_products2_image_height}px`,
-                        objectFit: 'cover'
-                      }}
-                    />
+                    <Link to={`/product/${product.slug}`}>
+                      <img 
+                        src={`http://localhost:5005${product.images[0]}`} 
+                        alt={product.name}
+                        style={{
+                          cursor: 'pointer',
+                          display: 'block'
+                        }}
+                      />
+                    </Link>
                     
                     {/* Badges */}
                     {siteSettings.homepage_products2_show_badges && (
@@ -515,7 +537,11 @@ const Home = () => {
                     {siteSettings.homepage_products2_show_favorite && (
                       <button 
                         className="favorite-btn"
-                        onClick={() => handleFavoriteToggle(product.id)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleFavoriteToggle(product.id);
+                        }}
                       >
                         ❤️
                       </button>
@@ -525,48 +551,54 @@ const Home = () => {
                 
                 {/* Product Info */}
                 <div className="product-info">
-                  {/* Category */}
-                  {siteSettings.homepage_products2_show_category && (
-                    <div className="product-category">
-                      {getCategoryName(product.category_id)}
-                    </div>
-                  )}
-                  
-                  {/* Product Name */}
-                  <h3 className="product-name">{product.name}</h3>
-                  
-                  {/* Price */}
-                  {siteSettings.homepage_products2_show_price && (
-                    <div className="product-price">
-                      <span className="current-price">₺{product.price}</span>
-                      {siteSettings.homepage_products2_show_original_price && product.original_price && product.original_price > product.price && (
-                        <span className="original-price">₺{product.original_price}</span>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Stock Status */}
-                  {siteSettings.homepage_products2_show_stock && (
-                    <div className="product-stock">
-                      {product.stock_quantity > 0 ? (
-                        <span className="in-stock">In Stock ({product.stock_quantity})</span>
-                      ) : (
-                        <span className="out-of-stock">Out of Stock</span>
-                      )}
-                    </div>
-                  )}
+                  <Link to={`/product/${product.slug}`} className="product-info-link">
+                    {/* Category */}
+                    {siteSettings.homepage_products2_show_category && (
+                      <div className="product-category">
+                        {getCategoryName(product.category_id)}
+                      </div>
+                    )}
+                    
+                    {/* Product Name */}
+                    <h3 className="product-name">{product.name}</h3>
+                    
+                    {/* Price */}
+                    {siteSettings.homepage_products2_show_price && (
+                      <div className="product-price">
+                        <span className="current-price">₺{product.price}</span>
+                        {siteSettings.homepage_products2_show_original_price && product.original_price && product.original_price > product.price && (
+                          <span className="original-price">₺{product.original_price}</span>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Stock Status */}
+                    {siteSettings.homepage_products2_show_stock && (
+                      <div className="product-stock">
+                        {product.stock_quantity > 0 ? (
+                          <span className="in-stock">In Stock ({product.stock_quantity})</span>
+                        ) : (
+                          <span className="out-of-stock">Out of Stock</span>
+                        )}
+                      </div>
+                    )}
+                  </Link>
                   
                   {/* Buttons */}
                   <div className="product-buttons">
                     {siteSettings.homepage_products2_show_details && (
-                      <a href={`/product/${product.slug}`} className="btn btn-details">
+                      <Link to={`/product/${product.slug}`} className="btn btn-details">
                         Details
-                      </a>
+                      </Link>
                     )}
                     {siteSettings.homepage_products2_show_buy_now && product.stock_quantity > 0 && (
                       <button 
                         className="btn btn-buy-now"
-                        onClick={() => handleBuyNow(product)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleBuyNow(product);
+                        }}
                       >
                         Buy Now
                       </button>
