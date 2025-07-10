@@ -1181,7 +1181,16 @@ def get_site_settings():
                 'product_detail_product_details_value_font_style': settings.product_detail_product_details_value_font_style
             },
             # Navigation Links
-            'navigation_links': [],
+            'navigation_links': [
+                {
+                    'id': link.id,
+                    'name': link.name,
+                    'url': link.url,
+                    'order': link.order,
+                    'is_active': link.is_active
+                }
+                for link in (settings.navigation_links or [])
+            ],
             # Header Settings
             'nav_link_color': settings.nav_link_color,
             'nav_link_hover_color': settings.nav_link_hover_color,
@@ -2087,2844 +2096,867 @@ def update_site_settings():
         if 'homepage_products2_add_to_cart_button_text_color' in data:
             settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
         
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_add_to_cart_button_text_color = data['homepage_products_add_to_cart_button_text_color']
-        
-        # Homepage Products 2 Font & Color Settings
-        if 'homepage_products2_product_name_color' in data:
-            settings.homepage_products2_product_name_color = data['homepage_products2_product_name_color']
-        if 'homepage_products2_product_name_font_size' in data:
-            settings.homepage_products2_product_name_font_size = data['homepage_products2_product_name_font_size']
-        if 'homepage_products2_product_price_color' in data:
-            settings.homepage_products2_product_price_color = data['homepage_products2_product_price_color']
-        if 'homepage_products2_product_price_font_size' in data:
-            settings.homepage_products2_product_price_font_size = data['homepage_products2_product_price_font_size']
-        if 'homepage_products2_add_to_cart_button_color' in data:
-            settings.homepage_products2_add_to_cart_button_color = data['homepage_products2_add_to_cart_button_color']
-        if 'homepage_products2_add_to_cart_button_text_color' in data:
-            settings.homepage_products2_add_to_cart_button_text_color = data['homepage_products2_add_to_cart_button_text_color']
-        
-        # Products Page Font & Color Settings
-        if 'products_page_product_name_color' in data:
-            settings.products_page_product_name_color = data['products_page_product_name_color']
-        if 'products_page_product_name_font_size' in data:
-            settings.products_page_product_name_font_size = data['products_page_product_name_font_size']
-        if 'products_page_product_price_color' in data:
-            settings.products_page_product_price_color = data['products_page_product_price_color']
-        if 'products_page_product_price_font_size' in data:
-            settings.products_page_product_price_font_size = data['products_page_product_price_font_size']
-        if 'products_page_add_to_cart_button_color' in data:
-            settings.products_page_add_to_cart_button_color = data['products_page_add_to_cart_button_color']
-        if 'products_page_add_to_cart_button_text_color' in data:
-            settings.products_page_add_to_cart_button_text_color = data['products_page_add_to_cart_button_text_color']
-        
-        # Homepage Products 1 Font & Color Settings
-        if 'homepage_products_product_name_color' in data:
-            settings.homepage_products_product_name_color = data['homepage_products_product_name_color']
-        if 'homepage_products_product_name_font_size' in data:
-            settings.homepage_products_product_name_font_size = data['homepage_products_product_name_font_size']
-        if 'homepage_products_product_price_color' in data:
-            settings.homepage_products_product_price_color = data['homepage_products_product_price_color']
-        if 'homepage_products_product_price_font_size' in data:
-            settings.homepage_products_product_price_font_size = data['homepage_products_product_price_font_size']
-        if 'homepage_products_add_to_cart_button_color' in data:
-            settings.homepage_products_add_to_cart_button_color = data['homepage_products_add_to_cart_button_color']
-        if 'homepage_products_add_to_cart_button_text_color' in data:
-            settings.homepage_products_
+        db.session.commit()
+        
+        return jsonify({'message': 'Site settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/upload/site-logo', methods=['POST'])
+@admin_required
+def upload_site_logo():
+    try:
+        create_upload_folders()
+        
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file selected'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if file and allowed_file(file.filename, 'image'):
+            filename = generate_unique_filename(file.filename)
+            file_path = os.path.join('uploads', 'site', filename)
+            
+            # Create site upload directory if it doesn't exist
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            file.save(file_path)
+            
+            return jsonify({
+                'message': 'Logo uploaded successfully',
+                'logo_url': f'/uploads/site/{filename}'
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid file type'}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/upload/site-logo2', methods=['POST'])
+@admin_required
+def upload_site_logo2():
+    try:
+        create_upload_folders()
+        
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file selected'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if file and allowed_file(file.filename, 'image'):
+            filename = generate_unique_filename(file.filename)
+            file_path = os.path.join('uploads', 'site', filename)
+            
+            # Create site upload directory if it doesn't exist
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            file.save(file_path)
+            
+            return jsonify({
+                'message': 'Second logo uploaded successfully',
+                'logo_url': f'/uploads/site/{filename}'
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid file type'}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/upload/welcome-background', methods=['POST'])
+@admin_required
+def upload_welcome_background():
+    try:
+        create_upload_folders()
+        
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file selected'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if file and allowed_file(file.filename, 'image'):
+            filename = generate_unique_filename(file.filename)
+            file_path = os.path.join('uploads', 'site', filename)
+            
+            # Create site upload directory if it doesn't exist
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            file.save(file_path)
+            
+            return jsonify({
+                'message': 'Welcome background uploaded successfully',
+                'background_url': f'/uploads/site/{filename}'
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid file type'}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/upload/footer-logo', methods=['POST'])
+@admin_required
+def upload_footer_logo():
+    try:
+        create_upload_folders()
+        
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file selected'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if file and allowed_file(file.filename, 'image'):
+            filename = generate_unique_filename(file.filename)
+            file_path = os.path.join('uploads', 'site', filename)
+            
+            # Create site upload directory if it doesn't exist
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            file.save(file_path)
+            
+            return jsonify({
+                'message': 'Footer logo uploaded successfully',
+                'logo_url': f'/uploads/site/{filename}'
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid file type'}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Kategorilere göre ayrılmış site settings endpoint'leri
+
+# Site Identity Settings
+@admin_bp.route('/site-settings/identity', methods=['GET'])
+@admin_required
+def get_site_identity():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'site_name': settings.site_name,
+            'site_logo': settings.site_logo,
+            'use_logo': settings.use_logo,
+            'logo_width': settings.logo_width,
+            'logo_height': settings.logo_height,
+            'site_logo2': settings.site_logo2,
+            'use_logo2': settings.use_logo2,
+            'logo2_width': settings.logo2_width,
+            'logo2_height': settings.logo2_height
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/identity', methods=['PUT'])
+@admin_required
+def update_site_identity():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Site Identity fields
+        if 'site_name' in data:
+            settings.site_name = data['site_name']
+        if 'site_logo' in data:
+            settings.site_logo = data['site_logo']
+        if 'use_logo' in data:
+            settings.use_logo = data['use_logo']
+        if 'logo_width' in data:
+            settings.logo_width = data['logo_width']
+        if 'logo_height' in data:
+            settings.logo_height = data['logo_height']
+        if 'site_logo2' in data:
+            settings.site_logo2 = data['site_logo2']
+        if 'use_logo2' in data:
+            settings.use_logo2 = data['use_logo2']
+        if 'logo2_width' in data:
+            settings.logo2_width = data['logo2_width']
+        if 'logo2_height' in data:
+            settings.logo2_height = data['logo2_height']
+        
+        db.session.commit()
+        return jsonify({'message': 'Site identity updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Welcome Section Settings
+@admin_bp.route('/site-settings/welcome', methods=['GET'])
+@admin_required
+def get_welcome_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'welcome_title': settings.welcome_title,
+            'welcome_subtitle': settings.welcome_subtitle,
+            'welcome_background_image': settings.welcome_background_image,
+            'welcome_background_color': settings.welcome_background_color,
+            'welcome_text_color': settings.welcome_text_color,
+            'welcome_button_text': settings.welcome_button_text,
+            'welcome_button_link': settings.welcome_button_link,
+            'welcome_button_color': settings.welcome_button_color
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/welcome', methods=['PUT'])
+@admin_required
+def update_welcome_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Welcome section fields
+        if 'welcome_title' in data:
+            settings.welcome_title = data['welcome_title']
+        if 'welcome_subtitle' in data:
+            settings.welcome_subtitle = data['welcome_subtitle']
+        if 'welcome_background_image' in data:
+            settings.welcome_background_image = data['welcome_background_image']
+        if 'welcome_background_color' in data:
+            settings.welcome_background_color = data['welcome_background_color']
+        if 'welcome_text_color' in data:
+            settings.welcome_text_color = data['welcome_text_color']
+        if 'welcome_button_text' in data:
+            settings.welcome_button_text = data['welcome_button_text']
+        if 'welcome_button_link' in data:
+            settings.welcome_button_link = data['welcome_button_link']
+        if 'welcome_button_color' in data:
+            settings.welcome_button_color = data['welcome_button_color']
+        
+        db.session.commit()
+        return jsonify({'message': 'Welcome section updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Collections Section Settings
+@admin_bp.route('/site-settings/collections', methods=['GET'])
+@admin_required
+def get_collections_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'collections_title': settings.collections_title,
+            'collections_show_categories': settings.collections_show_categories,
+            'collections_categories_per_row': settings.collections_categories_per_row,
+            'collections_max_rows': settings.collections_max_rows,
+            'collections_show_section': settings.collections_show_section
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/collections', methods=['PUT'])
+@admin_required
+def update_collections_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Collections section fields
+        if 'collections_title' in data:
+            settings.collections_title = data['collections_title']
+        if 'collections_show_categories' in data:
+            settings.collections_show_categories = data['collections_show_categories']
+        if 'collections_categories_per_row' in data:
+            settings.collections_categories_per_row = data['collections_categories_per_row']
+        if 'collections_max_rows' in data:
+            settings.collections_max_rows = data['collections_max_rows']
+        if 'collections_show_section' in data:
+            settings.collections_show_section = data['collections_show_section']
+        
+        db.session.commit()
+        return jsonify({'message': 'Collections section updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Contact & Social Settings
+@admin_bp.route('/site-settings/contact-social', methods=['GET'])
+@admin_required
+def get_contact_social_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'contact_phone': settings.contact_phone,
+            'contact_email': settings.contact_email,
+            'contact_address': settings.contact_address,
+            'social_instagram': settings.social_instagram,
+            'social_facebook': settings.social_facebook,
+            'social_twitter': settings.social_twitter,
+            'social_youtube': settings.social_youtube,
+            'social_linkedin': settings.social_linkedin
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/contact-social', methods=['PUT'])
+@admin_required
+def update_contact_social_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Contact & Social fields
+        if 'contact_phone' in data:
+            settings.contact_phone = data['contact_phone']
+        if 'contact_email' in data:
+            settings.contact_email = data['contact_email']
+        if 'contact_address' in data:
+            settings.contact_address = data['contact_address']
+        if 'social_instagram' in data:
+            settings.social_instagram = data['social_instagram']
+        if 'social_facebook' in data:
+            settings.social_facebook = data['social_facebook']
+        if 'social_twitter' in data:
+            settings.social_twitter = data['social_twitter']
+        if 'social_youtube' in data:
+            settings.social_youtube = data['social_youtube']
+        if 'social_linkedin' in data:
+            settings.social_linkedin = data['social_linkedin']
+        
+        db.session.commit()
+        return jsonify({'message': 'Contact & social settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# SEO Settings
+@admin_bp.route('/site-settings/seo', methods=['GET'])
+@admin_required
+def get_seo_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'meta_title': settings.meta_title,
+            'meta_description': settings.meta_description,
+            'meta_keywords': settings.meta_keywords
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/seo', methods=['PUT'])
+@admin_required
+def update_seo_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # SEO fields
+        if 'meta_title' in data:
+            settings.meta_title = data['meta_title']
+        if 'meta_description' in data:
+            settings.meta_description = data['meta_description']
+        if 'meta_keywords' in data:
+            settings.meta_keywords = data['meta_keywords']
+        
+        db.session.commit()
+        return jsonify({'message': 'SEO settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Business Settings
+@admin_bp.route('/site-settings/business', methods=['GET'])
+@admin_required
+def get_business_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'currency_symbol': settings.currency_symbol,
+            'currency_code': settings.currency_code,
+            'shipping_cost': settings.shipping_cost,
+            'free_shipping_threshold': settings.free_shipping_threshold
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/business', methods=['PUT'])
+@admin_required
+def update_business_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Business fields
+        if 'currency_symbol' in data:
+            settings.currency_symbol = data['currency_symbol']
+        if 'currency_code' in data:
+            settings.currency_code = data['currency_code']
+        if 'shipping_cost' in data:
+            settings.shipping_cost = data['shipping_cost']
+        if 'free_shipping_threshold' in data:
+            settings.free_shipping_threshold = data['free_shipping_threshold']
+        
+        db.session.commit()
+        return jsonify({'message': 'Business settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Feature Flags
+@admin_bp.route('/site-settings/features', methods=['GET'])
+@admin_required
+def get_feature_settings():
+    try:
+        settings = SiteSettings.query.first()
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+            db.session.commit()
+        
+        return jsonify({
+            'enable_reviews': settings.enable_reviews,
+            'enable_wishlist': settings.enable_wishlist,
+            'enable_compare': settings.enable_compare,
+            'enable_newsletter': settings.enable_newsletter,
+            'maintenance_mode': settings.maintenance_mode
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/site-settings/features', methods=['PUT'])
+@admin_required
+def update_feature_settings():
+    try:
+        data = request.get_json()
+        settings = SiteSettings.query.first()
+        
+        if not settings:
+            settings = SiteSettings()
+            db.session.add(settings)
+        
+        # Feature flag fields
+        if 'enable_reviews' in data:
+            settings.enable_reviews = data['enable_reviews']
+        if 'enable_wishlist' in data:
+            settings.enable_wishlist = data['enable_wishlist']
+        if 'enable_compare' in data:
+            settings.enable_compare = data['enable_compare']
+        if 'enable_newsletter' in data:
+            settings.enable_newsletter = data['enable_newsletter']
+        if 'maintenance_mode' in data:
+            settings.maintenance_mode = data['maintenance_mode']
+        
+        db.session.commit()
+        return jsonify({'message': 'Feature settings updated successfully'})
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Excel Export/Import Endpoints
+
+@admin_bp.route('/products/export-excel', methods=['GET'])
+@admin_required
+def export_products_excel():
+    """Export all products to Excel file"""
+    try:
+        products = Product.query.all()
+        
+        # Prepare data for Excel - ordered for better readability
+        data = []
+        for product in products:
+            data.append({
+                'ID': product.id,
+                'Name': product.name,
+                'Slug': product.slug,
+                'Description': product.description,
+                'Price': product.price,
+                'Original Price': product.original_price,
+                'Stock Quantity': product.stock_quantity,
+                'Category ID': product.category_id,
+                'Category Name': product.category.name if product.category else '',
+                'Images': ','.join(product.images) if product.images else '',
+                'Video URL': product.video_url or '',
+                'Is Featured': 'TRUE' if product.is_featured else 'FALSE',
+                'Is Active': 'TRUE' if product.is_active else 'FALSE',
+                'Has Variations': 'TRUE' if product.has_variations else 'FALSE',
+                'Variation Type': product.variation_type or '',
+                'Variation Name': product.variation_name or '',
+                'Weight': product.weight or '',
+                'Dimensions': product.dimensions or '',
+                'Material': product.material or '',
+                'Created At': product.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'Updated At': product.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        
+        # Get categories for reference
+        categories = Category.query.filter_by(is_active=True).all()
+        categories_data = []
+        for cat in categories:
+            categories_data.append({
+                'ID': cat.id,
+                'Name': cat.name,
+                'Slug': cat.slug
+            })
+        
+        # Create Excel file in memory
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # Main products sheet
+            df = pd.DataFrame(data)
+            df.to_excel(writer, index=False, sheet_name='Products')
+            
+            # Categories reference sheet
+            df_categories = pd.DataFrame(categories_data)
+            df_categories.to_excel(writer, index=False, sheet_name='Categories Reference')
+            
+            # Instructions sheet
+            instructions = pd.DataFrame([
+                {'Instructions': 'This file contains exported product data'},
+                {'Instructions': 'You can edit and re-import this file'},
+                {'Instructions': '1. Edit data in Products sheet'},
+                {'Instructions': '2. If ID column exists = update, if not = create new product'},
+                {'Instructions': '3. Use Categories Reference sheet for Category ID values'},
+                {'Instructions': '4. For multiple images, separate with commas in Images column'},
+                {'Instructions': '5. Use TRUE/FALSE for boolean fields'},
+                {'Instructions': '6. Created At and Updated At columns are auto-updated'},
+                {'Instructions': '7. Category Name column is for reference only, not used in import'},
+                {'Instructions': '8. Save file and upload via admin panel'}
+            ])
+            instructions.to_excel(writer, index=False, sheet_name='Instructions')
+        
+        output.seek(0)
+        
+        # Generate filename with timestamp
+        filename = f"products_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/products/export-template', methods=['GET'])
+@admin_required
+def export_products_template():
+    """Export empty template for product import"""
+    try:
+        # Get categories for reference
+        categories = Category.query.filter_by(is_active=True).all()
+        
+        # Create empty template with headers and sample data
+        template_data = [{
+            'Name': 'Sample Product Name',
+            'Slug': 'sample-product-name',
+            'Description': 'Product description here',
+            'Price': 29.99,
+            'Original Price': 39.99,
+            'Stock Quantity': 10,
+            'Category ID': categories[0].id if categories else 1,
+            'Images': '/images/sample1.jpg,/images/sample2.jpg',
+            'Video URL': '',
+            'Is Featured': 'FALSE',
+            'Is Active': 'TRUE',
+            'Has Variations': 'FALSE',
+            'Variation Type': '',
+            'Variation Name': '',
+            'Weight': '',
+            'Dimensions': '',
+            'Material': ''
+        }]
+        
+        # Create categories sheet data
+        categories_data = []
+        for cat in categories:
+            categories_data.append({
+                'ID': cat.id,
+                'Name': cat.name,
+                'Slug': cat.slug
+            })
+        
+        # Create Excel file in memory
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # Products template sheet
+            df_template = pd.DataFrame(template_data)
+            df_template.to_excel(writer, index=False, sheet_name='Products Template')
+            
+            # Categories reference sheet
+            df_categories = pd.DataFrame(categories_data)
+            df_categories.to_excel(writer, index=False, sheet_name='Categories Reference')
+            
+            # Instructions sheet
+            instructions = pd.DataFrame([
+                {'Instructions': 'Use this file for bulk product upload'},
+                {'Instructions': '1. Delete sample row from Products Template sheet'},
+                {'Instructions': '2. Fill in product information'},
+                {'Instructions': '3. Use Categories Reference sheet for Category ID values'},
+                {'Instructions': '4. For multiple images, separate with commas in Images column'},
+                {'Instructions': '5. Use TRUE/FALSE for boolean fields'},
+                {'Instructions': '6. Save file and upload via admin panel'}
+            ])
+            instructions.to_excel(writer, index=False, sheet_name='Instructions')
+        
+        output.seek(0)
+        
+        filename = f"products_import_template_{datetime.now().strftime('%Y%m%d')}.xlsx"
+        
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@admin_bp.route('/products/import-excel', methods=['POST'])
+@admin_required
+def import_products_excel():
+    """Import products from Excel file"""
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file uploaded'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if not file.filename.endswith(('.xlsx', '.xls')):
+            return jsonify({'error': 'File must be Excel format (.xlsx or .xls)'}), 400
+        
+        # Try to read Excel file - support both export and template formats
+        df = None
+        sheet_name = None
+        
+        try:
+            # First try to read as export format (Products sheet)
+            df = pd.read_excel(file, sheet_name='Products')
+            sheet_name = 'Products'
+        except:
+            try:
+                # Then try template format (Products Template sheet)
+                df = pd.read_excel(file, sheet_name='Products Template')
+                sheet_name = 'Products Template'
+            except:
+                # Finally try first sheet
+                df = pd.read_excel(file, sheet_name=0)
+                sheet_name = 'First Sheet'
+        
+        if df is None:
+            return jsonify({'error': 'Could not read Excel file'}), 400
+        
+        success_count = 0
+        error_count = 0
+        errors = []
+        updated_count = 0
+        
+        for index, row in df.iterrows():
+            try:
+                # Validate required fields
+                if pd.isna(row['Name']) or pd.isna(row['Price']):
+                    errors.append(f"Row {index + 2}: Name and Price are required")
+                    error_count += 1
+                    continue
+                
+                # Check if category exists
+                category = Category.query.get(row['Category ID'])
+                if not category:
+                    errors.append(f"Row {index + 2}: Category ID {row['Category ID']} not found")
+                    error_count += 1
+                    continue
+                
+                # Process images
+                images = []
+                if not pd.isna(row['Images']) and row['Images']:
+                    images = [img.strip() for img in str(row['Images']).split(',')]
+                
+                # Helper function to convert string boolean to actual boolean
+                def str_to_bool(value):
+                    if pd.isna(value):
+                        return False
+                    if isinstance(value, bool):
+                        return value
+                    if isinstance(value, str):
+                        return value.upper() in ['TRUE', '1', 'YES', 'Y']
+                    return bool(value)
+                
+                # Helper function to generate unique slug
+                def generate_unique_slug(base_slug, product_id=None):
+                    slug = base_slug
+                    counter = 1
+                    while True:
+                        # Check if slug exists (excluding current product if updating)
+                        query = Product.query.filter_by(slug=slug)
+                        if product_id:
+                            query = query.filter(Product.id != product_id)
+                        
+                        if not query.first():
+                            return slug
+                        
+                        slug = f"{base_slug}-{counter}"
+                        counter += 1
+                
+                # Check if this is an update (has ID) or new product
+                product_id = None
+                if 'ID' in row and not pd.isna(row['ID']):
+                    product_id = int(row['ID'])
+                    product = Product.query.get(product_id)
+                    if product:
+                        # Update existing product
+                        product.name = str(row['Name'])
+                        # Generate unique slug for update
+                        base_slug = str(row['Slug']) if not pd.isna(row['Slug']) else str(row['Name']).lower().replace(' ', '-')
+                        product.slug = generate_unique_slug(base_slug, product.id)
+                        product.description = str(row['Description']) if not pd.isna(row['Description']) else ''
+                        product.price = float(row['Price'])
+                        product.original_price = float(row['Original Price']) if not pd.isna(row['Original Price']) else None
+                        product.stock_quantity = int(row['Stock Quantity']) if not pd.isna(row['Stock Quantity']) else 0
+                        product.category_id = int(row['Category ID'])
+                        product.images = images
+                        product.video_url = str(row['Video URL']) if not pd.isna(row['Video URL']) else None
+                        product.is_featured = str_to_bool(row['Is Featured'])
+                        product.is_active = str_to_bool(row['Is Active']) if not pd.isna(row['Is Active']) else True
+                        product.has_variations = str_to_bool(row['Has Variations'])
+                        product.variation_type = str(row['Variation Type']) if not pd.isna(row['Variation Type']) else ''
+                        product.variation_name = str(row['Variation Name']) if not pd.isna(row['Variation Name']) else ''
+                        product.weight = str(row['Weight']) if not pd.isna(row['Weight']) else ''
+                        product.dimensions = str(row['Dimensions']) if not pd.isna(row['Dimensions']) else ''
+                        product.material = str(row['Material']) if not pd.isna(row['Material']) else ''
+                        
+                        updated_count += 1
+                        continue
+                
+                # Create new product
+                # Generate unique slug for new product
+                base_slug = str(row['Slug']) if not pd.isna(row['Slug']) else str(row['Name']).lower().replace(' ', '-')
+                unique_slug = generate_unique_slug(base_slug)
+                
+                product = Product(
+                    name=str(row['Name']),
+                    slug=unique_slug,
+                    description=str(row['Description']) if not pd.isna(row['Description']) else '',
+                    price=float(row['Price']),
+                    original_price=float(row['Original Price']) if not pd.isna(row['Original Price']) else None,
+                    stock_quantity=int(row['Stock Quantity']) if not pd.isna(row['Stock Quantity']) else 0,
+                    category_id=int(row['Category ID']),
+                    images=images,
+                    video_url=str(row['Video URL']) if not pd.isna(row['Video URL']) else None,
+                    is_featured=str_to_bool(row['Is Featured']),
+                    is_active=str_to_bool(row['Is Active']) if not pd.isna(row['Is Active']) else True,
+                    has_variations=str_to_bool(row['Has Variations']),
+                    variation_type=str(row['Variation Type']) if not pd.isna(row['Variation Type']) else '',
+                    variation_name=str(row['Variation Name']) if not pd.isna(row['Variation Name']) else '',
+                    weight=str(row['Weight']) if not pd.isna(row['Weight']) else '',
+                    dimensions=str(row['Dimensions']) if not pd.isna(row['Dimensions']) else '',
+                    material=str(row['Material']) if not pd.isna(row['Material']) else ''
+                )
+                
+                db.session.add(product)
+                success_count += 1
+                
+            except Exception as e:
+                errors.append(f"Row {index + 2}: {str(e)}")
+                error_count += 1
+                # Rollback session on error to prevent further issues
+                db.session.rollback()
+        
+        # Commit successful imports
+        try:
+            if success_count > 0 or updated_count > 0:
+                db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': f'Database commit failed: {str(e)}'}), 500
+        
+        # Create a more detailed message
+        if success_count > 0 and updated_count > 0:
+            message = f'✅ Excel import tamamlandı: {success_count} yeni ürün eklendi, {updated_count} ürün güncellendi'
+        elif success_count > 0:
+            message = f'✅ Excel import tamamlandı: {success_count} yeni ürün eklendi'
+        elif updated_count > 0:
+            message = f'✅ Excel import tamamlandı: {updated_count} ürün güncellendi'
+        else:
+            message = f'⚠️ Excel import tamamlandı ancak hiç ürün işlenemedi'
+        
+        if error_count > 0:
+            message += f' ({error_count} hata)'
+        
+        if sheet_name:
+            message += f' - Kaynak: {sheet_name}'
+        
+        return jsonify({
+            'message': message,
+            'success_count': success_count,
+            'updated_count': updated_count,
+            'error_count': error_count,
+            'errors': errors[:10]  # Limit to first 10 errors
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

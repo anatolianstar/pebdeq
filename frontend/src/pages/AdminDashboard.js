@@ -615,7 +615,7 @@ const AdminDashboard = () => {
 
   const fetchSiteSettings = async () => {
     try {
-      const response = await fetch('/api/admin/site-settings', { headers: getAuthHeaders() });
+      const response = await fetch('/api/site-settings', { headers: getAuthHeaders() });
       const data = await response.json();
       
       if (response.ok) {
